@@ -14,7 +14,7 @@ var path = require("path"),
     Q = require("q");
 
 module.exports = function (baseDir, pckgPromise, gulp) {
-    var eslintrc = path.join(__dirname, "..", "eslint.json");
+    var eslintrc = path.join(__dirname, "..", "eslint", ".eslintrc");
 
     return function () {
         return pckgPromise.then(function (pckg) {
