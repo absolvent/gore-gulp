@@ -108,6 +108,15 @@ describe("webpack", function () {
                     });
                 });
 
+                paths = paths.concat([
+                    path.join(distDir, "test-library-2.not-an.min.js"),
+                    path.join(distDir, "test-library-2.not-an.min.js.map")
+                ].map(function (pth) {
+                    return FS.isFile(pth).then(function (isFile) {
+                        assert.notOk(isFile, pth);
+                    });
+                }));
+
                 return Q.all(paths);
             })
             .then(function () {
