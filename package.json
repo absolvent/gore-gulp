@@ -1,8 +1,8 @@
 {
     "author": "Mateusz Charytoniuk <mateusz.charytoniuk@gmail.com>",
     "dependencies": {
-        "babel-core": "4.x",
-        "babel-loader": "4.x",
+        "babel-core": "5.x",
+        "babel-loader": "5.x",
         "glob": "5.x",
         "gulp": "3.x",
         "gulp-eslint": "0.x",
