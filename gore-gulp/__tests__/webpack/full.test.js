@@ -56,12 +56,12 @@ describe("webpack", function () {
                 var paths;
 
                 paths = [
-                    path.join(distDir, "test-fixture-example.common.min.js"),
-                    path.join(distDir, "test-fixture-example.common.min.js.map"),
-                    path.join(distDir, "test-fixture-example.module.min.js"),
-                    path.join(distDir, "test-fixture-example.module.min.js.map"),
-                    path.join(distDir, "test-fixture-example.test.min.js"),
-                    path.join(distDir, "test-fixture-example.test.min.js.map")
+                    path.join(distDir, "test-library-1.common.min.js"),
+                    path.join(distDir, "test-library-1.common.min.js.map"),
+                    path.join(distDir, "test-library-1.module.min.js"),
+                    path.join(distDir, "test-library-1.module.min.js.map"),
+                    path.join(distDir, "test-library-1.test.min.js"),
+                    path.join(distDir, "test-library-1.test.min.js.map")
                 ].map(function (pth) {
                     return FS.isFile(pth).then(function (isFile) {
                         assert.ok(isFile, pth);
