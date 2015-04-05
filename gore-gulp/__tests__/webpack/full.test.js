@@ -35,7 +35,7 @@ describe("webpack", function () {
     });
 
     it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        var baseDir = path.join(__dirname, "__fixtures__"),
+        var baseDir = path.join(__dirname, "__fixtures__", "test-library-1"),
             distDir = path.join(tmpDir, "dist"),
             pckgPromise;
 
