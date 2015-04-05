@@ -84,7 +84,7 @@ function run(config) {
 
 function stub(baseDir, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-            return Q.nfcall(glob, path.join(__dirname, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return Q.nfcall(glob, path.join(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
                         normalizeEntries(entries),
