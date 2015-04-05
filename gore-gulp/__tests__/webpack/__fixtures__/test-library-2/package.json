@@ -1,0 +1,7 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "library-is-here"
+    },
+    "name": "test-library-2"
+}

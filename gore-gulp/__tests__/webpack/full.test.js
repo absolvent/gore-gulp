@@ -75,4 +75,44 @@ describe("webpack", function () {
             })
             .catch(done);
     });
+
+    it("uses library location specified in package configuration", function (done) {
+        var baseDir = path.join(__dirname, "__fixtures__", "test-library-2"),
+            distDir = path.join(tmpDir, "dist"),
+            pckgPromise;
+
+        pckgPromise = FS.read(path.join(baseDir, "package.json"))
+            .then(function (pckgContents) {
+                return JSON.parse(pckgContents);
+            })
+            .then(function (pckg) {
+                return _.merge(pckg, {
+                    "directories": {
+                        "dist": distDir
+                    }
+                });
+            });
+
+        webpack.full(baseDir, pckgPromise)()
+            .then(function () {
+                var paths;
+
+                paths = [
+                    path.join(distDir, "test-library-2.common.min.js"),
+                    path.join(distDir, "test-library-2.common.min.js.map"),
+                    path.join(distDir, "test-library-2.true.min.js"),
+                    path.join(distDir, "test-library-2.true.min.js.map")
+                ].map(function (pth) {
+                    return FS.isFile(pth).then(function (isFile) {
+                        assert.ok(isFile, pth);
+                    });
+                });
+
+                return Q.all(paths);
+            })
+            .then(function () {
+                done();
+            })
+            .catch(done);
+    });
 });
