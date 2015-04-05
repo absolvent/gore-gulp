@@ -10,6 +10,7 @@
 
 var path = require("path"),
     _ = require("lodash"),
+    defaults = require(path.join(__dirname, "/defaults")),
     glob = require("glob"),
     Q = require("q"),
     querystring = require("querystring"),
@@ -30,18 +31,18 @@ function full(config) {
     });
 }
 
-function normalizeEntry(options, entries) {
+function normalizeEntries(entries) {
     var i,
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
-        ret[normalizeEntryModuleName(entries[i], options.ecmaScriptFileExtensions)] = entries[i];
+        ret[normalizeEntry(entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
     }
 
     return ret;
 }
 
-function normalizeEntryModuleName(entry, fileExtensions) {
+function normalizeEntry(entry, fileExtensions) {
     var i,
         fileExtension;
 
@@ -70,7 +71,7 @@ function quick(config) {
 }
 
 function run(config) {
-    return new Promise(function (resolve, reject) {
+    return new Q.Promise(function (resolve, reject) {
         webpack(config, function (err) {
             if (err) {
                 reject(err);
@@ -81,17 +82,20 @@ function run(config) {
     });
 }
 
-function stub(options, baseDir) {
-    var pckg = require(path.join(baseDir, "package.json"));
-
-    return Q.nfcall(glob, path.join(__dirname, pckg.directories.lib, "**", "*.entry" + options.ecmaScriptFileExtensionsGlobPattern))
-        .then(function (entries) {
-            return normalizeEntry(options, entries);
+function stub(baseDir, pckgPromise) {
+    return pckgPromise.then(function (pckg) {
+            return Q.nfcall(glob, path.join(__dirname, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+                .then(function (entries) {
+                    return [
+                        normalizeEntries(entries),
+                        pckg
+                    ];
+                });
         })
-        .then(function (entries) {
+        .spread(function (entries, pckg) {
             return {
                 "bail": true,
-                "context": path.join(__dirname, pckg.directories.lib),
+                "context": pckg.directories.lib,
                 "devtool": "source-map",
                 "entry": entries,
                 "module": {
@@ -113,11 +117,13 @@ function stub(options, baseDir) {
                                     "es6.templateLiterals"
                                 ],
                                 "optional": [
+                                    "es3.runtime",
                                     "runtime",
                                     "utility.deadCodeElimination",
+                                    "utility.inlineEnvironmentVariables",
                                     "utility.inlineExpressions",
-                                    "validation.undeclaredVariableCheck",
-                                    "validation.react"
+                                    "validation.react",
+                                    "validation.undeclaredVariableCheck"
                                 ]
                             })
                         }
@@ -125,29 +131,28 @@ function stub(options, baseDir) {
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
-                    "path": path.join(baseDir, pckg.directories.dist)
+                    "path": pckg.directories.dist
                 },
                 "pckg": pckg,
                 "resolve": {
-                    "extensions": options.ecmaScriptFileExtensions
+                    "extensions": defaults.ecmaScriptFileExtensions
+                },
+                "resolveLoader": {
+                    "root": path.join(__dirname, "..", "node_modules")
                 }
             };
         });
 }
 
-function init(options, baseDir, variant) {
-    return stub(options, baseDir).then(variant).then(run);
-}
-
 module.exports = {
-    "full": function (options, baseDir) {
+    "full": function (baseDir, pckgPromise) {
         return function () {
-            return init(options, baseDir, full)
+            return stub(baseDir, pckgPromise).then(full).then(run);
         };
     },
-    "quick": function (options, baseDir) {
+    "quick": function (baseDir, pckgPromise) {
         return function () {
-            return init(options, baseDir, quick);
+            return stub(baseDir, pckgPromise).then(quick).then(run);
         };
     }
 };

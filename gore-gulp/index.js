@@ -9,41 +9,46 @@
 "use strict";
 
 var path = require("path"),
-    defaults = require(path.join(__dirname, "/defaults")),
     FS = require("q-io/fs"),
     lint = require(path.join(__dirname, "/lint")),
     test = require(path.join(__dirname, "/test")),
     webpack = require(path.join(__dirname, "/webpack"));
 
-function configure(options) {
-    return stub.bind(null, options);
-}
-
-function setup(options, gulp, tasks, baseDir) {
+function setup(options, pckgPromise, gulp, self) {
     gulp.task("default", [
         "test"
     ]);
-    gulp.task("lint", tasks.lint(baseDir));
+    gulp.task("lint", self.lint(gulp));
     gulp.task("test", [
         "lint"
-    ], tasks.test(baseDir));
+    ], self.test(gulp));
+    gulp.task("webpack", [
+        "test"
+    ], self.webpack());
 }
 
-function stub(options, gulp) {
-    var tasks = {
-        "lint": lint.bind(null, options, gulp),
-        "test": test.bind(null, options, gulp),
-        "webpack": {
-            "full": webpack.full.bind(null, options),
-            "quick": webpack.quick.bind(null, options)
-        }
-    };
+module.exports = function (baseDir) {
+    var pckgPromise = FS.read(path.join(baseDir, "package.json"))
+        .then(function (pckgContents) {
+            return JSON.parse(pckgContents);
+        });
 
     return {
-        "setup": function (baseDir) {
-            return setup(options, gulp, tasks, baseDir);
+        "lint": function (gulp) {
+            return lint(baseDir, pckgPromise, gulp);
+        },
+        "setup": function (gulp) {
+            return setup(baseDir, pckgPromise, gulp, this);
+        },
+        "test": function (gulp) {
+            return test(baseDir, pckgPromise, gulp);
+        },
+        "webpack": function () {
+            return webpack.full(baseDir, pckgPromise);
         }
     };
-}
+};
 
-module.exports = configure(defaults);
+module.exports.lint = lint;
+module.exports.test = test;
+module.exports.webpack = webpack;

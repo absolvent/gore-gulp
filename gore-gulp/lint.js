@@ -9,17 +9,28 @@
 "use strict";
 
 var path = require("path"),
-    eslint = require("gulp-eslint");
+    defaults = require(path.join(__dirname, "/defaults")),
+    eslint = require("gulp-eslint"),
+    Q = require("q");
 
-module.exports = function (options, gulp, baseDir) {
-    var eslintrc = path.join(__dirname, "..", "eslint.json"),
-        pckg = require(path.join(baseDir, "package.json")),
-        globPattern = path.join(baseDir, pckg.directories.lib, "**", "*." + options.ecmaScriptFileExtensionsGlobPattern);
+module.exports = function (baseDir, pckgPromise, gulp) {
+    var eslintrc = path.join(__dirname, "..", "eslint.json");
 
     return function () {
-        return gulp.src(globPattern)
-            .pipe(eslint(eslintrc))
-            .pipe(eslint.format())
-            .pipe(eslint.failOnError());
+        return pckgPromise.then(function (pckg) {
+                return path.join(baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern);
+            })
+            .then(function (globPattern) {
+                var eslintDeferred = Q.defer();
+
+                gulp.src(globPattern)
+                    .pipe(eslint(eslintrc))
+                    .pipe(eslint.format())
+                    .pipe(eslint.failOnError())
+                    .on("error", eslintDeferred.reject)
+                    .on("finish", eslintDeferred.resolve);
+
+                return eslintDeferred.promise;
+            });
     };
 };

@@ -9,17 +9,27 @@
 "use strict";
 
 var path = require("path"),
-    mocha = require("gulp-mocha");
+    defaults = require(path.join(__dirname, "/defaults")),
+    mocha = require("gulp-mocha"),
+    Q = require("q");
 
-module.exports = function (options, gulp, baseDir) {
-    var pckg = require(path.join(baseDir, "package.json")),
-        globPattern = path.join(baseDir, pckg.directories.lib, "**", "*.test" + options.ecmaScriptFileExtensionsGlobPattern);
-
+module.exports = function (baseDir, pckgPromise, gulp) {
     return function () {
-        return gulp.src(globPattern)
-            .pipe(mocha({
-                "bail": true,
-                "reporter": "dot"
-            }));
+        return pckgPromise.then(function (pckg) {
+                return path.join(baseDir, pckg.directories.lib, "**", "*.test" + defaults.ecmaScriptFileExtensionsGlobPattern);
+            })
+            .then(function (globPattern) {
+                var mochaDeferred = Q.defer();
+
+                gulp.src(globPattern)
+                    .pipe(mocha({
+                        "bail": true,
+                        "reporter": "dot"
+                    }))
+                    .on("error", mochaDeferred.reject)
+                    .on("end", mochaDeferred.resolve);
+
+                return mochaDeferred.promise;
+            });
     };
 };

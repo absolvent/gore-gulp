@@ -13,4 +13,4 @@ var path = require("path"),
     gg = require(path.join(__dirname, pckg.name)),
     gulp = require("gulp");
 
-gg(gulp).setup(__dirname);
+gg(__dirname).setup(gulp);

@@ -8,13 +8,14 @@
 
 "use strict";
 
-/*eslint no-sync: 0 */
 /*global beforeEach: false, describe: false, it: false */
 
 var path = require("path"),
+    _ = require("lodash"),
     assert = require("chai").assert,
     defaults = require(path.join(__dirname, "..", "..", "defaults")),
-    fs = require("fs"),
+    FS = require("q-io/fs"),
+    Q = require("q"),
     tmp = require("tmp"),
     webpack = require(path.join(__dirname, "..", "..", "webpack"));
 
@@ -34,17 +35,42 @@ describe("webpack", function () {
     });
 
     it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        webpack.full(defaults, path.join(__dirname, "__fixtures__"))()
+        var baseDir = path.join(__dirname, "__fixtures__"),
+            distDir = path.join(tmpDir, "dist"),
+            pckgPromise;
+
+        pckgPromise = FS.read(path.join(baseDir, "package.json"))
+            .then(function (pckgContents) {
+                return JSON.parse(pckgContents);
+            })
+            .then(function (pckg) {
+                return _.merge(pckg, {
+                    "directories": {
+                        "dist": distDir
+                    }
+                });
+            });
+
+        webpack.full(baseDir, pckgPromise)()
             .then(function () {
-                var distDir = path.join(tmpDir, "dist");
+                var paths;
 
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.common.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.common.min.js.map")).isFile());
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.module.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.module.min.js.map")).isFile());
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.test.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.test.min.js.map")).isFile());
+                paths = [
+                    path.join(distDir, "test-fixture-example.common.min.js"),
+                    path.join(distDir, "test-fixture-example.common.min.js.map"),
+                    path.join(distDir, "test-fixture-example.module.min.js"),
+                    path.join(distDir, "test-fixture-example.module.min.js.map"),
+                    path.join(distDir, "test-fixture-example.test.min.js"),
+                    path.join(distDir, "test-fixture-example.test.min.js.map")
+                ].map(function (pth) {
+                    return FS.isFile(pth).then(function (isFile) {
+                        assert.ok(isFile, pth);
+                    });
+                });
 
+                return Q.all(paths);
+            })
+            .then(function () {
                 done();
             })
             .catch(done);
