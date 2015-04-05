@@ -31,8 +31,7 @@ function full(config) {
 }
 
 function normalizeEntry(options, entries) {
-    var entry,
-        i,
+    var i,
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
@@ -82,7 +81,7 @@ function run(config) {
     });
 }
 
-function stub(options, baseDir, outputPath) {
+function stub(options, baseDir) {
     var pckg = require(path.join(baseDir, "package.json"));
 
     return Q.nfcall(glob, path.join(__dirname, pckg.directories.lib, "**", "*.entry" + options.ecmaScriptFileExtensionsGlobPattern))
@@ -126,7 +125,7 @@ function stub(options, baseDir, outputPath) {
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
-                    "path": outputPath
+                    "path": path.join(baseDir, pckg.directories.dist)
                 },
                 "pckg": pckg,
                 "resolve": {
@@ -137,20 +136,18 @@ function stub(options, baseDir, outputPath) {
 }
 
 function init(options, baseDir, variant) {
-    return {
-        "output": function (output) {
-            return function () {
-                return stub(options, baseDir, output).then(variant).then(run);
-            };
-        }
-    };
+    return stub(options, baseDir).then(variant).then(run);
 }
 
 module.exports = {
     "full": function (options, baseDir) {
-        return init(options, baseDir, full);
+        return function () {
+            return init(options, baseDir, full)
+        };
     },
     "quick": function (options, baseDir) {
-        return init(options, baseDir, quick);
+        return function () {
+            return init(options, baseDir, quick);
+        };
     }
 };

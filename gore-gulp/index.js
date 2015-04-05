@@ -9,6 +9,7 @@
 "use strict";
 
 var path = require("path"),
+    FS = require("q-io/fs"),
     globals = require(path.join(__dirname, "/globals")),
     lint = require(path.join(__dirname, "/lint")),
     test = require(path.join(__dirname, "/test")),

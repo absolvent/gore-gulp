@@ -1,5 +1,6 @@
 {
     "directories": {
+        "dist": "dist",
         "lib": "."
     },
     "name": "test-fixture-example"

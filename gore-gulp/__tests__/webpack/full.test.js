@@ -34,15 +34,16 @@ describe("webpack", function () {
     });
 
     it("generates output using .entry." + globals.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        webpack.full(globals, path.join(__dirname, "__fixtures__"))
-            .output(tmpDir)()
+        webpack.full(globals, path.join(__dirname, "__fixtures__"))()
             .then(function () {
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.common.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.common.min.js.map")).isFile());
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.module.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.module.min.js.map")).isFile());
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.test.min.js")).isFile());
-                assert.ok(fs.statSync(path.join(tmpDir, "test-fixture-example.test.min.js.map")).isFile());
+                var distDir = path.join(tmpDir, "dist");
+
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.common.min.js")).isFile());
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.common.min.js.map")).isFile());
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.module.min.js")).isFile());
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.module.min.js.map")).isFile());
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.test.min.js")).isFile());
+                assert.ok(fs.statSync(path.join(distDir, "test-fixture-example.test.min.js.map")).isFile());
 
                 done();
             })
