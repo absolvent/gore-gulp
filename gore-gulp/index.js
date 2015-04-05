@@ -9,8 +9,8 @@
 "use strict";
 
 var path = require("path"),
+    defaults = require(path.join(__dirname, "/defaults")),
     FS = require("q-io/fs"),
-    globals = require(path.join(__dirname, "/globals")),
     lint = require(path.join(__dirname, "/lint")),
     test = require(path.join(__dirname, "/test")),
     webpack = require(path.join(__dirname, "/webpack"));
@@ -46,4 +46,4 @@ function stub(options, gulp) {
     };
 }
 
-module.exports = configure(globals);
+module.exports = configure(defaults);

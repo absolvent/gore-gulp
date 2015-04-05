@@ -13,8 +13,8 @@
 
 var path = require("path"),
     assert = require("chai").assert,
+    defaults = require(path.join(__dirname, "..", "..", "defaults")),
     fs = require("fs"),
-    globals = require(path.join(__dirname, "..", "..", "globals")),
     tmp = require("tmp"),
     webpack = require(path.join(__dirname, "..", "..", "webpack"));
 
@@ -33,8 +33,8 @@ describe("webpack", function () {
         });
     });
 
-    it("generates output using .entry." + globals.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        webpack.full(globals, path.join(__dirname, "__fixtures__"))()
+    it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
+        webpack.full(defaults, path.join(__dirname, "__fixtures__"))()
             .then(function () {
                 var distDir = path.join(tmpDir, "dist");
 
