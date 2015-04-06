@@ -1,0 +1,7 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "library-with-nested-elements"
+    },
+    "name": "test-library-4"
+}

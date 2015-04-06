@@ -27,6 +27,9 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                     .pipe(eslint(eslintrc))
                     .pipe(eslint.format())
                     .pipe(eslint.failOnError())
+                    .on("data", function () {
+                        // console.log(data);
+                    })
                     .on("error", eslintDeferred.reject)
                     .on("finish", eslintDeferred.resolve);
 

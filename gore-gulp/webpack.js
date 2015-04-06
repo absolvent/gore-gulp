@@ -26,17 +26,20 @@ function full(config) {
     });
 }
 
-function normalizeAliasPaths(baseDir, vendors) {
+function normalizeAliasPaths(baseDir, pckg) {
     var property,
-        ret = {};
+        alias = {};
 
-    for (property in vendors) {
-        if (vendors.hasOwnProperty(property)) {
-            ret[property] = path.resolve(baseDir, vendors[property]);
+    alias[pckg.name] = path.resolve(baseDir, pckg.directories.lib);
+    alias = _.merge(alias, pckg.alias);
+
+    for (property in pckg.alias) {
+        if (pckg.alias.hasOwnProperty(property)) {
+            alias[property] = path.resolve(baseDir, pckg.alias[property]);
         }
     }
 
-    return ret;
+    return alias;
 }
 
 function normalizeEntries(entries) {
@@ -98,7 +101,6 @@ function stub(baseDir, pckgPromise) {
         .spread(function (entries, pckg) {
             return {
                 "bail": true,
-                "context": path.resolve(baseDir, pckg.directories.lib),
                 "devtool": "source-map",
                 "entry": entries,
                 "module": {
@@ -138,7 +140,7 @@ function stub(baseDir, pckgPromise) {
                 },
                 "pckg": pckg,
                 "resolve": {
-                    "alias": normalizeAliasPaths(baseDir, pckg.alias),
+                    "alias": normalizeAliasPaths(baseDir, pckg),
                     "extensions": defaults.ecmaScriptFileExtensions
                 }
             };
