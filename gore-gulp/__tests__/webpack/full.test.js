@@ -110,4 +110,27 @@ describe("webpack", function () {
             .then(done)
             .catch(done);
     });
+
+    it("uses vendor libraries configuration field", function (done) {
+        runDirectory(path.join(__dirname, "__fixtures__", "test-library-3"))
+            .then(function (distDir) {
+                var paths;
+
+                paths = [
+                    path.join(distDir, "test-library-3.common.min.js"),
+                    path.join(distDir, "test-library-3.common.min.js.map"),
+                    path.join(distDir, "test-library-3.index.min.js"),
+                    path.join(distDir, "test-library-3.index.min.js.map")
+                ].map(function (pth) {
+                    return FS.isFile(pth).then(function (isFile) {
+                        assert.ok(isFile, pth);
+                    });
+                });
+
+                return Q.all(paths);
+            })
+            .then(_.noop)
+            .then(done)
+            .catch(done);
+    });
 });

@@ -1,0 +1,10 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "library-with-bower-components"
+    },
+    "name": "test-library-3",
+    "vendor": {
+        "vendor-package": "bower_components/vendor-package/index"
+    }
+}

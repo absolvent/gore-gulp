@@ -11,6 +11,7 @@
 var ecmaScriptFileExtensions = [
     "",
     ".coffee",
+    ".min.js",
     ".js",
     ".jsx"
 ];

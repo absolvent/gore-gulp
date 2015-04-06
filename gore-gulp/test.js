@@ -16,7 +16,7 @@ var path = require("path"),
 module.exports = function (baseDir, pckgPromise, gulp) {
     return function () {
         return pckgPromise.then(function (pckg) {
-                return path.join(baseDir, pckg.directories.lib, "**", "*.test" + defaults.ecmaScriptFileExtensionsGlobPattern);
+                return path.resolve(baseDir, pckg.directories.lib, "**", "*.test" + defaults.ecmaScriptFileExtensionsGlobPattern);
             })
             .then(function (globPattern) {
                 var mochaDeferred = Q.defer();

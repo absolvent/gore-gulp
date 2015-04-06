@@ -42,7 +42,7 @@ function setupTask(baseDir, pckgPromise, task) {
 module.exports = function (baseDir) {
     var pckgPromise;
 
-    pckgPromise = FS.read(path.join(baseDir, "package.json"))
+    pckgPromise = FS.read(path.resolve(baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         });

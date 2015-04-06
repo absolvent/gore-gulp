@@ -31,6 +31,19 @@ function full(config) {
     });
 }
 
+function normalizeAliasPaths(baseDir, vendors) {
+    var property,
+        ret = {};
+
+    for (property in vendors) {
+        if (vendors.hasOwnProperty(property)) {
+            ret[property] = path.resolve(baseDir, vendors[property]);
+        }
+    }
+
+    return ret;
+}
+
 function normalizeEntries(entries) {
     var i,
         ret = {};
@@ -84,7 +97,7 @@ function run(config) {
 
 function stub(baseDir, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-            return Q.nfcall(glob, path.join(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return Q.nfcall(glob, path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
                         normalizeEntries(entries),
@@ -95,7 +108,7 @@ function stub(baseDir, pckgPromise) {
         .spread(function (entries, pckg) {
             return {
                 "bail": true,
-                "context": pckg.directories.lib,
+                "context": path.resolve(baseDir, pckg.directories.lib),
                 "devtool": "source-map",
                 "entry": entries,
                 "module": {
@@ -131,10 +144,11 @@ function stub(baseDir, pckgPromise) {
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
-                    "path": pckg.directories.dist
+                    "path": path.resolve(baseDir, pckg.directories.dist)
                 },
                 "pckg": pckg,
                 "resolve": {
+                    "alias": normalizeAliasPaths(baseDir, pckg.vendor),
                     "extensions": defaults.ecmaScriptFileExtensions
                 }
             };
