@@ -15,9 +15,9 @@ var path = require("path"),
     assert = require("chai").assert,
     defaults = require(path.join(__dirname, "..", "..", "defaults")),
     FS = require("q-io/fs"),
+    gg = require(path.join(__dirname, "..", "..", "index")),
     Q = require("q"),
-    tmp = require("tmp"),
-    webpack = require(path.join(__dirname, "..", "..", "webpack"));
+    tmp = require("tmp");
 
 describe("webpack", function () {
     var tmpDir;
@@ -36,22 +36,17 @@ describe("webpack", function () {
 
     it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
         var baseDir = path.join(__dirname, "__fixtures__", "test-library-1"),
-            distDir = path.join(tmpDir, "dist"),
-            pckgPromise;
+            distDir = path.join(tmpDir, "dist");
 
-        pckgPromise = FS.read(path.join(baseDir, "package.json"))
-            .then(function (pckgContents) {
-                return JSON.parse(pckgContents);
-            })
-            .then(function (pckg) {
+        gg(baseDir)
+            .webpack
+            .full(function (pckg) {
                 return _.merge(pckg, {
                     "directories": {
                         "dist": distDir
                     }
                 });
-            });
-
-        webpack.full(baseDir, pckgPromise)()
+            })()
             .then(function () {
                 var paths;
 
@@ -78,22 +73,17 @@ describe("webpack", function () {
 
     it("uses library location specified in package configuration", function (done) {
         var baseDir = path.join(__dirname, "__fixtures__", "test-library-2"),
-            distDir = path.join(tmpDir, "dist"),
-            pckgPromise;
+            distDir = path.join(tmpDir, "dist");
 
-        pckgPromise = FS.read(path.join(baseDir, "package.json"))
-            .then(function (pckgContents) {
-                return JSON.parse(pckgContents);
-            })
-            .then(function (pckg) {
+        gg(baseDir)
+            .webpack
+            .full(function (pckg) {
                 return _.merge(pckg, {
                     "directories": {
                         "dist": distDir
                     }
                 });
-            });
-
-        webpack.full(baseDir, pckgPromise)()
+            })()
             .then(function () {
                 var paths;
 

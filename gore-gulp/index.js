@@ -23,8 +23,10 @@ function setup(options, pckgPromise, gulp, self) {
         "lint"
     ], self.test(gulp));
     gulp.task("webpack", [
-        "test"
-    ], self.webpack());
+        "webpack.full"
+    ]);
+    gulp.task("webpack.full", self.webpack.full());
+    gulp.task("webpack.quick", self.webpack.quick());
 }
 
 module.exports = function (baseDir) {
@@ -43,8 +45,17 @@ module.exports = function (baseDir) {
         "test": function (gulp) {
             return test(baseDir, pckgPromise, gulp);
         },
-        "webpack": function () {
-            return webpack.full(baseDir, pckgPromise);
+        "webpack": {
+            "full": function (override) {
+                if (override) {
+                    pckgPromise = pckgPromise.then(override);
+                }
+
+                return webpack.full(baseDir, pckgPromise);
+            },
+            "quick": function () {
+                return webpack.quick(baseDir, pckgPromise);
+            }
         }
     };
 };
