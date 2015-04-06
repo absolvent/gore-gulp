@@ -23,6 +23,25 @@ var path = require("path"),
 describe("webpack", function () {
     var tmpDir;
 
+    function runDirectory(baseDir) {
+        var distDir;
+
+        return gg(baseDir)
+            .webpack
+            .full(gulp, function (pckg) {
+                distDir = path.join(tmpDir, pckg.directories.dist);
+
+                return _.merge(pckg, {
+                    "directories": {
+                        "dist": distDir
+                    }
+                });
+            })()
+            .then(function () {
+                return distDir;
+            });
+    }
+
     beforeEach(function (done) {
         tmp.dir(function (err, generatedTmpDir) {
             if (err) {
@@ -36,19 +55,8 @@ describe("webpack", function () {
     });
 
     it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        var baseDir = path.join(__dirname, "__fixtures__", "test-library-1"),
-            distDir = path.join(tmpDir, "dist");
-
-        gg(baseDir)
-            .webpack
-            .full(gulp, function (pckg) {
-                return _.merge(pckg, {
-                    "directories": {
-                        "dist": distDir
-                    }
-                });
-            })()
-            .then(function () {
+        runDirectory(path.join(__dirname, "__fixtures__", "test-library-1"))
+            .then(function (distDir) {
                 var paths;
 
                 paths = [
@@ -66,26 +74,14 @@ describe("webpack", function () {
 
                 return Q.all(paths);
             })
-            .then(function () {
-                done();
-            })
+            .then(_.noop)
+            .then(done)
             .catch(done);
     });
 
     it("uses library location specified in package configuration", function (done) {
-        var baseDir = path.join(__dirname, "__fixtures__", "test-library-2"),
-            distDir = path.join(tmpDir, "dist");
-
-        gg(baseDir)
-            .webpack
-            .full(gulp, function (pckg) {
-                return _.merge(pckg, {
-                    "directories": {
-                        "dist": distDir
-                    }
-                });
-            })()
-            .then(function () {
+        runDirectory(path.join(__dirname, "__fixtures__", "test-library-2"))
+            .then(function (distDir) {
                 var paths;
 
                 paths = [
@@ -110,9 +106,8 @@ describe("webpack", function () {
 
                 return Q.all(paths);
             })
-            .then(function () {
-                done();
-            })
+            .then(_.noop)
+            .then(done)
             .catch(done);
     });
 });
