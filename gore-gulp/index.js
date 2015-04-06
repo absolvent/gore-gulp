@@ -29,33 +29,33 @@ function setup(options, pckgPromise, gulp, self) {
     gulp.task("webpack.quick", self.webpack.quick());
 }
 
+function setupTask(baseDir, pckgPromise, task) {
+    return function (gulp, override) {
+        if (override) {
+            pckgPromise = pckgPromise.then(override);
+        }
+
+        return task(baseDir, pckgPromise, gulp);
+    };
+}
+
 module.exports = function (baseDir) {
-    var pckgPromise = FS.read(path.join(baseDir, "package.json"))
+    var pckgPromise;
+
+    pckgPromise = FS.read(path.join(baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         });
 
     return {
-        "lint": function (gulp) {
-            return lint(baseDir, pckgPromise, gulp);
-        },
+        "lint": setupTask(baseDir, pckgPromise, lint),
         "setup": function (gulp) {
             return setup(baseDir, pckgPromise, gulp, this);
         },
-        "test": function (gulp) {
-            return test(baseDir, pckgPromise, gulp);
-        },
+        "test": setupTask(baseDir, pckgPromise, test),
         "webpack": {
-            "full": function (override) {
-                if (override) {
-                    pckgPromise = pckgPromise.then(override);
-                }
-
-                return webpack.full(baseDir, pckgPromise);
-            },
-            "quick": function () {
-                return webpack.quick(baseDir, pckgPromise);
-            }
+            "full": setupTask(baseDir, pckgPromise, webpack.full),
+            "quick": setupTask(baseDir, pckgPromise, webpack.quick)
         }
     };
 };

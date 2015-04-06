@@ -16,6 +16,7 @@ var path = require("path"),
     defaults = require(path.join(__dirname, "..", "..", "defaults")),
     FS = require("q-io/fs"),
     gg = require(path.join(__dirname, "..", "..", "index")),
+    gulp = require("gulp"),
     Q = require("q"),
     tmp = require("tmp");
 
@@ -40,7 +41,7 @@ describe("webpack", function () {
 
         gg(baseDir)
             .webpack
-            .full(function (pckg) {
+            .full(gulp, function (pckg) {
                 return _.merge(pckg, {
                     "directories": {
                         "dist": distDir
@@ -77,7 +78,7 @@ describe("webpack", function () {
 
         gg(baseDir)
             .webpack
-            .full(function (pckg) {
+            .full(gulp, function (pckg) {
                 return _.merge(pckg, {
                     "directories": {
                         "dist": distDir
