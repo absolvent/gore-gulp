@@ -105,12 +105,12 @@ function stub(baseDir, pckgPromise) {
                             // environment and sometimes assume that global 'this'
                             // is always the Window object which is a mistake
                             "test": /bower_components/,
-                            "loader": "imports?this=>window"
+                            "loader": require.resolve("imports-loader") + "?this=>window"
                         },
                         {
                             "test": /\.jsx$/,
                             "exclude": /(bower_components|node_modules)/,
-                            "loader": "babel-loader?" + querystring.stringify({
+                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify({
                                 "loose": [
                                     "es6.modules",
                                     "es6.properties.computed",
@@ -136,9 +136,6 @@ function stub(baseDir, pckgPromise) {
                 "pckg": pckg,
                 "resolve": {
                     "extensions": defaults.ecmaScriptFileExtensions
-                },
-                "resolveLoader": {
-                    "root": path.join(__dirname, "..", "node_modules")
                 }
             };
         });

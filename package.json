@@ -7,6 +7,7 @@
         "gulp": "3.x",
         "gulp-eslint": "0.x",
         "gulp-mocha": "2.x",
+        "imports-loader": "0.x",
         "lodash": "3.x",
         "q": "1.x",
         "q-io": "1.x",
