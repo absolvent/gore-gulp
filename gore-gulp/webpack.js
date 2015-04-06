@@ -20,11 +20,6 @@ function full(config) {
     return _.assign(config, {
         "debug": false,
         "plugins": [
-            new webpack.DefinePlugin({
-                "process.env": {
-                    "NODE_ENV": "production"
-                }
-            }),
             new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js"),
             new webpack.optimize.UglifyJsPlugin()
         ]
@@ -73,11 +68,6 @@ function quick(config) {
     return _.assign(config, {
         "debug": true,
         "plugins": [
-            new webpack.DefinePlugin({
-                "process.env": {
-                    "NODE_ENV": "development"
-                }
-            }),
             new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js")
         ]
     });
