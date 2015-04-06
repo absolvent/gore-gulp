@@ -70,21 +70,21 @@ Feel free to open an issue if you’d like to see any changes.
 ### Vendor (non-NPM) libraries support
 
 To support libraries from other sources than NPM (like bower) you need to
-specify `vendor` key inside your `package.json`. For
+specify `alias` key inside your `package.json`. For
 example if you need to use bower edition of
 [RxJS](https://github.com/Reactive-Extensions/RxJS) (for some strange reason)
 you can configure your project like this:
 
 ```JSON
 {
+    "alias": {
+        "rxjs": "bower_components/rxjs/dist/rx.all"
+    },
     "directories": {
         "dist": "my-output-folder",
         "lib": "library-with-bower-components"
     },
-    "name": "my-library-with-bower-components",
-    "vendor": {
-        "rxjs": "bower_components/rxjs/dist/rx.all"
-    }
+    "name": "my-library-with-bower-components"
 }
 ```
 
@@ -95,6 +95,12 @@ And then just use it:
 
 import Rx from "rxjs";
 ```
+
+Internally, `alias` key is an exposed
+[webpack configuration field](http://webpack.github.io/docs/configuration.html#resolve-alias).
+Aliased paths are processed by **gore-gulp** before passing them to `webpack`
+to ensure that they are relative to base package directory (the one that holds
+`package.json`).
 
 ## Summary
 

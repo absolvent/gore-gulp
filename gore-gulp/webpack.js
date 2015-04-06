@@ -148,7 +148,7 @@ function stub(baseDir, pckgPromise) {
                 },
                 "pckg": pckg,
                 "resolve": {
-                    "alias": normalizeAliasPaths(baseDir, pckg.vendor),
+                    "alias": normalizeAliasPaths(baseDir, pckg.alias),
                     "extensions": defaults.ecmaScriptFileExtensions
                 }
             };
