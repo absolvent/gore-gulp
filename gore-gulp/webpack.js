@@ -27,19 +27,11 @@ function full(config) {
 }
 
 function normalizeAliasPaths(baseDir, pckg) {
-    var property,
-        alias = {};
+    var alias = {};
 
     alias[pckg.name] = path.resolve(baseDir, pckg.directories.lib);
-    alias = _.merge(alias, pckg.alias);
 
-    for (property in pckg.alias) {
-        if (pckg.alias.hasOwnProperty(property)) {
-            alias[property] = path.resolve(baseDir, pckg.alias[property]);
-        }
-    }
-
-    return alias;
+    return _.merge(alias, pckg.alias);
 }
 
 function normalizeEntries(entries) {
@@ -141,7 +133,8 @@ function stub(baseDir, pckgPromise) {
                 "pckg": pckg,
                 "resolve": {
                     "alias": normalizeAliasPaths(baseDir, pckg),
-                    "extensions": defaults.ecmaScriptFileExtensions
+                    "extensions": defaults.ecmaScriptFileExtensions,
+                    "root": baseDir
                 }
             };
         });
