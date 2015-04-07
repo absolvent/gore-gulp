@@ -157,7 +157,7 @@ describe("webpack", function () {
             .catch(done);
     });
 
-    it("resolved node_modules paths", function (done) {
+    it("resolves node_modules paths", function (done) {
         runDirectory(path.join(__dirname, "__fixtures__", "test-library-5"))
             .then(function (distDir) {
                 var paths;
@@ -167,6 +167,29 @@ describe("webpack", function () {
                     path.join(distDir, "test-library-5.common.min.js.map"),
                     path.join(distDir, "test-library-5.fake-module-holder.min.js"),
                     path.join(distDir, "test-library-5.fake-module-holder.min.js.map")
+                ].map(function (pth) {
+                    return FS.isFile(pth).then(function (isFile) {
+                        assert.ok(isFile, pth);
+                    });
+                });
+
+                return Q.all(paths);
+            })
+            .then(_.noop)
+            .then(done)
+            .catch(done);
+    });
+
+    it("uses externals settings", function (done) {
+        runDirectory(path.join(__dirname, "__fixtures__", "test-library-6"))
+            .then(function (distDir) {
+                var paths;
+
+                paths = [
+                    path.join(distDir, "test-library-6.common.min.js"),
+                    path.join(distDir, "test-library-6.common.min.js.map"),
+                    path.join(distDir, "test-library-6.index.min.js"),
+                    path.join(distDir, "test-library-6.index.min.js.map")
                 ].map(function (pth) {
                     return FS.isFile(pth).then(function (isFile) {
                         assert.ok(isFile, pth);

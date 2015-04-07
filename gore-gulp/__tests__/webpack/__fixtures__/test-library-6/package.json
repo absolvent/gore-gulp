@@ -1,0 +1,10 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "library-with-externals"
+    },
+    "externals": {
+        "jquery": "jQuery"
+    },
+    "name": "test-library-6"
+}
