@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "fake-module": "*"
+    },
+    "directories": {
+        "dist": "dist",
+        "lib": "library-with-node-modules"
+    },
+    "name": "test-library-5"
+}
