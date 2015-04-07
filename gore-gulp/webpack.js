@@ -120,8 +120,7 @@ function stub(baseDir, pckgPromise) {
                                     "utility.deadCodeElimination",
                                     "utility.inlineEnvironmentVariables",
                                     "utility.inlineExpressions",
-                                    "validation.react",
-                                    "validation.undeclaredVariableCheck"
+                                    "validation.react"
                                 ]
                             })
                         }
