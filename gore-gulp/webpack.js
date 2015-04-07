@@ -95,6 +95,7 @@ function stub(baseDir, pckgPromise) {
                 "bail": true,
                 "devtool": "source-map",
                 "entry": entries,
+                "externals": pckg.externals,
                 "module": {
                     "loaders": [
                         {
