@@ -11,9 +11,9 @@
 var ecmaScriptFileExtensions = [
     "",
     ".coffee",
-    ".min.js",
     ".js",
-    ".jsx"
+    ".jsx",
+    ".min.js"
 ];
 
 module.exports = {
