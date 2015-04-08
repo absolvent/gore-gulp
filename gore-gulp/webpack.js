@@ -34,25 +34,29 @@ function normalizeAliasPaths(baseDir, pckg) {
     return _.merge(alias, pckg.alias);
 }
 
-function normalizeEntries(entries) {
+function normalizeEntries(baseDir, pckg, entries) {
     var i,
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
-        ret[normalizeEntry(entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
+        ret[normalizeEntry(baseDir, pckg, entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
     }
 
     return ret;
 }
 
-function normalizeEntry(entry, fileExtensions) {
+function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
     var i,
+        entryPointStem,
         fileExtension;
 
     for (i = 0; i < fileExtensions.length; i += 1) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
-            return path.basename(entry, fileExtension);
+            entryPointStem = path.relative(path.join(baseDir, pckg.directories.lib), entry);
+            entryPointStem = entryPointStem.replace(path.sep, "-");
+
+            return path.basename(entryPointStem, fileExtension);
         }
     }
 
@@ -85,7 +89,7 @@ function stub(baseDir, pckgPromise) {
             return Q.nfcall(glob, path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
-                        normalizeEntries(entries),
+                        normalizeEntries(baseDir, pckg, entries),
                         pckg
                     ];
                 });
