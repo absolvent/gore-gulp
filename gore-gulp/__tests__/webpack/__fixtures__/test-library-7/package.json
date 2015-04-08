@@ -1,0 +1,7 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "nested-entry-points"
+    },
+    "name": "test-library-7"
+}
