@@ -25,7 +25,7 @@ describe("webpack", function () {
 
     function doFiles(paths, cb) {
         return function (distDir) {
-            paths.map(function (pth) {
+            paths = paths.map(function (pth) {
                 return FS.isFile(path.join(distDir, pth)).then(function (isFile) {
                     return cb(isFile, pth);
                 });
@@ -168,7 +168,8 @@ describe("webpack", function () {
                 "test-library-7.common.min.js",
                 "test-library-7.common.min.js.map",
                 "test-library-7.first-pointof.min.js",
-                "test-library-7.second-pointof.min.js.map"
+                "test-library-7.second-pointof.min.js.map",
+                "test-library-7.third-nested-pointof.min.js.map"
             ]))
             .then(done)
             .catch(done);

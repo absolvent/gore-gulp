@@ -14,6 +14,7 @@ var path = require("path"),
     glob = require("glob"),
     Q = require("q"),
     querystring = require("querystring"),
+    slug = require("slug"),
     webpack = require("webpack");
 
 function full(config) {
@@ -54,13 +55,22 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
             entryPointStem = path.relative(path.join(baseDir, pckg.directories.lib), entry);
-            entryPointStem = entryPointStem.replace(path.sep, "-");
+            entryPointStem = replaceAll(entryPointStem, path.sep, " ");
+            entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
 
-            return path.basename(entryPointStem, fileExtension);
+            return slug(entryPointStem);
         }
     }
 
     return entry;
+}
+
+function replaceAll(src, pattern, replacement) {
+    while (-1 !== src.indexOf(pattern)) {
+        src = src.replace(pattern, replacement);
+    }
+
+    return src;
 }
 
 function quick(config) {
