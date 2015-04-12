@@ -55,7 +55,8 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
             entryPointStem = path.relative(path.join(baseDir, pckg.directories.lib), entry);
-            entryPointStem = replaceAll(entryPointStem, path.sep, " ");
+            // replace all path.sep with spaces for more meaningful slugss
+            entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
 
             return slug(entryPointStem);
@@ -63,14 +64,6 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
     }
 
     return entry;
-}
-
-function replaceAll(src, pattern, replacement) {
-    while (-1 !== src.indexOf(pattern)) {
-        src = src.replace(pattern, replacement);
-    }
-
-    return src;
 }
 
 function quick(config) {
