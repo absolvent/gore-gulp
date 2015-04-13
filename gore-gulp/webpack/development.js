@@ -14,6 +14,7 @@ var _ = require("lodash"),
 function development(config) {
     return _.assign(config, {
         "debug": true,
+        "devtool": "cheap-module-source-map",
         "plugins": [
             new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js")
         ]

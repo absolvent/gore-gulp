@@ -84,7 +84,6 @@ function stub(baseDir, pckgPromise) {
         .spread(function (entries, pckg) {
             return {
                 "bail": true,
-                "devtool": "source-map",
                 "entry": entries,
                 "externals": pckg.externals,
                 "module": {

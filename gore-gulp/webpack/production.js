@@ -14,6 +14,7 @@ var _ = require("lodash"),
 function production(config) {
     return _.assign(config, {
         "debug": false,
+        "devtool": "source-map",
         "plugins": [
             new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js"),
             new webpack.optimize.UglifyJsPlugin()
