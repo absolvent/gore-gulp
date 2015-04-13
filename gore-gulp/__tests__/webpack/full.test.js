@@ -48,7 +48,7 @@ describe("webpack", function () {
 
         return gg(baseDir)
             .webpack
-            .full(gulp, function (pckg) {
+            .production(gulp, function (pckg) {
                 distDir = path.join(tmpDir, pckg.directories.dist);
 
                 return _.merge(pckg, {

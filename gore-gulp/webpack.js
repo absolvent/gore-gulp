@@ -17,12 +17,11 @@ var path = require("path"),
     slug = require("slug"),
     webpack = require("webpack");
 
-function full(config) {
+function development(config) {
     return _.assign(config, {
-        "debug": false,
+        "debug": true,
         "plugins": [
-            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js"),
-            new webpack.optimize.UglifyJsPlugin()
+            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js")
         ]
     });
 }
@@ -66,11 +65,12 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
     return entry;
 }
 
-function quick(config) {
+function production(config) {
     return _.assign(config, {
-        "debug": true,
+        "debug": false,
         "plugins": [
-            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js")
+            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js"),
+            new webpack.optimize.UglifyJsPlugin()
         ]
     });
 }
@@ -148,14 +148,14 @@ function stub(baseDir, pckgPromise) {
 }
 
 module.exports = {
-    "full": function (baseDir, pckgPromise) {
+    "development": function (baseDir, pckgPromise) {
         return function () {
-            return stub(baseDir, pckgPromise).then(full).then(run);
+            return stub(baseDir, pckgPromise).then(development).then(run);
         };
     },
-    "quick": function (baseDir, pckgPromise) {
+    "production": function (baseDir, pckgPromise) {
         return function () {
-            return stub(baseDir, pckgPromise).then(quick).then(run);
+            return stub(baseDir, pckgPromise).then(production).then(run);
         };
     }
 };

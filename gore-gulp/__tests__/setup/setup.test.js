@@ -42,10 +42,10 @@ describe("setup", function () {
     });
 
     it("sets up gulp instance using development settings", function () {
-        doTestSetup("development", "webpack.quick");
+        doTestSetup("development", "webpack.development");
     });
 
     it("sets up gulp instance using production settings", function () {
-        doTestSetup("production", "webpack.full");
+        doTestSetup("production", "webpack.production");
     });
 });

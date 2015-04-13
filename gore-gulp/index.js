@@ -18,9 +18,9 @@ function setup(options, pckgPromise, gulp, self) {
     var defaultWebpackVariant;
 
     if ("production" === process.env.NODE_ENV) {
-        defaultWebpackVariant = "webpack.full";
+        defaultWebpackVariant = "webpack.production";
     } else {
-        defaultWebpackVariant = "webpack.quick";
+        defaultWebpackVariant = "webpack.development";
     }
 
     gulp.task("default", [
@@ -33,8 +33,8 @@ function setup(options, pckgPromise, gulp, self) {
     gulp.task("webpack", [
       defaultWebpackVariant
     ]);
-    gulp.task("webpack.full", self.webpack.full());
-    gulp.task("webpack.quick", self.webpack.quick());
+    gulp.task("webpack.development", self.webpack.development());
+    gulp.task("webpack.production", self.webpack.production());
 }
 
 function setupTask(baseDir, pckgPromise, task) {
@@ -62,8 +62,8 @@ module.exports = function (baseDir) {
         },
         "test": setupTask(baseDir, pckgPromise, test),
         "webpack": {
-            "full": setupTask(baseDir, pckgPromise, webpack.full),
-            "quick": setupTask(baseDir, pckgPromise, webpack.quick)
+            "development": setupTask(baseDir, pckgPromise, webpack.development),
+            "production": setupTask(baseDir, pckgPromise, webpack.production)
         }
     };
 };
