@@ -8,4 +8,4 @@
 
 "use strict";
 
-import Element from "test-library-4/React/Element";
+import "test-library-4/React/Element";
