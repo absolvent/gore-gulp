@@ -17,7 +17,6 @@ var path = require("path"),
     Promise = require("bluebird"),
     querystring = require("querystring"),
     reactNative = require(path.join(__dirname, "webpack", "react-native")),
-    slug = require("slug"),
     webpack = require("webpack");
 
 function normalizeAliasPaths(baseDir, pckg) {
@@ -52,7 +51,7 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
 
-            return slug(entryPointStem);
+            return _.kebabCase(entryPointStem);
         }
     }
 
