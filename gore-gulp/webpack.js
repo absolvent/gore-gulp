@@ -16,6 +16,7 @@ var path = require("path"),
     production = require(path.join(__dirname, "webpack", "production")),
     Q = require("q"),
     querystring = require("querystring"),
+    reactNative = require(path.join(__dirname, "webpack", "react-native")),
     slug = require("slug"),
     webpack = require("webpack");
 
@@ -130,15 +131,16 @@ function stub(baseDir, pckgPromise) {
         });
 }
 
+function setupVariant(variant) {
+    return function (baseDir, pckgPromise) {
+        return function () {
+            return stub(baseDir, pckgPromise).then(variant).then(run);
+        };
+    };
+}
+
 module.exports = {
-    "development": function (baseDir, pckgPromise) {
-        return function () {
-            return stub(baseDir, pckgPromise).then(development).then(run);
-        };
-    },
-    "production": function (baseDir, pckgPromise) {
-        return function () {
-            return stub(baseDir, pckgPromise).then(production).then(run);
-        };
-    }
+    "development": setupVariant(development),
+    "production": setupVariant(production),
+    "reactNative": setupVariant(reactNative)
 };

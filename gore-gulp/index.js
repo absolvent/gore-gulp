@@ -43,6 +43,7 @@ function setup(options, pckgPromise, gulp, self) {
     gulp.task("webpack.quick", ["webpack.development"], function () {
         deprecate(pckg.name + " - webpack.quick task is deprecated, please use webpack.development instead");
     });
+    gulp.task("webpack.react-native", self.webpack.reactNative());
 }
 
 function setupTask(baseDir, pckgPromise, task) {
@@ -71,7 +72,8 @@ module.exports = function (baseDir) {
         "test": setupTask(baseDir, pckgPromise, test),
         "webpack": {
             "development": setupTask(baseDir, pckgPromise, webpack.development),
-            "production": setupTask(baseDir, pckgPromise, webpack.production)
+            "production": setupTask(baseDir, pckgPromise, webpack.production),
+            "reactNative": setupTask(baseDir, pckgPromise, webpack.reactNative)
         }
     };
 };
