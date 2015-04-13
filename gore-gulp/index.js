@@ -9,8 +9,10 @@
 "use strict";
 
 var path = require("path"),
+    deprecate = require("deprecate"),
     FS = require("q-io/fs"),
     lint = require(path.join(__dirname, "/lint")),
+    pckg = require(path.join(__dirname, "..", "package.json")),
     test = require(path.join(__dirname, "/test")),
     webpack = require(path.join(__dirname, "/webpack"));
 
@@ -34,7 +36,13 @@ function setup(options, pckgPromise, gulp, self) {
       defaultWebpackVariant
     ]);
     gulp.task("webpack.development", self.webpack.development());
+    gulp.task("webpack.full", ["webpack.production"], function () {
+        deprecate(pckg.name + " - webpack.full task is deprecated, please use webpack.production instead");
+    });
     gulp.task("webpack.production", self.webpack.production());
+    gulp.task("webpack.quick", ["webpack.development"], function () {
+        deprecate(pckg.name + " - webpack.quick task is deprecated, please use webpack.development instead");
+    });
 }
 
 function setupTask(baseDir, pckgPromise, task) {
