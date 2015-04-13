@@ -12,9 +12,9 @@ var path = require("path"),
     _ = require("lodash"),
     defaults = require(path.join(__dirname, "defaults")),
     development = require(path.join(__dirname, "webpack", "development")),
-    glob = require("glob"),
     production = require(path.join(__dirname, "webpack", "production")),
     Promise = require("bluebird"),
+    promisifiedGlob = Promise.promisify(require("glob")),
     querystring = require("querystring"),
     reactNative = require(path.join(__dirname, "webpack", "react-native")),
     webpack = require("webpack");
@@ -72,7 +72,7 @@ function run(config) {
 
 function stub(baseDir, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-            return Promise.promisify(glob)(path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return promisifiedGlob(path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
                         normalizeEntries(baseDir, pckg, entries),

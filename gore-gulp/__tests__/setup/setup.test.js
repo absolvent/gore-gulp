@@ -12,7 +12,7 @@
 
 var path = require("path"),
     assert = require("chai").assert,
-    gg = require(path.join(__dirname, "..", "..", "index"));
+    gg = require(path.join(__dirname, "..", ".."));
 
 describe("setup", function () {
     var previousNodeEnv;

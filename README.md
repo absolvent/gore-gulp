@@ -65,8 +65,6 @@ tasks.
 
 Feel free to open an issue if you’d like to see any changes.
 
-## Features
-
 ### Vendor (non-NPM) libraries support
 
 To support libraries from other sources than NPM (like bower) you need to
@@ -101,6 +99,10 @@ Internally, `alias` key is an exposed
 Aliased paths are processed by **gore-gulp** before passing them to `webpack`
 to ensure that they are relative to base package directory (the one that holds
 `package.json`).
+
+## Example
+
+See [example](example) directory for complete project.
 
 ## Summary
 
