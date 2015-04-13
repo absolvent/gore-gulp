@@ -21,7 +21,8 @@ var path = require("path"),
     tmp = require("tmp");
 
 describe("webpack", function () {
-    var tmpDir;
+    var fixtureDir = path.join(__dirname, "..", "..", "__fixtures__"),
+        tmpDir;
 
     function doFiles(paths, cb) {
         var stat = Promise.promisify(fs.stat);
@@ -85,7 +86,7 @@ describe("webpack", function () {
     });
 
     it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-1"))
+        runDirectory(path.join(fixtureDir, "test-library-1"))
             .then(expectFiles([
                 "test-library-1.common.min.js",
                 "test-library-1.common.min.js.map",
@@ -101,7 +102,7 @@ describe("webpack", function () {
     it("uses library location specified in package configuration", function (done) {
         var distDir;
 
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-2"))
+        runDirectory(path.join(fixtureDir, "test-library-2"))
             .then(function (dd) {
                 distDir = dd;
 
@@ -125,7 +126,7 @@ describe("webpack", function () {
     });
 
     it("uses vendor libraries configuration field", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-3"))
+        runDirectory(path.join(fixtureDir, "test-library-3"))
             .then(expectFiles([
                 "test-library-3.common.min.js",
                 "test-library-3.common.min.js.map",
@@ -137,7 +138,7 @@ describe("webpack", function () {
     });
 
     it("resolves nested modules paths", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-4"))
+        runDirectory(path.join(fixtureDir, "test-library-4"))
             .then(expectFiles([
                 "test-library-4.common.min.js",
                 "test-library-4.common.min.js.map",
@@ -149,7 +150,7 @@ describe("webpack", function () {
     });
 
     it("resolves node_modules paths", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-5"))
+        runDirectory(path.join(fixtureDir, "test-library-5"))
             .then(expectFiles([
                 "test-library-5.common.min.js",
                 "test-library-5.common.min.js.map",
@@ -161,7 +162,7 @@ describe("webpack", function () {
     });
 
     it("uses externals settings", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-6"))
+        runDirectory(path.join(fixtureDir, "test-library-6"))
             .then(expectFiles([
                 "test-library-6.common.min.js",
                 "test-library-6.common.min.js.map",
@@ -173,7 +174,7 @@ describe("webpack", function () {
     });
 
     it("resolves multiple entry points", function (done) {
-        runDirectory(path.join(__dirname, "__fixtures__", "test-library-7"))
+        runDirectory(path.join(fixtureDir, "test-library-7"))
             .then(expectFiles([
                 "test-library-7.common.min.js",
                 "test-library-7.common.min.js.map",
