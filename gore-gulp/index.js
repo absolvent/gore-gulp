@@ -15,6 +15,14 @@ var path = require("path"),
     webpack = require(path.join(__dirname, "/webpack"));
 
 function setup(options, pckgPromise, gulp, self) {
+    var defaultWebpackVariant;
+
+    if ("production" === process.env.NODE_ENV) {
+        defaultWebpackVariant = "webpack.full";
+    } else {
+        defaultWebpackVariant = "webpack.quick";
+    }
+
     gulp.task("default", [
         "test"
     ]);
@@ -23,7 +31,7 @@ function setup(options, pckgPromise, gulp, self) {
         "lint"
     ], self.test(gulp));
     gulp.task("webpack", [
-        "webpack.full"
+      defaultWebpackVariant
     ]);
     gulp.task("webpack.full", self.webpack.full());
     gulp.task("webpack.quick", self.webpack.quick());
