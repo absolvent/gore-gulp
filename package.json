@@ -3,6 +3,7 @@
     "dependencies": {
         "babel-core": "5.x",
         "babel-loader": "5.x",
+        "bluebird": "2.x",
         "deprecate": "0.x",
         "eslint-plugin-react": "2.x",
         "glob": "5.x",
@@ -11,8 +12,6 @@
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
         "lodash": "3.x",
-        "q": "1.x",
-        "q-io": "1.x",
         "slug": "0.x",
         "webpack": "1.x"
     },

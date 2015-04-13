@@ -10,9 +10,10 @@
 
 var path = require("path"),
     deprecate = require("deprecate"),
-    FS = require("q-io/fs"),
+    fs = require("fs"),
     lint = require(path.join(__dirname, "/lint")),
     pckg = require(path.join(__dirname, "..", "package.json")),
+    Promise = require("bluebird"),
     test = require(path.join(__dirname, "/test")),
     webpack = require(path.join(__dirname, "/webpack"));
 
@@ -57,9 +58,10 @@ function setupTask(baseDir, pckgPromise, task) {
 }
 
 module.exports = function (baseDir) {
-    var pckgPromise;
+    var pckgPromise,
+        readFile = Promise.promisify(fs.readFile);
 
-    pckgPromise = FS.read(path.resolve(baseDir, "package.json"))
+    pckgPromise = readFile(path.resolve(baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         });

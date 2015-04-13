@@ -11,7 +11,7 @@
 var path = require("path"),
     defaults = require(path.join(__dirname, "/defaults")),
     mocha = require("gulp-mocha"),
-    Q = require("q");
+    Promise = require("bluebird");
 
 module.exports = function (baseDir, pckgPromise, gulp) {
     return function () {
@@ -19,17 +19,15 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                 return path.resolve(baseDir, pckg.directories.lib, "**", "*.test" + defaults.ecmaScriptFileExtensionsGlobPattern);
             })
             .then(function (globPattern) {
-                var mochaDeferred = Q.defer();
-
-                gulp.src(globPattern)
-                    .pipe(mocha({
-                        "bail": true,
-                        "reporter": "dot"
-                    }))
-                    .on("error", mochaDeferred.reject)
-                    .on("end", mochaDeferred.resolve);
-
-                return mochaDeferred.promise;
+                return new Promise(function (resolve, reject) {
+                    gulp.src(globPattern)
+                        .pipe(mocha({
+                            "bail": true,
+                            "reporter": "dot"
+                        }))
+                        .on("error", reject)
+                        .on("end", resolve);
+                });
             });
     };
 };

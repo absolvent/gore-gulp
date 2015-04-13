@@ -14,7 +14,7 @@ var path = require("path"),
     development = require(path.join(__dirname, "webpack", "development")),
     glob = require("glob"),
     production = require(path.join(__dirname, "webpack", "production")),
-    Q = require("q"),
+    Promise = require("bluebird"),
     querystring = require("querystring"),
     reactNative = require(path.join(__dirname, "webpack", "react-native")),
     slug = require("slug"),
@@ -60,7 +60,7 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
 }
 
 function run(config) {
-    return new Q.Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         webpack(config, function (err) {
             if (err) {
                 reject(err);
@@ -73,7 +73,7 @@ function run(config) {
 
 function stub(baseDir, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-            return Q.nfcall(glob, path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return Promise.promisify(glob)(path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
                         normalizeEntries(baseDir, pckg, entries),

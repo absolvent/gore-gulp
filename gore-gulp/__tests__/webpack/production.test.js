@@ -14,24 +14,34 @@ var path = require("path"),
     _ = require("lodash"),
     assert = require("chai").assert,
     defaults = require(path.join(__dirname, "..", "..", "defaults")),
-    FS = require("q-io/fs"),
+    fs = require("fs"),
     gg = require(path.join(__dirname, "..", "..", "index")),
     gulp = require("gulp"),
-    Q = require("q"),
+    Promise = require("bluebird"),
     tmp = require("tmp");
 
 describe("webpack", function () {
     var tmpDir;
 
     function doFiles(paths, cb) {
+        var stat = Promise.promisify(fs.stat);
+
         return function (distDir) {
             paths = paths.map(function (pth) {
-                return FS.isFile(path.join(distDir, pth)).then(function (isFile) {
-                    return cb(isFile, pth);
-                });
+                return stat(path.join(distDir, pth))
+                    .then(function (stats) {
+                        return cb(stats.isFile(), pth);
+                    })
+                    .catch(function (err) {
+                        if ("ENOENT" === err.code) {
+                            return cb(false, pth);
+                        }
+
+                        throw err;
+                    });
             });
 
-            return Q.all(paths).then(_.noop);
+            return Promise.all(paths).then(_.noop);
         };
     }
 

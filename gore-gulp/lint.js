@@ -11,7 +11,7 @@
 var path = require("path"),
     defaults = require(path.join(__dirname, "/defaults")),
     eslint = require("gulp-eslint"),
-    Q = require("q");
+    Promise = require("bluebird");
 
 module.exports = function (baseDir, pckgPromise, gulp) {
     var eslintrc = path.join(__dirname, "..", "eslint", ".eslintrc");
@@ -21,19 +21,17 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                 return path.resolve(baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern);
             })
             .then(function (globPattern) {
-                var eslintDeferred = Q.defer();
-
-                gulp.src(globPattern)
-                    .pipe(eslint(eslintrc))
-                    .pipe(eslint.format())
-                    .pipe(eslint.failOnError())
-                    .on("data", function () {
-                        // console.log(data);
-                    })
-                    .on("error", eslintDeferred.reject)
-                    .on("finish", eslintDeferred.resolve);
-
-                return eslintDeferred.promise;
+                return new Promise(function (resolve, reject) {
+                    gulp.src(globPattern)
+                        .pipe(eslint(eslintrc))
+                        .pipe(eslint.format())
+                        .pipe(eslint.failOnError())
+                        .on("data", function () {
+                            // console.log(data);
+                        })
+                        .on("error", reject)
+                        .on("finish", resolve);
+                });
             });
     };
 };

@@ -22,7 +22,7 @@ describe("setup", function () {
 
         process.env.NODE_ENV = environment;
 
-        gg(__dirname).setup({
+        gg(path.join(__dirname, "..", "webpack", "__fixtures__", "test-library-1")).setup({
             "task": function (name, deps) {
                 tasks[name] = deps;
             }
