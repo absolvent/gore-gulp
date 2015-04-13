@@ -1,0 +1,22 @@
+{
+    "author": "Mateusz Charytoniuk <mateusz.charytoniuk@gmail.com>",
+    "dependencies": {
+    },
+    "description": "gore-gulp example project",
+    "devDependencies": {
+        "gore-gulp": "0.x"
+    },
+    "directories": {
+        "dist": "output",
+        "lib": "src"
+    },
+    "engines": {
+        "node": ">=0.12"
+    },
+    "main": "src",
+    "name": "example",
+    "scripts": {
+        "test": "gulp test"
+    },
+    "version": "0.0.0"
+}

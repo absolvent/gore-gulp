@@ -65,6 +65,8 @@ tasks.
 
 Feel free to open an issue if you’d like to see any changes.
 
+## Features
+
 ### Vendor (non-NPM) libraries support
 
 To support libraries from other sources than NPM (like bower) you need to
