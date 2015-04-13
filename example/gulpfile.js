@@ -8,8 +8,7 @@
 
 "use strict";
 
-var path = require("path"),
-    gg = require("gore-gulp"),
+var gg = require("gore-gulp"),
     gulp = require("gulp");
 
 gg(__dirname).setup(gulp);

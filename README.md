@@ -102,9 +102,26 @@ Aliased paths are processed by **gore-gulp** before passing them to `webpack`
 to ensure that they are relative to base package directory (the one that holds
 `package.json`).
 
-## Example
+## Examples
 
-See [example](example) directory for complete project.
+### How to start a project with gore-gulp?
+
+1. Add `directories.dist` and `directories.lib` sections to your `package.json`.
+2. Setup your `gulpfile.js` using **gore-gulp**:
+
+    ```JavaScript
+    var gg = require("gore-gulp"),
+        gulp = require("gulp");
+
+    gg(__dirname).setup(gulp);
+    ```
+
+3. Generate code using `gulp webpack` (use `NODE_ENV=production` for more
+optimizations).
+
+### Complete example
+
+Visit [example](example) directory for preconfigured project.
 
 ## Summary
 
