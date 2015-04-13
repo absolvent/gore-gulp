@@ -10,21 +10,14 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.join(__dirname, "/defaults")),
+    defaults = require(path.join(__dirname, "defaults")),
+    development = require(path.join(__dirname, "webpack", "development")),
     glob = require("glob"),
+    production = require(path.join(__dirname, "webpack", "production")),
     Q = require("q"),
     querystring = require("querystring"),
     slug = require("slug"),
     webpack = require("webpack");
-
-function development(config) {
-    return _.assign(config, {
-        "debug": true,
-        "plugins": [
-            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js")
-        ]
-    });
-}
 
 function normalizeAliasPaths(baseDir, pckg) {
     var alias = {};
@@ -63,16 +56,6 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
     }
 
     return entry;
-}
-
-function production(config) {
-    return _.assign(config, {
-        "debug": false,
-        "plugins": [
-            new webpack.optimize.CommonsChunkPlugin(config.pckg.name + ".common.min.js"),
-            new webpack.optimize.UglifyJsPlugin()
-        ]
-    });
 }
 
 function run(config) {
