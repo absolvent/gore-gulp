@@ -13,6 +13,6 @@
 var path = require("path"),
     common = require(path.join(__dirname, "common"));
 
-describe("webpack/production", function () {
-    common("production");
+describe("webpack/development", function () {
+    common("development");
 });
