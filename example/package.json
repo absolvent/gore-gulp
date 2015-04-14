@@ -4,7 +4,8 @@
     },
     "description": "gore-gulp example project",
     "devDependencies": {
-        "gore-gulp": "0.x"
+        "gore-gulp": "0.x",
+        "gulp": "3.x"
     },
     "directories": {
         "dist": "output",
