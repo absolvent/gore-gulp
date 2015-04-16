@@ -1,0 +1,7 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "local-eslint-config"
+    },
+    "name": "test-library-8"
+}

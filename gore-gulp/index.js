@@ -31,9 +31,7 @@ function setup(options, pckgPromise, gulp, self) {
         "test"
     ]);
     gulp.task("lint", self.lint(gulp));
-    gulp.task("test", [
-        "lint"
-    ], self.test(gulp));
+    gulp.task("test", self.test(gulp));
     gulp.task("webpack", [
       defaultWebpackVariant
     ]);

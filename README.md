@@ -119,9 +119,15 @@ to ensure that they are relative to base package directory (the one that holds
 3. Generate code using `gulp webpack` (use `NODE_ENV=production` for more
 optimizations).
 
-### Complete example
+#### Complete example
 
 Visit [example](example) directory for preconfigured project.
+
+### How can I use my local configuration file?
+
+Currently it is only possible to override
+[eslint](https://github.com/eslint/eslint) settings by placing your `.eslintrc`
+file into the base project directory (the one that holds your `package.json`).
 
 ## Summary
 

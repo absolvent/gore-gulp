@@ -9,14 +9,16 @@
         "glob": "5.x",
         "gulp": "3.x",
         "gulp-eslint": "0.x",
+        "gulp-if": "1.x",
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
         "lodash": "3.x",
         "webpack": "1.x"
     },
-    "description": "Collection of Gulp extras and commonly used tasks.",
+    "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
         "chai": "2.x",
+        "nightmare": "1.x",
         "tmp": "0.x"
     },
     "directories": {
@@ -35,5 +37,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.2.7"
+    "version": "0.2.8"
 }
