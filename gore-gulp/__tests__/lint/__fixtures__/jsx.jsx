@@ -10,4 +10,4 @@
 import HelloWorld from "example.com/HelloWorld";
 import React from "react";
 
-React.render(<HelloWorld />, document.body);
+React.render(<HelloWorld world="Earth" />, document.body);

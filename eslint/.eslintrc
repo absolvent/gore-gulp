@@ -18,6 +18,7 @@
         "unicodeCodePointEscapes": true
     },
     "env": {
+        "browser": true,
         "node": true
     },
     "plugins": [
@@ -35,7 +36,7 @@
         "consistent-this": [2, "that"],
         "curly": 2,
         "default-case": 0,
-        "dot-notation": 2,
+        "dot-notation": 1,
         "eol-last": 2,
         "eqeqeq": 2,
         "func-names": 0,
@@ -150,7 +151,7 @@
         "quotes": [2, "double", "avoid-escape"],
         "radix": 2,
         "react/jsx-boolean-value": 2,
-        "react/jsx-quotes": [2, "single", "avoid-escape"],
+        "react/jsx-quotes": [2, "double", "avoid-escape"],
         "react/jsx-no-undef": 2,
         "react/jsx-sort-props": 0,
         "react/jsx-uses-react": 0,

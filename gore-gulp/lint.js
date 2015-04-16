@@ -54,7 +54,9 @@ module.exports = function (baseDir, pckgPromise, gulp) {
             .spread(function (eslintrc, globPattern) {
                 return new Promise(function (resolve, reject) {
                     gulp.src(globPattern)
-                        .pipe(eslint(eslintrc))
+                        .pipe(eslint({
+                            "configFile": eslintrc
+                        }))
                         .pipe(gulpif(!gulp.isSilent, eslint.format()))
                         .pipe(eslint.failOnError())
                         // force data to flow by reading from pipe

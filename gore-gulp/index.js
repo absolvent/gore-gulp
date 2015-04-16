@@ -31,19 +31,29 @@ function setup(options, pckgPromise, gulp, self) {
         "test"
     ]);
     gulp.task("lint", self.lint(gulp));
-    gulp.task("test", self.test(gulp));
+    gulp.task("test", [
+        "lint"
+    ], self.test(gulp));
     gulp.task("webpack", [
       defaultWebpackVariant
     ]);
-    gulp.task("webpack.development", self.webpack.development());
-    gulp.task("webpack.full", ["webpack.production"], function () {
+    gulp.task("webpack.development", [
+        "test"
+    ], self.webpack.development());
+    gulp.task("webpack.full", [
+        "webpack.production"
+    ], function () {
         deprecate(pckg.name + " - webpack.full task is deprecated, please use webpack.production instead");
     });
-    gulp.task("webpack.production", self.webpack.production());
-    gulp.task("webpack.quick", ["webpack.development"], function () {
+    gulp.task("webpack.production", [
+        "test"
+    ], self.webpack.production());
+    gulp.task("webpack.quick", [
+        "webpack.development"
+    ], function () {
         deprecate(pckg.name + " - webpack.quick task is deprecated, please use webpack.development instead");
     });
-    gulp.task("webpack.react-native", self.webpack.reactNative());
+    // gulp.task("webpack.react-native", self.webpack.reactNative());
 }
 
 function setupTask(baseDir, pckgPromise, task) {
