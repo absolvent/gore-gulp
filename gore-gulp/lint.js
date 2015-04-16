@@ -58,7 +58,7 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                             "configFile": eslintrc
                         }))
                         .pipe(gulpif(!gulp.isSilent, eslint.format()))
-                        .pipe(eslint.failOnError())
+                        .pipe(eslint.failAfterError())
                         // force data to flow by reading from pipe
                         .on("data", _.noop)
                         .on("error", reject)
