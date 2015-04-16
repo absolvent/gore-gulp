@@ -28,6 +28,11 @@
     "engines": {
         "node": ">=0.12"
     },
+    "keywords": [
+        "framework",
+        "gulp",
+        "react"
+    ],
     "main": "gore-gulp",
     "name": "gore-gulp",
     "repository": {
