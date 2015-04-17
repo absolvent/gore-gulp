@@ -55,7 +55,10 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                 return new Promise(function (resolve, reject) {
                     gulp.src(globPattern)
                         .pipe(eslint({
-                            "configFile": eslintrc
+                            "configFile": eslintrc,
+                            "plugins": [
+                                "react"
+                            ]
                         }))
                         .pipe(gulpif(!gulp.isSilent, eslint.format()))
                         .pipe(eslint.failAfterError())
