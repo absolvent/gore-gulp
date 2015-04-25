@@ -25,7 +25,7 @@
         "lib": "gore-gulp"
     },
     "engines": {
-        "node": ">=0.12"
+        "node": ">=0.10"
     },
     "keywords": [
         "framework",

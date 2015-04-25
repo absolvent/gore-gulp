@@ -1,0 +1,19 @@
+node:
+    build: docker-compose/node
+
+nginx:
+    image: jwilder/nginx-proxy
+    ports:
+        - "80:80"
+    restart: always
+    volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
+
+sinopia:
+    environment:
+        VIRTUAL_HOST: sinopia.dhpm.io
+    image: rnbwd/sinopia
+    restart: always
+    volumes:
+        - /storage/sinopia:/sinopia/storage
+        - sinopia.yml:/sinopia/config.yml

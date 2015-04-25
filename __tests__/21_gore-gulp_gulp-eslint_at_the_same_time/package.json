@@ -1,0 +1,14 @@
+{
+    "devDependencies": {
+        "gore-gulp": "0.x",
+        "gulp": "3.x"
+    },
+    "directories": {
+        "dist": "dist",
+        "lib": "src"
+    },
+    "name": "test-library-issue-21",
+    "scripts": {
+        "test": "gulp test"
+    }
+}
