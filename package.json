@@ -38,8 +38,8 @@
         "url": "git@github.com:goreutils/gore-gulp.git"
     },
     "scripts": {
-        "postinstall": "npm i eslint-plugin-react@2.x gulp-eslint@0.x",
+        "preinstall": "npm i eslint-plugin-react@2.x gulp-eslint@0.x",
         "test": "gulp test"
     },
-    "version": "0.2.20"
+    "version": "0.2.21"
 }
