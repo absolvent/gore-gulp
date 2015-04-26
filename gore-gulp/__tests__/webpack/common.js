@@ -73,105 +73,108 @@ function runDirectory(baseDir, variant) {
 }
 
 function setup(variant) {
-    it("generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-1"), variant)
-            .then(expectFiles([
+    [
+        {
+            "expectFiles": [
                 "test-library-1.common.min.js",
                 "test-library-1.common.min.js.map",
                 "test-library-1.module.min.js",
                 "test-library-1.module.min.js.map",
                 "test-library-1.test.min.js",
                 "test-library-1.test.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("uses library location specified in package configuration", function (done) {
-        var distDir;
-
-        runDirectory(path.join(fixtureDir, "test-library-2"), variant)
-            .then(function (dd) {
-                distDir = dd;
-
-                return dd;
-            })
-            .then(expectFiles([
+            ],
+            "fixture": "test-library-1",
+            "name": "generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files",
+            "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
                 "test-library-2.common.min.js",
                 "test-library-2.common.min.js.map",
                 "test-library-2.true.min.js",
                 "test-library-2.true.min.js.map"
-            ]))
-            .then(function () {
-                return distDir;
-            })
-            .then(notExpectFiles([
+            ],
+            "fixture": "test-library-2",
+            "name": "uses library location specified in package configuration",
+            "notExpectFiles": [
                 "test-library-2.not-an.min.js",
                 "test-library-2.not-an.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("uses vendor libraries configuration field", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-3"), variant)
-            .then(expectFiles([
+            ]
+        },
+        {
+            "expectFiles": [
                 "test-library-3.common.min.js",
                 "test-library-3.common.min.js.map",
                 "test-library-3.index.min.js",
                 "test-library-3.index.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("resolves nested modules paths", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-4"), variant)
-            .then(expectFiles([
+            ],
+            "fixture": "test-library-3",
+            "name": "uses vendor libraries configuration field",
+            "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
                 "test-library-4.common.min.js",
                 "test-library-4.common.min.js.map",
                 "test-library-4.index.min.js",
                 "test-library-4.index.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("resolves node_modules paths", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-5"), variant)
-            .then(expectFiles([
+            ],
+            "fixture": "test-library-4",
+            "name": "resolves nested modules paths",
+            "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
                 "test-library-5.common.min.js",
                 "test-library-5.common.min.js.map",
                 "test-library-5.fake-module-holder.min.js",
                 "test-library-5.fake-module-holder.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("uses externals settings", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-6"), variant)
-            .then(expectFiles([
+            ],
+            "fixture": "test-library-5",
+            "name": "resolves node_modules paths",
+            "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
                 "test-library-6.common.min.js",
                 "test-library-6.common.min.js.map",
                 "test-library-6.index.min.js",
                 "test-library-6.index.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
-    });
-
-    it("resolves multiple entry points", function (done) {
-        runDirectory(path.join(fixtureDir, "test-library-7"), variant)
-            .then(expectFiles([
+            ],
+            "fixture": "test-library-6",
+            "name": "uses externals settings",
+            "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
                 "test-library-7.common.min.js",
                 "test-library-7.common.min.js.map",
                 "test-library-7.first-pointof.min.js",
                 "test-library-7.second-pointof.min.js.map",
                 "test-library-7.third-nested-pointof.min.js.map"
-            ]))
-            .then(done)
-            .catch(done);
+            ],
+            "fixture": "test-library-7",
+            "name": "resolves multiple entry points",
+            "notExpectFiles": []
+        }
+    ].forEach(function (testData) {
+        it(testData.name, function (done) {
+            var distDir;
+
+            runDirectory(path.join(fixtureDir, testData.fixture), variant)
+                .then(function (dd) {
+                    distDir = dd;
+
+                    return dd;
+                })
+                .then(expectFiles(testData.expectFiles))
+                .then(function () {
+                    return distDir;
+                })
+                .then(notExpectFiles(testData.notExpectFiles))
+                .then(done)
+                .catch(done);
+        });
     });
 }
 
