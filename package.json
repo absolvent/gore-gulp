@@ -6,6 +6,7 @@
         "babel-loader": "5.x",
         "bluebird": "2.x",
         "deprecate": "0.x",
+        "eslint-plugin-react": "2.x",
         "glob": "5.x",
         "gulp": "3.x",
         "gulp-eslint": "0.x",
@@ -45,5 +46,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.2.17"
+    "version": "0.2.18"
 }
