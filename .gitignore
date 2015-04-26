@@ -3,6 +3,7 @@
 
 # generated files
 *.cache
+*.log
 
 # vendor libraries
 /node_modules
