@@ -6,10 +6,8 @@
         "babel-loader": "5.x",
         "bluebird": "2.x",
         "deprecate": "0.x",
-        "eslint-plugin-react": "2.x",
         "glob": "5.x",
         "gulp": "3.x",
-        "gulp-eslint": "0.x",
         "gulp-if": "1.x",
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
@@ -19,7 +17,6 @@
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
         "chai": "2.x",
-        "react": "0.x",
         "tmp": "0.x"
     },
     "directories": {
@@ -27,7 +24,7 @@
         "lib": "gore-gulp"
     },
     "engines": {
-        "node": ">=0.12"
+        "node": ">=0.10"
     },
     "keywords": [
         "framework",
@@ -41,8 +38,8 @@
         "url": "git@github.com:goreutils/gore-gulp.git"
     },
     "scripts": {
-        "postinstall": "npm install gulp-eslint",
+        "postinstall": "npm i eslint-plugin-react@2.x gulp-eslint@0.x",
         "test": "gulp test"
     },
-    "version": "0.2.19"
+    "version": "0.2.20"
 }
