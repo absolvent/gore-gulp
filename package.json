@@ -36,15 +36,13 @@
     ],
     "main": "gore-gulp",
     "name": "gore-gulp",
-    "peerDependencies": {
-        "eslint-plugin-react": "*"
-    },
     "repository": {
         "type": "git",
         "url": "git@github.com:goreutils/gore-gulp.git"
     },
     "scripts": {
+        "postinstall": "npm install gulp-eslint",
         "test": "gulp test"
     },
-    "version": "0.2.18"
+    "version": "0.2.19"
 }
