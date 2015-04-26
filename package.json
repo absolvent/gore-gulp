@@ -8,7 +8,7 @@
         "deprecate": "0.x",
         "glob": "5.x",
         "gulp": "3.x",
-        "gulp-eslint": "0.x",
+        "gulp-eslint": "0.20.x",
         "gulp-if": "1.x",
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
@@ -18,6 +18,7 @@
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
         "chai": "2.x",
+        "react": "0.x",
         "tmp": "0.x"
     },
     "directories": {
@@ -44,5 +45,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.2.15"
+    "version": "0.2.16"
 }
