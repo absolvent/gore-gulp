@@ -11,17 +11,20 @@
 /*global describe: false, it: false */
 
 var path = require("path"),
+    _ = require("lodash"),
     gg = require(path.join(__dirname, "..", "index")),
     Gulp = require("gulp").Gulp;
 
 describe("lint", function () {
     it("detects code flaws", function (done) {
-        var testGulp = new Gulp();
-
-        testGulp.isSilent = true;
-
         gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
-            .lint(testGulp)()
+            .lint(new Gulp(), function (pckg) {
+                return _.merge(pckg, {
+                    "config": {
+                        "isSilent": true
+                    }
+                });
+            })()
             .then(function () {
                 done(new Error("Linter should detect errors!"));
             })

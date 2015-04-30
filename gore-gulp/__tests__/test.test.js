@@ -10,5 +10,5 @@
 
 /*global describe: false */
 
-describe("test", function () {
+describe.skip("test", function () {
 });

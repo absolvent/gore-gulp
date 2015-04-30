@@ -9,14 +9,27 @@
 "use strict";
 
 var path = require("path"),
+    assert = require("chai").assert,
     defaults = require(path.join(__dirname, "/defaults")),
     mocha = require("gulp-mocha"),
     Promise = require("bluebird");
 
+function detectTestFileExtensionPrefix(pckg) {
+    if (pckg.config && pckg.config.testFileExtensionPrefix) {
+        assert.isString(pckg.config.testFileExtensionPrefix);
+
+        return pckg.config.testFileExtensionPrefix;
+    }
+
+    return ".test";
+}
+
 module.exports = function (baseDir, pckgPromise, gulp) {
     return function () {
         return pckgPromise.then(function (pckg) {
-                return path.resolve(baseDir, pckg.directories.lib, "**", "*.test" + defaults.ecmaScriptFileExtensionsGlobPattern);
+                var testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
+
+                return path.resolve(baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + defaults.ecmaScriptFileExtensionsGlobPattern);
             })
             .then(function (globPattern) {
                 return new Promise(function (resolve, reject) {

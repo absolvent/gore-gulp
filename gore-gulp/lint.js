@@ -43,15 +43,24 @@ function awaitGlobPattern(baseDir, pckgPromise) {
     });
 }
 
+function isSilent(pckg) {
+    if (pckg.config) {
+        return pckg.config.isSilent;
+    }
+
+    return false;
+}
+
 module.exports = function (baseDir, pckgPromise, gulp) {
     var initPromises = [
         awaitEslintrc(baseDir),
-        awaitGlobPattern(baseDir, pckgPromise)
+        awaitGlobPattern(baseDir, pckgPromise),
+        pckgPromise
     ];
 
     return function () {
         return Promise.all(initPromises)
-            .spread(function (eslintrc, globPattern) {
+            .spread(function (eslintrc, globPattern, pckg) {
                 return new Promise(function (resolve, reject) {
                     gulp.src(globPattern)
                         .pipe(eslint({
@@ -60,7 +69,7 @@ module.exports = function (baseDir, pckgPromise, gulp) {
                                 "react"
                             ]
                         }))
-                        .pipe(gulpif(!gulp.isSilent, eslint.format()))
+                        .pipe(gulpif(!isSilent(pckg), eslint.format()))
                         .pipe(eslint.failAfterError())
                         // force data to flow by reading from pipe
                         .on("data", _.noop)
