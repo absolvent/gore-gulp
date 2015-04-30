@@ -5,6 +5,7 @@
         "babel-eslint": "3.x",
         "babel-loader": "5.x",
         "bluebird": "2.x",
+        "chai": "2.x",
         "deprecate": "0.x",
         "eslint-plugin-react": "2.x",
         "glob": "5.x",
@@ -18,7 +19,6 @@
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
-        "chai": "2.x",
         "tmp": "0.x"
     },
     "directories": {
