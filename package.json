@@ -2,15 +2,11 @@
     "author": "Mateusz Charytoniuk <mateusz.charytoniuk@gmail.com>",
     "dependencies": {
         "babel-core": "5.x",
-        "babel-eslint": "3.x",
         "babel-loader": "5.x",
         "bluebird": "2.x",
-        "chai": "2.x",
         "deprecate": "0.x",
-        "eslint-plugin-react": "2.x",
         "glob": "5.x",
         "gulp": "3.x",
-        "gulp-eslint": "0.x",
         "gulp-if": "1.x",
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
@@ -19,6 +15,7 @@
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
+        "chai": "2.x",
         "tmp": "0.x"
     },
     "directories": {
@@ -40,7 +37,8 @@
         "url": "git@github.com:goreutils/gore-gulp.git"
     },
     "scripts": {
+        "preinstall": "npm i --ignore-scripts babel-eslint@3.x eslint-plugin-react@2.x gulp-eslint@0.x",
         "test": "gulp test"
     },
-    "version": "0.2.22"
+    "version": "0.2.23"
 }
