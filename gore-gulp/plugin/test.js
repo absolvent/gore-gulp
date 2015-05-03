@@ -10,7 +10,7 @@
 
 var path = require("path"),
     assert = require("chai").assert,
-    defaults = require(path.join(__dirname, "/defaults")),
+    defaults = require(path.join(__dirname, "..", "defaults")),
     mocha = require("gulp-mocha"),
     Promise = require("bluebird");
 

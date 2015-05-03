@@ -12,12 +12,12 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    gg = require(path.join(__dirname, "..", "index")),
+    gg = require(path.join(__dirname, "..", "..", "index")),
     Gulp = require("gulp").Gulp;
 
 describe("lint", function () {
     it("detects code flaws", function (done) {
-        gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
+        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
             .plugins.lint.task(new Gulp(), function (pckg) {
                 return _.merge(pckg, {
                     "config": {

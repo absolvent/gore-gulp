@@ -10,7 +10,7 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.join(__dirname, "defaults")),
+    defaults = require(path.join(__dirname, "..", "defaults")),
     development = require(path.join(__dirname, "webpack", "development")),
     production = require(path.join(__dirname, "webpack", "production")),
     Promise = require("bluebird"),

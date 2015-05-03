@@ -11,7 +11,7 @@
 /*global describe: false, it: false */
 
 var path = require("path"),
-    common = require(path.join(__dirname, "webpack", "common"));
+    common = require(path.join(__dirname, "plugin", "webpack", "common"));
 
 describe("example", function () {
     it("tests example package", function (done) {

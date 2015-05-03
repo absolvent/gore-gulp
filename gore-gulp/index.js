@@ -12,12 +12,12 @@ var path = require("path"),
     _ = require("lodash"),
     deprecate = require("deprecate"),
     fs = require("fs"),
-    lint = require(path.join(__dirname, "/lint")),
+    lint = require(path.join(__dirname, "plugin", "lint")),
     pckg = require(path.join(__dirname, "..", "package.json")),
     Promise = require("bluebird"),
     promisifiedReadFile = Promise.promisify(fs.readFile),
-    test = require(path.join(__dirname, "/test")),
-    webpack = require(path.join(__dirname, "/webpack"));
+    test = require(path.join(__dirname, "plugin", "test")),
+    webpack = require(path.join(__dirname, "plugin", "webpack"));
 
 function setup(options, pckgPromise, plugins, gulp) {
     var name;
