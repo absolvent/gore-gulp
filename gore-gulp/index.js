@@ -40,13 +40,13 @@ function setup(options, pckgPromise, plugins, gulp) {
     });
 }
 
-function setupTask(baseDir, pckgPromise, task) {
+function setupTask(baseDir, pckgPromise, factory) {
     return function (gulp, override) {
         if (override) {
             pckgPromise = pckgPromise.then(override);
         }
 
-        return task(baseDir, pckgPromise, gulp);
+        return factory(baseDir, pckgPromise, gulp);
     };
 }
 
@@ -60,10 +60,10 @@ module.exports = function (baseDir) {
             return JSON.parse(pckgContents);
         });
 
-    function plugin(name, dependencies, callback) {
-        plugins[name] = {
-            "dependencies": dependencies,
-            "task": setupTask(baseDir, pckgPromise, callback)
+    function plugin(definition) {
+        plugins[definition.name] = {
+            "dependencies": definition.dependencies,
+            "task": setupTask(baseDir, pckgPromise, definition.factory)
         };
 
         return ret;
@@ -77,25 +77,49 @@ module.exports = function (baseDir) {
         }
     };
 
-    plugin("lint", [], lint);
-    plugin("test", [
-        "lint"
-    ], test);
-    plugin("webpack.development", [
-        "test"
-    ], webpack.development);
-    plugin("webpack.production", [
-        "test"
-    ], webpack.production);
+    plugin({
+        "dependencies": [],
+        "factory": lint,
+        "name": "lint"
+    });
+    plugin({
+        "dependencies": [
+            "lint"
+        ],
+        "factory": test,
+        "name": "test"
+    });
+    plugin({
+        "dependencies": [
+            "test"
+        ],
+        "factory": webpack.development,
+        "name": "webpack.development"
+    });
+    plugin({
+        "dependencies": [
+            "test"
+        ],
+        "factory": webpack.production,
+        "name": "webpack.production"
+    });
 
     if ("production" === process.env.NODE_ENV) {
-        plugin("webpack", [
-            "webpack.production"
-        ], _.noop);
+        plugin({
+            "dependencies": [
+                "webpack.production"
+            ],
+            "factory": _.noop,
+            "name": "webpack"
+        });
     } else {
-        plugin("webpack", [
-            "webpack.development"
-        ], _.noop);
+        plugin({
+            "dependencies": [
+                "webpack.development"
+            ],
+            "factory": _.noop,
+            "name": "webpack"
+        });
     }
 
     return ret;

@@ -20,10 +20,14 @@ describe("plugin", function () {
         var gulpInstance = new Gulp();
 
         gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
-            .plugin("custom", [], function () {
-                return function () {
-                    done();
-                };
+            .plugin({
+                "dependencies": [],
+                "factory": function () {
+                    return function () {
+                        done();
+                    };
+                },
+                "name": "custom"
             })
             .setup(gulpInstance);
 
@@ -34,13 +38,21 @@ describe("plugin", function () {
         var gulpInstance = new Gulp();
 
         gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
-            .plugin("first", [], function () {
-                return function () {
-                    done();
-                };
+            .plugin({
+                "dependencies": [],
+                "factory": function () {
+                    return function () {
+                        done();
+                    };
+                },
+                "name": "first"
             })
-            .plugin("second", ["first"], function () {
-                return _.noop;
+            .plugin({
+                "dependencies": ["first"],
+                "factory": function () {
+                    return _.noop;
+                },
+                "name": "second"
             })
             .setup(gulpInstance);
 

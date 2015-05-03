@@ -141,12 +141,22 @@ The minimal plugin is a factory function that returns a gulp task.
 
 ```JavaScript
 gg(__dirname)
-    .plugin(funtion (baseDir, pckgPromise, gulpInstance) {
-        return function () {
-            // this function is going to be passed to the gulp.task call
-        };
+    .plugin({
+        "dependencies": [],
+        "factory": function (baseDir, pckgPromise, gulpInstance) {
+            return function () {
+                // this function is going to be passed to the gulp.task call
+            };
+        },
+        "name": "task-name"
     })
     .setup(gulp)
+```
+
+Invocation from CLI:
+
+```
+$ gulp task-name
 ```
 
 ## Summary
