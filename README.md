@@ -159,6 +159,13 @@ Invocation from CLI:
 $ gulp task-name
 ```
 
+### How can I integrate gore-gulp with my editor?
+
+Please check
+[goreutils/gore-gulp-sublime-text](https://github.com/goreutils/gore-gulp-sublime-text)
+for instruction on how to integrate **gore-gulp** with **Sublime Text** and
+benefit from global linter settings.
+
 ## Summary
 
 The goal of this package is to provide a one-liner that configures your
