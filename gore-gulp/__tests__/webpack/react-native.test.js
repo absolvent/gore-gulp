@@ -10,7 +10,7 @@
 
 /*global describe: false, it: false */
 
-describe("webpack/react-native", function () {
+describe.skip("webpack/react-native", function () {
     it("tests something", function () {
     });
 });

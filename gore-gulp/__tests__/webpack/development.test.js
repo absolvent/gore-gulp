@@ -14,5 +14,5 @@ var path = require("path"),
     common = require(path.join(__dirname, "common"));
 
 describe("webpack/development", function () {
-    common.setup("development");
+    common.setup("webpack.development");
 });

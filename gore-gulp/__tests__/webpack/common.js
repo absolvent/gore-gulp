@@ -54,7 +54,8 @@ function runDirectory(baseDir, variant) {
     var distDir;
 
     return gg(baseDir)
-        .webpack[variant](gulp, function (pckg) {
+        .plugins[variant]
+        .task(gulp, function (pckg) {
             return promisifiedTmp()
                 .then(function (tmpDir) {
                     distDir = path.join(tmpDir[0], pckg.directories.dist);

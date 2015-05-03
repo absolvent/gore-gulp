@@ -18,7 +18,7 @@ var path = require("path"),
 describe("lint", function () {
     it("detects code flaws", function (done) {
         gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
-            .lint(new Gulp(), function (pckg) {
+            .plugins.lint.task(new Gulp(), function (pckg) {
                 return _.merge(pckg, {
                     "config": {
                         "isSilent": true

@@ -15,7 +15,7 @@ var path = require("path"),
 
 describe("example", function () {
     it("tests example package", function (done) {
-        common.runDirectory(path.join(__dirname, "..", "..", "example"), "production")
+        common.runDirectory(path.join(__dirname, "..", "..", "example"), "webpack.production")
             .then(common.expectFiles([
                 "example.common.min.js",
                 "example.common.min.js.map",

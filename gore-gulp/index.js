@@ -9,6 +9,7 @@
 "use strict";
 
 var path = require("path"),
+    _ = require("lodash"),
     deprecate = require("deprecate"),
     fs = require("fs"),
     lint = require(path.join(__dirname, "/lint")),
@@ -18,42 +19,25 @@ var path = require("path"),
     test = require(path.join(__dirname, "/test")),
     webpack = require(path.join(__dirname, "/webpack"));
 
-function setup(options, pckgPromise, gulp, self) {
-    var defaultWebpackVariant;
+function setup(options, pckgPromise, plugins, gulp) {
+    var name;
 
-    if ("production" === process.env.NODE_ENV) {
-        defaultWebpackVariant = "webpack.production";
-    } else {
-        defaultWebpackVariant = "webpack.development";
+    for (name in plugins) {
+        if (plugins.hasOwnProperty(name)) {
+            gulp.task(name, plugins[name].dependencies, plugins[name].task(gulp));
+        }
     }
 
-    gulp.task("default", [
-        "test"
-    ]);
-    gulp.task("lint", self.lint(gulp));
-    gulp.task("test", [
-        "lint"
-    ], self.test(gulp));
-    gulp.task("webpack", [
-      defaultWebpackVariant
-    ]);
-    gulp.task("webpack.development", [
-        "test"
-    ], self.webpack.development());
     gulp.task("webpack.full", [
         "webpack.production"
     ], function () {
         deprecate(pckg.name + " - webpack.full task is deprecated, please use webpack.production instead");
     });
-    gulp.task("webpack.production", [
-        "test"
-    ], self.webpack.production());
     gulp.task("webpack.quick", [
         "webpack.development"
     ], function () {
         deprecate(pckg.name + " - webpack.quick task is deprecated, please use webpack.development instead");
     });
-    // gulp.task("webpack.react-native", self.webpack.reactNative());
 }
 
 function setupTask(baseDir, pckgPromise, task) {
@@ -67,27 +51,47 @@ function setupTask(baseDir, pckgPromise, task) {
 }
 
 module.exports = function (baseDir) {
-    var pckgPromise;
+    var pckgPromise,
+        plugins = {};
 
     pckgPromise = promisifiedReadFile(path.resolve(baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         });
 
+    function plugin(name, dependencies, callback) {
+        plugins[name] = {
+            "dependencies": dependencies,
+            "task": setupTask(baseDir, pckgPromise, callback)
+        };
+    }
+
+    plugin("lint", [], lint);
+    plugin("test", [
+        "lint"
+    ], test);
+    plugin("webpack.development", [
+        "test"
+    ], webpack.development);
+    plugin("webpack.production", [
+        "test"
+    ], webpack.production);
+
+    if ("production" === process.env.NODE_ENV) {
+        plugin("webpack", [
+            "webpack.production"
+        ], _.noop);
+    } else {
+        plugin("webpack", [
+            "webpack.development"
+        ], _.noop);
+    }
+
     return {
-        "lint": setupTask(baseDir, pckgPromise, lint),
+        "plugin": plugin,
+        "plugins": plugins,
         "setup": function (gulp) {
-            return setup(baseDir, pckgPromise, gulp, this);
-        },
-        "test": setupTask(baseDir, pckgPromise, test),
-        "webpack": {
-            "development": setupTask(baseDir, pckgPromise, webpack.development),
-            "production": setupTask(baseDir, pckgPromise, webpack.production),
-            "reactNative": setupTask(baseDir, pckgPromise, webpack.reactNative)
+            return setup(baseDir, pckgPromise, plugins, gulp);
         }
     };
 };
-
-module.exports.lint = lint;
-module.exports.test = test;
-module.exports.webpack = webpack;
