@@ -52,7 +52,8 @@ function setupTask(baseDir, pckgPromise, task) {
 
 module.exports = function (baseDir) {
     var pckgPromise,
-        plugins = {};
+        plugins = {},
+        ret;
 
     pckgPromise = promisifiedReadFile(path.resolve(baseDir, "package.json"))
         .then(function (pckgContents) {
@@ -64,7 +65,17 @@ module.exports = function (baseDir) {
             "dependencies": dependencies,
             "task": setupTask(baseDir, pckgPromise, callback)
         };
+
+        return ret;
     }
+
+    ret = {
+        "plugin": plugin,
+        "plugins": plugins,
+        "setup": function (gulp) {
+            return setup(baseDir, pckgPromise, plugins, gulp);
+        }
+    };
 
     plugin("lint", [], lint);
     plugin("test", [
@@ -87,11 +98,5 @@ module.exports = function (baseDir) {
         ], _.noop);
     }
 
-    return {
-        "plugin": plugin,
-        "plugins": plugins,
-        "setup": function (gulp) {
-            return setup(baseDir, pckgPromise, plugins, gulp);
-        }
-    };
+    return ret;
 };
