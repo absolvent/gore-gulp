@@ -129,6 +129,26 @@ Currently it is only possible to override
 [eslint](https://github.com/eslint/eslint) settings by placing your `.eslintrc`
 file into the base project directory (the one that holds your `package.json`).
 
+### Can I attach my own plugin and why should I do that?
+
+The goal of **gore-gulp** is to provide no-configuration (!) development
+environment or to provide a way to set it up through centralized configuration.
+If your organization uses common patterns among projects you can create an
+NPM package with **gore-gulp** plugin and instead of configuring each project
+via copy-pasting you can attach your plugin.
+
+The minimal plugin is a factory function that returns a gulp task.
+
+```JavaScript
+gg(__dirname)
+    .plugin(funtion (baseDir, pckgPromise, gulpInstance) {
+        return function () {
+            // this function is going to be passed to the gulp.task call
+        };
+    })
+    .setup(gulp)
+```
+
 ## Summary
 
 The goal of this package is to provide a one-liner that configures your
