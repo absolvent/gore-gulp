@@ -168,6 +168,20 @@ Please check
 for instruction on how to integrate **gore-gulp** with **Sublime Text** and
 benefit from global linter settings.
 
+### Can I still use plain gulp tasks?
+
+Of course!
+
+```JavaScript
+gg(__dirname).setup(gulp);
+
+gulp.task("sass", function () {
+   return gulp.src("*.sass")
+        .pipe(sass())
+        .pipe(gulp.dest("assets"));
+});
+```
+
 ## Summary
 
 The goal of this package is to provide a one-liner that configures your
