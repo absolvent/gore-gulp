@@ -1,3 +1,5 @@
+![gore-gulp](https://cdn.rawgit.com/goreutils/goreutils.github.io/e0ee67e872580d23c27a9eb5f9ab3e8cf3ed72ed/assets/gore-gulp.png)
+
 # gore-gulp
 
 ## What does this package contain?
