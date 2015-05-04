@@ -11,18 +11,20 @@
 /*global afterEach:false, beforeEach: false, describe: false, it: false */
 
 var path = require("path"),
+    assert = require("chai").assert,
     gg = require(path.join(__dirname, "..", "..")),
     Gulp = require("gulp").Gulp;
 
 describe("setup", function () {
-    var previousNodeEnv;
+    var fixtureLibraryPath = path.join(__dirname, "..", "..", "__fixtures__", "test-library-1"),
+        previousNodeEnv;
 
-    function doTestSetup(done, environment, taskName) {
+    function doTestWebpackSetup(done, environment, taskName) {
         var gulpInstance = new Gulp();
 
         process.env.NODE_ENV = environment;
 
-        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-1")).setup(gulpInstance);
+        gg(fixtureLibraryPath).setup(gulpInstance);
 
         gulpInstance.task(taskName, function () {
             done();
@@ -39,10 +41,18 @@ describe("setup", function () {
     });
 
     it("sets up gulp instance using development settings", function (done) {
-        doTestSetup(done, "development", "webpack.development");
+        doTestWebpackSetup(done, "development", "webpack.development");
     });
 
     it("sets up gulp instance using production settings", function (done) {
-        doTestSetup(done, "production", "webpack.production");
+        doTestWebpackSetup(done, "production", "webpack.production");
+    });
+
+    it("provides the default task", function () {
+        var gulpInstance = new Gulp();
+
+        gg(fixtureLibraryPath).setup(gulpInstance);
+
+        assert.ok(gulpInstance.hasTask("default"));
     });
 });
