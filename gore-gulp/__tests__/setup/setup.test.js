@@ -11,26 +11,23 @@
 /*global afterEach:false, beforeEach: false, describe: false, it: false */
 
 var path = require("path"),
-    assert = require("chai").assert,
-    gg = require(path.join(__dirname, "..", ".."));
+    gg = require(path.join(__dirname, "..", "..")),
+    Gulp = require("gulp").Gulp;
 
 describe("setup", function () {
     var previousNodeEnv;
 
-    function doTestSetup(environment, taskName) {
-        var tasks = {};
+    function doTestSetup(done, environment, taskName) {
+        var gulpInstance = new Gulp();
 
         process.env.NODE_ENV = environment;
 
-        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-1")).setup({
-            "task": function (name, deps) {
-                tasks[name] = deps;
-            }
-        });
+        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-1")).setup(gulpInstance);
 
-        assert.deepEqual(tasks.webpack, [
-            taskName
-        ]);
+        gulpInstance.task(taskName, function () {
+            done();
+        });
+        gulpInstance.start("webpack");
     }
 
     afterEach(function () {
@@ -41,11 +38,11 @@ describe("setup", function () {
         previousNodeEnv = process.env.NODE_ENV;
     });
 
-    it("sets up gulp instance using development settings", function () {
-        doTestSetup("development", "webpack.development");
+    it("sets up gulp instance using development settings", function (done) {
+        doTestSetup(done, "development", "webpack.development");
     });
 
-    it("sets up gulp instance using production settings", function () {
-        doTestSetup("production", "webpack.production");
+    it("sets up gulp instance using production settings", function (done) {
+        doTestSetup(done, "production", "webpack.production");
     });
 });

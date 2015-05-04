@@ -122,5 +122,13 @@ module.exports = function (baseDir) {
         });
     }
 
+    plugin({
+        "dependencies": [
+            "webpack"
+        ],
+        "factory": _.noop,
+        "name": "default"
+    });
+
     return ret;
 };
