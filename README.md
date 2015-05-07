@@ -183,6 +183,21 @@ gulp.task("sass", function () {
 });
 ```
 
+### How to specify gore-gulp tasks dependencies?
+
+```JavaScript
+gg({
+    "baseDir": __dirname,
+    "dependencies": [
+        "my-dependency"
+    ]
+}).setup(gulp);
+
+gulp.task("my-dependency", function () {
+    // this tasks is going to start before others
+});
+```
+
 ## Summary
 
 The goal of this package is to provide a one-liner gulp configuration that enables the programmer to quickly start coding with the best practices of modern JavaScript.

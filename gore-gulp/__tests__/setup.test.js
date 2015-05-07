@@ -58,7 +58,7 @@ describe("setup", function () {
         assert.ok(gulpInstance.hasTask("default"));
     });
 
-    it.skip("provides package dependencies", function () {
+    it("provides package dependencies", function () {
         var gulpInstance = new Gulp(),
             spy = sinon.spy();
 

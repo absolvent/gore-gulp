@@ -40,6 +40,14 @@ function setup(options, pckgPromise, plugins, gulp) {
     });
 }
 
+function setupDependencies(config, dependencies) {
+    if (!_.isEmpty(config.dependencies)) {
+        return config.dependencies.concat(dependencies);
+    }
+
+    return dependencies;
+}
+
 function setupTask(config, pckgPromise, factory) {
     return function (gulp, override) {
         if (override) {
@@ -69,7 +77,7 @@ module.exports = function (config) {
 
     function plugin(definition) {
         plugins[definition.name] = {
-            "dependencies": definition.dependencies,
+            "dependencies": setupDependencies(config, definition.dependencies),
             "task": setupTask(config, pckgPromise, definition.factory)
         };
 
