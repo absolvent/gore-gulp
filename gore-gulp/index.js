@@ -40,22 +40,29 @@ function setup(options, pckgPromise, plugins, gulp) {
     });
 }
 
-function setupTask(baseDir, pckgPromise, factory) {
+function setupTask(config, pckgPromise, factory) {
     return function (gulp, override) {
         if (override) {
             pckgPromise = pckgPromise.then(override);
         }
 
-        return factory(baseDir, pckgPromise, gulp);
+        return factory(config, pckgPromise, gulp);
     };
 }
 
-module.exports = function (baseDir) {
+module.exports = function (config) {
     var pckgPromise,
         plugins = {},
         ret;
 
-    pckgPromise = promisifiedReadFile(path.resolve(baseDir, "package.json"))
+    if ("string" === typeof config) {
+        config = {
+            "baseDir": config,
+            "dependencies": []
+        };
+    }
+
+    pckgPromise = promisifiedReadFile(path.resolve(config.baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         });
@@ -63,7 +70,7 @@ module.exports = function (baseDir) {
     function plugin(definition) {
         plugins[definition.name] = {
             "dependencies": definition.dependencies,
-            "task": setupTask(baseDir, pckgPromise, definition.factory)
+            "task": setupTask(config, pckgPromise, definition.factory)
         };
 
         return ret;
@@ -73,7 +80,7 @@ module.exports = function (baseDir) {
         "plugin": plugin,
         "plugins": plugins,
         "setup": function (gulp) {
-            return setup(baseDir, pckgPromise, plugins, gulp);
+            return setup(config, pckgPromise, plugins, gulp);
         }
     };
 

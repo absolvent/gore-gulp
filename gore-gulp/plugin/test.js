@@ -24,12 +24,12 @@ function detectTestFileExtensionPrefix(pckg) {
     return ".test";
 }
 
-module.exports = function (baseDir, pckgPromise, gulp) {
+module.exports = function (config, pckgPromise, gulp) {
     return function () {
         return pckgPromise.then(function (pckg) {
                 var testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
 
-                return path.resolve(baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + defaults.ecmaScriptFileExtensionsGlobPattern);
+                return path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + defaults.ecmaScriptFileExtensionsGlobPattern);
             })
             .then(function (globPattern) {
                 return new Promise(function (resolve, reject) {

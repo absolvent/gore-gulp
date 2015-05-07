@@ -11,9 +11,11 @@
 /*global afterEach:false, beforeEach: false, describe: false, it: false */
 
 var path = require("path"),
+    _ = require("lodash"),
     assert = require("chai").assert,
     gg = require(path.join(__dirname, "..")),
-    Gulp = require("gulp").Gulp;
+    Gulp = require("gulp").Gulp,
+    sinon = require("sinon");
 
 describe("setup", function () {
     var fixtureLibraryPath = path.join(__dirname, "..", "__fixtures__", "test-library-1"),
@@ -54,5 +56,26 @@ describe("setup", function () {
         gg(fixtureLibraryPath).setup(gulpInstance);
 
         assert.ok(gulpInstance.hasTask("default"));
+    });
+
+    it.skip("provides package dependencies", function () {
+        var gulpInstance = new Gulp(),
+            spy = sinon.spy();
+
+        gg({
+            "baseDir": fixtureLibraryPath,
+            "dependencies": [
+                "my-custom-dependency"
+            ]
+        }).plugin({
+            "dependencies": [],
+            "factory": _.noop,
+            "name": "my-test-plugin"
+        }).setup(gulpInstance);
+
+        gulpInstance.task("my-custom-dependency", spy);
+        gulpInstance.start("my-test-plugin");
+
+        assert.ok(spy.calledOnce);
     });
 });

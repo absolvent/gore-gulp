@@ -19,26 +19,26 @@ var path = require("path"),
     reactNative = require(path.join(__dirname, "webpack", "react-native")),
     webpack = require("webpack");
 
-function normalizeAliasPaths(baseDir, pckg) {
+function normalizeAliasPaths(config, pckg) {
     var alias = {};
 
-    alias[pckg.name] = path.resolve(baseDir, pckg.directories.lib);
+    alias[pckg.name] = path.resolve(config.baseDir, pckg.directories.lib);
 
     return _.merge(alias, pckg.alias);
 }
 
-function normalizeEntries(baseDir, pckg, entries) {
+function normalizeEntries(config, pckg, entries) {
     var i,
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
-        ret[normalizeEntry(baseDir, pckg, entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
+        ret[normalizeEntry(config, pckg, entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
     }
 
     return ret;
 }
 
-function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
+function normalizeEntry(config, pckg, entry, fileExtensions) {
     var i,
         entryPointStem,
         fileExtension;
@@ -46,7 +46,7 @@ function normalizeEntry(baseDir, pckg, entry, fileExtensions) {
     for (i = 0; i < fileExtensions.length; i += 1) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
-            entryPointStem = path.relative(path.join(baseDir, pckg.directories.lib), entry);
+            entryPointStem = path.relative(path.join(config.baseDir, pckg.directories.lib), entry);
             // replace all path.sep with spaces for more meaningful slugss
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
@@ -70,12 +70,12 @@ function run(config) {
     });
 }
 
-function stub(baseDir, pckgPromise) {
+function stub(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-            return promisifiedGlob(path.resolve(baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return promisifiedGlob(path.resolve(config.baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
-                        normalizeEntries(baseDir, pckg, entries),
+                        normalizeEntries(config, pckg, entries),
                         pckg
                     ];
                 });
@@ -117,22 +117,22 @@ function stub(baseDir, pckgPromise) {
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
-                    "path": path.resolve(baseDir, pckg.directories.dist)
+                    "path": path.resolve(config.baseDir, pckg.directories.dist)
                 },
                 "pckg": pckg,
                 "resolve": {
-                    "alias": normalizeAliasPaths(baseDir, pckg),
+                    "alias": normalizeAliasPaths(config, pckg),
                     "extensions": defaults.ecmaScriptFileExtensions,
-                    "root": baseDir
+                    "root": config.baseDir
                 }
             };
         });
 }
 
 function setupVariant(variant) {
-    return function (baseDir, pckgPromise) {
+    return function (config, pckgPromise) {
         return function () {
-            return stub(baseDir, pckgPromise).then(variant).then(run);
+            return stub(config, pckgPromise).then(variant).then(run);
         };
     };
 }

@@ -16,6 +16,7 @@
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
+        "sinon": "1.x",
         "tmp": "0.x"
     },
     "directories": {

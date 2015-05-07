@@ -16,9 +16,9 @@ var path = require("path"),
     gulpif = require("gulp-if"),
     Promise = require("bluebird");
 
-function awaitEslintrc(baseDir) {
+function awaitEslintrc(config) {
     var bundledEslintrc = path.join(__dirname, "..", "..", "eslint", ".eslintrc"),
-        userEslintrc = path.join(baseDir, ".eslintrc");
+        userEslintrc = path.join(config.baseDir, ".eslintrc");
 
     return new Promise(function (resolve, reject) {
         fs.stat(userEslintrc, function (err, stat) {
@@ -37,9 +37,9 @@ function awaitEslintrc(baseDir) {
     });
 }
 
-function awaitGlobPattern(baseDir, pckgPromise) {
+function awaitGlobPattern(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-        return path.resolve(baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern);
+        return path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern);
     });
 }
 
@@ -51,10 +51,10 @@ function isSilent(pckg) {
     return false;
 }
 
-module.exports = function (baseDir, pckgPromise, gulp) {
+module.exports = function (config, pckgPromise, gulp) {
     var initPromises = [
-        awaitEslintrc(baseDir),
-        awaitGlobPattern(baseDir, pckgPromise),
+        awaitEslintrc(config),
+        awaitGlobPattern(config, pckgPromise),
         pckgPromise
     ];
 
