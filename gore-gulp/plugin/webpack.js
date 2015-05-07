@@ -120,6 +120,9 @@ function stub(config, pckgPromise) {
                     "path": path.resolve(config.baseDir, pckg.directories.dist)
                 },
                 "pckg": pckg,
+                "plugins": [
+                    new webpack.ProvidePlugin(pckg.provide)
+                ],
                 "resolve": {
                     "alias": normalizeAliasPaths(config, pckg),
                     "extensions": defaults.ecmaScriptFileExtensions,

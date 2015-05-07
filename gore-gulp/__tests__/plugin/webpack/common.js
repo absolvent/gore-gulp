@@ -157,6 +157,16 @@ function setup(variant) {
             "fixture": "test-library-7",
             "name": "resolves multiple entry points",
             "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
+                "test-library-9.common.min.js",
+                "test-library-9.common.min.js.map",
+                "test-library-9.index.min.js"
+            ],
+            "fixture": "test-library-9",
+            "name": "uses 'provide' plugin",
+            "notExpectFiles": []
         }
     ].forEach(function (testData) {
         it(testData.name, function (done) {

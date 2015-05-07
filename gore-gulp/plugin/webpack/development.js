@@ -12,7 +12,7 @@ var _ = require("lodash"),
     webpack = require("webpack");
 
 function development(config) {
-    return _.assign(config, {
+    return _.merge(config, {
         "debug": true,
         "devtool": "cheap-source-map",
         "plugins": [

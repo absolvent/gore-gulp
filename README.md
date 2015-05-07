@@ -72,7 +72,7 @@ Feel free to open an issue if you’d like to see any changes.
 ### Vendor (non-NPM) libraries support
 
 To support libraries from sources other than NPM—bower, for example—you need to
-specify an `alias` key in your `package.json`. 
+specify an `alias` key in your `package.json`.
 
 For example if you need to use bower edition of
 [RxJS](https://github.com/Reactive-Extensions/RxJS) (for some strange reason)
@@ -197,6 +197,29 @@ gulp.task("my-dependency", function () {
     // this tasks is going to start before others
 });
 ```
+
+### Can I autoload dependencies?
+
+Sure, use package.json's `provide` key (it will also satisfy linter for the given variable):
+
+```JSON
+{
+    "dependencies": {
+        "jquery": "2.x"
+    }
+    "provide": {
+        "$": "jquery"
+    }
+}
+```
+
+```JavaScript
+$(document).ready(function () {
+    // no errors in this file
+    // jquery is automatically included
+});
+```
+
 
 ## Summary
 

@@ -1,0 +1,10 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "provided-libraries"
+    },
+    "name": "test-library-9",
+    "provide": {
+        "$": "jquery"
+    }
+}

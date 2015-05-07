@@ -36,4 +36,19 @@ describe("lint", function () {
                 }
             });
     });
+
+    it("should ignore errors when library uses 'provide' shim", function (done) {
+        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-9"))
+            .plugins.lint.task(new Gulp(), function (pckg) {
+                return _.merge(pckg, {
+                    "config": {
+                        "isSilent": true
+                    }
+                });
+            })()
+            .then(function () {
+                done();
+            })
+            .catch(done);
+    });
 });

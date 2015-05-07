@@ -39,7 +39,10 @@ function awaitEslintrc(config) {
 
 function awaitGlobPattern(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-        return path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern);
+        return [
+            path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern),
+            "!" + path.resolve(config.baseDir, pckg.directories.lib, "**", "__fixtures__", "**", "*")
+        ];
     });
 }
 
@@ -49,6 +52,10 @@ function isSilent(pckg) {
     }
 
     return false;
+}
+
+function normalizeGlobals(pckg) {
+    return _.mapValues(pckg.provide, _.constant(false));
 }
 
 module.exports = function (config, pckgPromise, gulp) {
@@ -65,9 +72,11 @@ module.exports = function (config, pckgPromise, gulp) {
                     gulp.src(globPattern)
                         .pipe(eslint({
                             "configFile": eslintrc,
+                            "globals": normalizeGlobals(pckg),
                             "plugins": [
                                 "react"
-                            ]
+                            ],
+                            "useEslintrc": false
                         }))
                         .pipe(gulpif(!isSilent(pckg), eslint.format()))
                         .pipe(eslint.failAfterError())
