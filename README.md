@@ -206,7 +206,7 @@ Sure, use package.json's `provide` key (it will also satisfy linter for the give
 {
     "dependencies": {
         "jquery": "2.x"
-    }
+    },
     "provide": {
         "$": "jquery"
     }
