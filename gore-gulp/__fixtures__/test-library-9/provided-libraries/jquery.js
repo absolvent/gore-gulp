@@ -8,13 +8,6 @@
 
 "use strict";
 
-var _ = require("lodash");
-
-function development(config) {
-    return _.merge(config, {
-        "debug": true,
-        "devtool": "cheap-source-map"
-    });
-}
-
-module.exports = development;
+module.exports = function () {
+    return "this is just a fake module";
+};

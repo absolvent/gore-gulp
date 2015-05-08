@@ -205,18 +205,18 @@ Sure, use package.json's `provide` key (it will also satisfy linter for the give
 ```JSON
 {
     "dependencies": {
-        "jquery": "2.x"
+        "bluebird": "2.x"
     },
     "provide": {
-        "$": "jquery"
+        "Promise": "bluebird"
     }
 }
 ```
 
 ```JavaScript
-$(document).ready(function () {
+new Promise(function () {
     // no errors in this file
-    // jquery is automatically included
+    // Promise is automatically included
 });
 ```
 

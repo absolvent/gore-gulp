@@ -8,7 +8,8 @@
 
 "use strict";
 
-var path = require("path"),
+var baseBabelConfig,
+    path = require("path"),
     _ = require("lodash"),
     defaults = require(path.join(__dirname, "..", "defaults")),
     development = require(path.join(__dirname, "webpack", "development")),
@@ -18,6 +19,21 @@ var path = require("path"),
     querystring = require("querystring"),
     reactNative = require(path.join(__dirname, "webpack", "react-native")),
     webpack = require("webpack");
+
+baseBabelConfig = {
+    "loose": [
+        "es6.modules",
+        "es6.properties.computed",
+        "es6.templateLiterals"
+    ],
+    "optional": [
+        "es3.runtime",
+        "runtime",
+        "utility.deadCodeElimination",
+        "utility.inlineEnvironmentVariables",
+        "utility.inlineExpressions"
+    ]
+};
 
 function normalizeAliasPaths(config, pckg) {
     var alias = {};
@@ -58,6 +74,14 @@ function normalizeEntry(config, pckg, entry, fileExtensions) {
     return entry;
 }
 
+function normalizeProvidePaths(providePaths) {
+    if (!providePaths) {
+        return {};
+    }
+
+    return providePaths;
+}
+
 function run(config) {
     return new Promise(function (resolve, reject) {
         webpack(config, function (err) {
@@ -95,23 +119,24 @@ function stub(config, pckgPromise) {
                             "loader": require.resolve("imports-loader") + "?this=>window"
                         },
                         {
-                            "test": /\.jsx$/,
-                            "exclude": /(bower_components|node_modules)/,
-                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify({
-                                "loose": [
-                                    "es6.modules",
-                                    "es6.properties.computed",
-                                    "es6.templateLiterals"
-                                ],
+                            "test": function (filename) {
+                                return _.startsWith(filename, config.baseDir) && _.endsWith(filename, ".js");
+                            },
+                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
+                                "blacklist": [
+                                    "react"
+                                ]
+                            }))
+                        },
+                        {
+                            "test": function (filename) {
+                                return _.startsWith(filename, config.baseDir) && _.endsWith(filename, ".jsx");
+                            },
+                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
                                 "optional": [
-                                    "es3.runtime",
-                                    "runtime",
-                                    "utility.deadCodeElimination",
-                                    "utility.inlineEnvironmentVariables",
-                                    "utility.inlineExpressions",
                                     "validation.react"
                                 ]
-                            })
+                            }))
                         }
                     ]
                 },
@@ -119,9 +144,9 @@ function stub(config, pckgPromise) {
                     "filename": pckg.name + ".[name].min.js",
                     "path": path.resolve(config.baseDir, pckg.directories.dist)
                 },
-                "pckg": pckg,
                 "plugins": [
-                    new webpack.ProvidePlugin(pckg.provide)
+                    new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
+                    new webpack.optimize.CommonsChunkPlugin(pckg.name + ".common.min.js")
                 ],
                 "resolve": {
                     "alias": normalizeAliasPaths(config, pckg),
