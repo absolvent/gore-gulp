@@ -91,7 +91,7 @@ you can configure your project like this:
 }
 ```
 
-And thenuse it like this:
+And then use it like this:
 
 ```JavaScript
 // library-with-bower-components/index.entry.js
@@ -150,9 +150,9 @@ module.exports = {
     "factory": function (config, pckgPromise, gulpInstance) {
         return function () {
             // this function is going to be passed to the gulp.task call
-            // config.baseDir is the host project directroy (the one that uses gore-gulp)
-            // pckgPromise resolves to host project package.json contents
-            // gulpInstance is the host project gulp
+            // config.baseDir is a directory of the host project (the one that uses gore-gulp)
+            // pckgPromise resolves to host project's package.json contents
+            // gulpInstance is the host project's gulp
         };
     },
     "name": "task-name"
