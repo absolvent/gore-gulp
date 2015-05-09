@@ -143,17 +143,25 @@ via copy-pasting you can attach your plugin.
 The minimal plugin is a factory function that returns a gulp task.
 
 ```JavaScript
-gg(__dirname)
-    .plugin({
-        "dependencies": [],
-        "factory": function (baseDir, pckgPromise, gulpInstance) {
-            return function () {
-                // this function is going to be passed to the gulp.task call
-            };
-        },
-        "name": "task-name"
-    })
-    .setup(gulp)
+// my-plugin.js
+
+module.exports = {
+    "dependencies": [],
+    "factory": function (baseDir, pckgPromise, gulpInstance) {
+        return function () {
+            // this function is going to be passed to the gulp.task call
+        };
+    },
+    "name": "task-name"
+};
+```
+
+```JavaScript
+// gulpfile.js
+
+var myPlugin = require("my-plugin");
+
+gg(__dirname).plugin(myPlugin).setup(gulp)
 ```
 
 Invoking with CLI:
@@ -174,6 +182,8 @@ benefit from global linter settings.
 Of course!
 
 ```JavaScript
+// gulpfile.js
+
 gg(__dirname).setup(gulp);
 
 gulp.task("sass", function () {
@@ -186,6 +196,8 @@ gulp.task("sass", function () {
 ### How to specify gore-gulp tasks dependencies?
 
 ```JavaScript
+// gulpfile.js
+
 gg({
     "baseDir": __dirname,
     "dependencies": [
@@ -203,6 +215,8 @@ gulp.task("my-dependency", function () {
 Sure, use package.json's `provide` key (it will also satisfy linter for the given variable):
 
 ```JSON
+// package.json
+
 {
     "dependencies": {
         "bluebird": "2.x"
@@ -214,6 +228,8 @@ Sure, use package.json's `provide` key (it will also satisfy linter for the give
 ```
 
 ```JavaScript
+// index.entry.js
+
 new Promise(function () {
     // no errors in this file
     // Promise is automatically included
