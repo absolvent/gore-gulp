@@ -15,17 +15,17 @@ var path = require("path"),
     Promise = require("bluebird"),
     _ = require("lodash"),
     assert = require("chai").assert,
-    defaults = require(path.join(__dirname, "..", "..", "..", "defaults")),
-    fixtureDir = path.join(__dirname, "..", "..", "..", "__fixtures__"),
+    defaults = require(path.resolve(__dirname, "..", "..", "..", "defaults")),
+    fixtureDir = path.resolve(__dirname, "..", "..", "..", "__fixtures__"),
     fs = require("fs"),
-    gg = require(path.join(__dirname, "..", "..", "..", "index")),
+    gg = require(path.resolve(__dirname, "..", "..", "..", "index")),
     promisifiedStat = Promise.promisify(fs.stat),
     promisifiedTmp = Promise.promisify(require("tmp").dir);
 
 function doFiles(paths, cb) {
     return function (distDir) {
         paths = paths.map(function (pth) {
-            return promisifiedStat(path.join(distDir, pth))
+            return promisifiedStat(path.resolve(distDir, pth))
                 .then(function (stats) {
                     return cb(stats.isFile(), pth);
                 })
@@ -204,7 +204,7 @@ function setup(variant) {
         it(testData.name, function (done) {
             var distDir;
 
-            runDirectory(path.join(fixtureDir, testData.fixture), variant)
+            runDirectory(path.resolve(fixtureDir, testData.fixture), variant)
                 .then(function (dd) {
                     distDir = dd;
 

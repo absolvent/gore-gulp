@@ -11,12 +11,20 @@
         "gulp-if": "1.x",
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
+        "karma": "0.x",
+        "karma-chai-sinon": "0.x",
+        "karma-mocha": "0.x",
+        "karma-sourcemap-loader": "0.x",
+        "karma-webpack": "1.x",
         "lodash": "3.x",
+        "mocha": "2.x",
+        "mustache": "2.x",
+        "sinon": "1.x",
+        "sinon-chai": "2.x",
         "webpack": "1.x"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "devDependencies": {
-        "sinon": "1.x",
         "tmp": "0.x"
     },
     "directories": {

@@ -8,7 +8,11 @@
 
 "use strict";
 
-var ecmaScriptFileExtensions = [
+var _ = require("lodash"),
+    ecmaScriptFileExtensions,
+    notEmptyExtensions;
+
+ecmaScriptFileExtensions = [
     "",
     ".coffee",
     ".js",
@@ -16,11 +20,10 @@ var ecmaScriptFileExtensions = [
     ".min.js"
 ];
 
+notEmptyExtensions = _.filter(ecmaScriptFileExtensions);
+
 module.exports = {
-    "ecmaScriptFileExtensionsGlobPattern": "{" + ecmaScriptFileExtensions
-        .filter(function (extension) {
-            return extension;
-        })
-        .join(",") + "}",
-    "ecmaScriptFileExtensions": ecmaScriptFileExtensions
+    "ecmaScriptFileExtensions": ecmaScriptFileExtensions,
+    "ecmaScriptFileExtensionsGlobPattern": "{" + notEmptyExtensions.join(",") + "}",
+    "ecmaScriptTestFileExtensionsRegExp": new RegExp(".*" + _.escapeRegExp(".test") + "(" + notEmptyExtensions.join("|") + ")" + "$")
 };

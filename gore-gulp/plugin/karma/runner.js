@@ -8,9 +8,12 @@
 
 "use strict";
 
-var path = require("path"),
-    pckg = require(path.resolve(__dirname, "package.json")),
-    gg = require(path.resolve(__dirname, pckg.name)),
-    gulp = require("gulp");
+var Promise = require("bluebird");
 
-gg(__dirname).setup(gulp);
+module.exports = function () {
+    return function () {
+        return new Promise(function (resolve) {
+            resolve();
+        });
+    };
+};

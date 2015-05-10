@@ -1,13 +1,7 @@
 {
-    "dependencies": {
-        "fake-module": "*"
-    },
     "directories": {
         "dist": "dist",
-        "lib": "provided-react-library"
+        "lib": "karma-library"
     },
-    "name": "test-library-10",
-    "provide": {
-        "React": "fake-module"
-    }
+    "name": "test-library-10"
 }

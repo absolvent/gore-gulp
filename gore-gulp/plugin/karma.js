@@ -9,8 +9,10 @@
 "use strict";
 
 var path = require("path"),
-    pckg = require(path.resolve(__dirname, "package.json")),
-    gg = require(path.resolve(__dirname, pckg.name)),
-    gulp = require("gulp");
+    runner = require(path.resolve(__dirname, "karma", "runner")),
+    server = require(path.resolve(__dirname, "karma", "server"));
 
-gg(__dirname).setup(gulp);
+module.exports = {
+    "runner": runner,
+    "server": server
+};

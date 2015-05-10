@@ -7,10 +7,3 @@
  */
 
 "use strict";
-
-var path = require("path"),
-    pckg = require(path.resolve(__dirname, "package.json")),
-    gg = require(path.resolve(__dirname, pckg.name)),
-    gulp = require("gulp");
-
-gg(__dirname).setup(gulp);

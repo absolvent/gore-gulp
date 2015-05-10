@@ -13,12 +13,12 @@
 var path = require("path"),
     _ = require("lodash"),
     assert = require("chai").assert,
-    gg = require(path.join(__dirname, "..")),
+    gg = require(path.resolve(__dirname, "..")),
     Gulp = require("gulp").Gulp,
     sinon = require("sinon");
 
 describe("setup", function () {
-    var fixtureLibraryPath = path.join(__dirname, "..", "__fixtures__", "test-library-1"),
+    var fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1"),
         previousNodeEnv;
 
     function doTestWebpackSetup(done, environment, taskName) {

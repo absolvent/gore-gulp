@@ -11,11 +11,11 @@
 /*global describe: false, it: false */
 
 var path = require("path"),
-    common = require(path.join(__dirname, "plugin", "webpack", "common"));
+    common = require(path.resolve(__dirname, "plugin", "webpack", "common"));
 
 describe("example", function () {
     it("tests example package", function (done) {
-        common.runDirectory(path.join(__dirname, "..", "..", "example"), "webpack.production")
+        common.runDirectory(path.resolve(__dirname, "..", "..", "example"), "webpack.production")
             .then(common.expectFiles([
                 "example.common.min.js",
                 "example.common.min.js.map",

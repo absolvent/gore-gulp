@@ -54,7 +54,7 @@ describe("lint", function () {
     });
 
     it("should ignore errors when library uses 'provide' shim", function (done) {
-        runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-9"))
+        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9"))
             .then(function () {
                 done();
             })

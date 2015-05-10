@@ -8,9 +8,6 @@
 
 "use strict";
 
-var path = require("path"),
-    pckg = require(path.resolve(__dirname, "package.json")),
-    gg = require(path.resolve(__dirname, pckg.name)),
-    gulp = require("gulp");
+var context = require.context("{{&config.baseDir}}", true, {{&defaults.ecmaScriptTestFileExtensionsRegExp}});
 
-gg(__dirname).setup(gulp);
+context.keys().forEach(context);

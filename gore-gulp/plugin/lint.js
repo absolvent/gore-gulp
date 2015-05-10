@@ -10,15 +10,15 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.join(__dirname, "..", "defaults")),
+    defaults = require(path.resolve(__dirname, "..", "defaults")),
     eslint = require("gulp-eslint"),
     fs = require("fs"),
     gulpif = require("gulp-if"),
     Promise = require("bluebird");
 
 function awaitEslintrc(config) {
-    var bundledEslintrc = path.join(__dirname, "..", "..", "eslint", ".eslintrc"),
-        userEslintrc = path.join(config.baseDir, ".eslintrc");
+    var bundledEslintrc = path.resolve(__dirname, "..", "..", "eslint", ".eslintrc"),
+        userEslintrc = path.resolve(config.baseDir, ".eslintrc");
 
     return new Promise(function (resolve, reject) {
         fs.stat(userEslintrc, function (err, stat) {

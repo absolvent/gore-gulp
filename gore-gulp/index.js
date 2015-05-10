@@ -12,12 +12,13 @@ var path = require("path"),
     _ = require("lodash"),
     deprecate = require("deprecate"),
     fs = require("fs"),
-    lint = require(path.join(__dirname, "plugin", "lint")),
-    pckg = require(path.join(__dirname, "..", "package.json")),
+    karma = require(path.resolve(__dirname, "plugin", "karma")),
+    lint = require(path.resolve(__dirname, "plugin", "lint")),
+    pckg = require(path.resolve(__dirname, "..", "package.json")),
     Promise = require("bluebird"),
     promisifiedReadFile = Promise.promisify(fs.readFile),
-    test = require(path.join(__dirname, "plugin", "test")),
-    webpack = require(path.join(__dirname, "plugin", "webpack"));
+    test = require(path.resolve(__dirname, "plugin", "test")),
+    webpack = require(path.resolve(__dirname, "plugin", "webpack"));
 
 function setup(options, pckgPromise, plugins, gulp) {
     var name;
@@ -106,6 +107,16 @@ module.exports = function (config) {
 
     plugin({
         "dependencies": [],
+        "factory": karma.runner,
+        "name": "karma.runner"
+    });
+    plugin({
+        "dependencies": [],
+        "factory": karma.server,
+        "name": "karma.server"
+    });
+    plugin({
+        "dependencies": [],
         "factory": lint,
         "name": "lint"
     });
@@ -118,14 +129,14 @@ module.exports = function (config) {
     });
     plugin({
         "dependencies": [
-            "test"
+            "lint"
         ],
         "factory": webpack.development,
         "name": "webpack.development"
     });
     plugin({
         "dependencies": [
-            "test"
+            "lint"
         ],
         "factory": webpack.production,
         "name": "webpack.production"

@@ -11,13 +11,13 @@
 var baseBabelConfig,
     path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.join(__dirname, "..", "defaults")),
-    development = require(path.join(__dirname, "webpack", "development")),
-    production = require(path.join(__dirname, "webpack", "production")),
+    defaults = require(path.resolve(__dirname, "..", "defaults")),
+    development = require(path.resolve(__dirname, "webpack", "development")),
+    production = require(path.resolve(__dirname, "webpack", "production")),
     Promise = require("bluebird"),
     promisifiedGlob = Promise.promisify(require("glob")),
     querystring = require("querystring"),
-    reactNative = require(path.join(__dirname, "webpack", "react-native")),
+    reactNative = require(path.resolve(__dirname, "webpack", "react-native")),
     webpack = require("webpack");
 
 baseBabelConfig = {
@@ -62,7 +62,7 @@ function normalizeEntry(config, pckg, entry, fileExtensions) {
     for (i = 0; i < fileExtensions.length; i += 1) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
-            entryPointStem = path.relative(path.join(config.baseDir, pckg.directories.lib), entry);
+            entryPointStem = path.relative(path.resolve(config.baseDir, pckg.directories.lib), entry);
             // replace all path.sep with spaces for more meaningful slugss
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);

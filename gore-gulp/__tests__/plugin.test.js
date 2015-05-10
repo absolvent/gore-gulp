@@ -12,14 +12,14 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    gg = require(path.join(__dirname, "..", "index")),
+    gg = require(path.resolve(__dirname, "..", "index")),
     Gulp = require("gulp").Gulp;
 
 describe("plugin", function () {
     it("allows to attach a custom plugin", function (done) {
         var gulpInstance = new Gulp();
 
-        gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
+        gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({
                 "dependencies": [],
                 "factory": function () {
@@ -37,7 +37,7 @@ describe("plugin", function () {
     it("is chainable", function (done) {
         var gulpInstance = new Gulp();
 
-        gg(path.join(__dirname, "..", "__fixtures__", "test-library-8"))
+        gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({
                 "dependencies": [],
                 "factory": function () {
