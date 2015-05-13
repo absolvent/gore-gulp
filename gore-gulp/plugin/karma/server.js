@@ -11,44 +11,94 @@
 var path = require("path"),
     defaults = require(path.resolve(__dirname, "..", "..", "defaults")),
     fs = require("fs"),
-    // karma = require("karma"),
+    karma = require("karma"),
     mustache = require("mustache"),
     Promise = require("bluebird"),
-    promisifiedReadFile = Promise.promisify(fs.readFile);
+    tmp = require("tmp"),
+    promisifiedReadFile = Promise.promisify(fs.readFile),
+    promisifiedTmpFile = Promise.promisify(tmp.file),
+    promisifiedWriteFile = Promise.promisify(fs.writeFile);
 
-function awaitPreprocessorTemplate() {
+function awaitPreprocessorCode(config) {
     return promisifiedReadFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"))
         .then(function (preprocessorTemplateBuffer) {
             return preprocessorTemplateBuffer.toString();
+        })
+        .then(function (preprocessorTemplate) {
+            return mustache.render(preprocessorTemplate, {
+                "config": config,
+                "defaults": defaults
+            });
         });
 }
 
 module.exports = function (config) {
     return function () {
-        var initPromises = [
-            awaitPreprocessorTemplate()
-        ];
+        var cleanupCallback,
+            initPromises = [
+                awaitPreprocessorCode(config),
+                promisifiedTmpFile({
+                    "postfix": ".js"
+                })
+            ];
 
         return Promise.all(initPromises)
-            .spread(function (preprocessorTemplate) {
-                return mustache.render(preprocessorTemplate, {
-                    "config": config,
-                    "defaults": defaults
+            .spread(function (preprocessorCode, tmpfile) {
+                cleanupCallback = tmpfile[2];
+
+                return promisifiedWriteFile(tmpfile[0], preprocessorCode)
+                    .then(function () {
+                        return tmpfile[0];
+                    });
+            })
+            .then(function (preprocessorPath) {
+                return new Promise(function (resolve, reject) {
+                    var preprocessors = {};
+
+                    preprocessors[preprocessorPath] = [
+                        "sourcemap",
+                        "webpack"
+                    ];
+
+                    karma.server.start({
+                        "files": [
+                            preprocessorPath
+                        ],
+                        "frameworks": [
+                            "mocha"
+                        ],
+                        "preprocessors": preprocessors,
+                        "reporters": [
+                            "dots"
+                        ],
+                        "singleRun": true,
+                        "webpack": {
+                            "devtool": "inline-source-map",
+                            "module": {
+                                "loaders": [
+                                    {
+                                        "loader": "babel-loader",
+                                        "test": /\.js$/
+                                    }
+                                ]
+                            }
+                        },
+                        "webpackServer": {
+                            "noInfo": true
+                        }
+                    }, function (exitCode) {
+                        if (0 === exitCode) {
+                            resolve();
+                        } else {
+                            reject(new Error("Karma has exited with non-zero exit code: " + exitCode));
+                        }
+                    });
                 });
             })
-            .then(function (preprocessorCode) {
-                console.log(preprocessorCode);
+            .finally(function () {
+                if (cleanupCallback) {
+                    cleanupCallback();
+                }
             });
-        // return new Promise(function (resolve, reject) {
-            // karma.server.start({
-            //     "configFile": path.resolve(__dirname, "..", "..", "..", "karma", "karma.conf.js")
-            // }, function (exitCode) {
-            //     if (0 === exitCode) {
-            //         resolve();
-            //     } else {
-            //         reject(new Error("Karma has exited with non-zero exit code: " + exitCode));
-            //     }
-            // });
-        // });
     };
 };

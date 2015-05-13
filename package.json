@@ -21,12 +21,10 @@
         "mustache": "2.x",
         "sinon": "1.x",
         "sinon-chai": "2.x",
+        "tmp": "0.x",
         "webpack": "1.x"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
-    "devDependencies": {
-        "tmp": "0.x"
-    },
     "directories": {
         "example": "example",
         "lib": "gore-gulp"
