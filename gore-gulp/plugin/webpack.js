@@ -28,10 +28,10 @@ baseBabelConfig = {
     ],
     "optional": [
         "es3.runtime",
+        "minification.inlineExpressions",
         "runtime",
         "utility.deadCodeElimination",
-        "utility.inlineEnvironmentVariables",
-        "utility.inlineExpressions"
+        "utility.inlineEnvironmentVariables"
     ]
 };
 
