@@ -167,6 +167,17 @@ function setup(variant) {
             "fixture": "test-library-9",
             "name": "uses 'provide' plugin",
             "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
+                "test-library-10.common.min.js",
+                "test-library-10.common.min.js.map",
+                "test-library-10.index.min.js",
+                "test-library-10.index.min.js.map"
+            ],
+            "fixture": "test-library-10",
+            "name": "'react' is the special case for 'provide' library",
+            "notExpectFiles": []
         }
     ].forEach(function (testData) {
         it(testData.name, function (done) {
