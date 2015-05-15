@@ -65,15 +65,27 @@ module.exports = function (config) {
 
     if ("string" === typeof config) {
         config = {
-            "baseDir": config,
-            "dependencies": []
+            "baseDir": config
         };
     }
+
+    config = _.merge({
+        "dependencies": [],
+        "override": _.identity
+    }, config);
 
     pckgPromise = promisifiedReadFile(path.resolve(config.baseDir, "package.json"))
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
-        });
+        })
+        .then(function (parsedPckg) {
+            return _.merge({
+                "config": {
+                    "isSilent": false
+                }
+            }, parsedPckg);
+        })
+        .then(config.override);
 
     function plugin(definition) {
         plugins[definition.name] = {

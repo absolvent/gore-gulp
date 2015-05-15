@@ -8,4 +8,4 @@
 
 "use strict";
 
-React.create('');
+React.create();

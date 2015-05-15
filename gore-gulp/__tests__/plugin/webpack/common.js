@@ -11,14 +11,14 @@
 /*global it: false */
 
 var path = require("path"),
+    Gulp = require("gulp").Gulp,
+    Promise = require("bluebird"),
     _ = require("lodash"),
     assert = require("chai").assert,
     defaults = require(path.join(__dirname, "..", "..", "..", "defaults")),
     fixtureDir = path.join(__dirname, "..", "..", "..", "__fixtures__"),
     fs = require("fs"),
     gg = require(path.join(__dirname, "..", "..", "..", "index")),
-    gulp = require("gulp"),
-    Promise = require("bluebird"),
     promisifiedStat = Promise.promisify(fs.stat),
     promisifiedTmp = Promise.promisify(require("tmp").dir);
 
@@ -51,26 +51,36 @@ function notExpectFiles(paths) {
 }
 
 function runDirectory(baseDir, variant) {
-    var distDir;
+    var distDir,
+        gulpInstance = new Gulp();
 
-    return gg(baseDir)
-        .plugins[variant]
-        .task(gulp, function (pckg) {
+    gg({
+        "baseDir": baseDir,
+        "override": function (pckg) {
             return promisifiedTmp()
-                .then(function (tmpDir) {
-                    distDir = path.join(tmpDir[0], pckg.directories.dist);
-                })
-                .then(function () {
+                .spread(function (tmpDir) {
+                    distDir = path.join(tmpDir, pckg.directories.dist);
+
                     return _.merge(pckg, {
+                        "config": {
+                            "isSilent": true
+                        },
                         "directories": {
                             "dist": distDir
                         }
                     });
                 });
-        })()
-        .then(function () {
-            return distDir;
-        });
+        }
+    }).setup(gulpInstance);
+
+    return new Promise(function (resolve, reject) {
+        gulpInstance.on("err", reject);
+        gulpInstance.on("stop", resolve);
+
+        gulpInstance.start(variant);
+    }).then(function () {
+        return distDir;
+    });
 }
 
 function setup(variant) {

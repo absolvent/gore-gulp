@@ -46,14 +46,6 @@ function awaitGlobPattern(config, pckgPromise) {
     });
 }
 
-function isSilent(pckg) {
-    if (pckg.config) {
-        return pckg.config.isSilent;
-    }
-
-    return false;
-}
-
 function normalizeGlobals(pckg) {
     return _.mapValues(pckg.provide, _.constant(false));
 }
@@ -78,7 +70,7 @@ module.exports = function (config, pckgPromise, gulp) {
                             ],
                             "useEslintrc": false
                         }))
-                        .pipe(gulpif(!isSilent(pckg), eslint.format()))
+                        .pipe(gulpif(!pckg.config.isSilent, eslint.format()))
                         .pipe(eslint.failAfterError())
                         // force data to flow by reading from pipe
                         .on("data", _.noop)
