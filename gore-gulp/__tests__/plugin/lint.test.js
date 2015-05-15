@@ -15,21 +15,36 @@ var path = require("path"),
     gg = require(path.join(__dirname, "..", "..", "index")),
     Gulp = require("gulp").Gulp;
 
+function runDirectory(baseDir) {
+    var gulpInstance = new Gulp();
+
+    gg({
+        "baseDir": baseDir,
+        "override": function (pckg) {
+            return _.merge(pckg, {
+                "config": {
+                    "isSilent": true
+                }
+            });
+        }
+    }).setup(gulpInstance);
+
+    return new Promise(function (resolve, reject) {
+        gulpInstance.on("err", reject);
+        gulpInstance.on("stop", resolve);
+
+        gulpInstance.start("lint");
+    });
+}
+
 describe("lint", function () {
     it("detects code flaws", function (done) {
-        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
-            .plugins.lint.task(new Gulp(), function (pckg) {
-                return _.merge(pckg, {
-                    "config": {
-                        "isSilent": true
-                    }
-                });
-            })()
+        runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
             .then(function () {
                 done(new Error("Linter should detect errors!"));
             })
             .catch(function (err) {
-                if ("ESLintError" === err.name) {
+                if ("ESLintError" === err.err.name) {
                     done();
                 } else {
                     done(err);
@@ -38,14 +53,7 @@ describe("lint", function () {
     });
 
     it("should ignore errors when library uses 'provide' shim", function (done) {
-        gg(path.join(__dirname, "..", "..", "__fixtures__", "test-library-9"))
-            .plugins.lint.task(new Gulp(), function (pckg) {
-                return _.merge(pckg, {
-                    "config": {
-                        "isSilent": true
-                    }
-                });
-            })()
+        runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-9"))
             .then(function () {
                 done();
             })
