@@ -4,7 +4,7 @@
     },
     "directories": {
         "dist": "dist",
-        "lib": "provided-libraries"
+        "lib": "provided-react-library"
     },
     "name": "test-library-10",
     "provide": {
