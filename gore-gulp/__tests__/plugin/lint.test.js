@@ -13,7 +13,8 @@
 var path = require("path"),
     _ = require("lodash"),
     gg = require(path.join(__dirname, "..", "..", "index")),
-    Gulp = require("gulp").Gulp;
+    Gulp = require("gulp").Gulp,
+    Promise = require("bluebird");
 
 function runDirectory(baseDir) {
     var gulpInstance = new Gulp();
