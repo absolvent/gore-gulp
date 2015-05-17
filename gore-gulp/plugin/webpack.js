@@ -144,8 +144,7 @@ function stub(config, pckgPromise) {
                                 ]
                             }))
                         }
-                    ],
-                    "noParse": /node_modules/
+                    ]
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
