@@ -122,22 +122,23 @@ function stub(config, pckgPromise) {
                             "test": /bower_components/,
                             "loader": require.resolve("imports-loader") + "?this=>window"
                         },
+                        // {
+                        //     "include": libDir,
+                        //     "test": function (filename) {
+                        //         return _.endsWith(filename, ".js");
+                        //     },
+                        //     "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
+                        //         "blacklist": [
+                        //             "react"
+                        //         ]
+                        //     }))
+                        // },
                         {
                             "include": libDir,
-                            "test": function (filename) {
-                                return _.endsWith(filename, ".js");
-                            },
-                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
-                                "blacklist": [
-                                    "react"
-                                ]
-                            }))
-                        },
-                        {
-                            "include": libDir,
-                            "test": function (filename) {
-                                return _.endsWith(filename, ".jsx");
-                            },
+                            "test": /\.jsx?$/,
+                            // "test": function (filename) {
+                            //     return _.endsWith(filename, ".jsx");
+                            // },
                             "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
                                 "optional": [
                                     "validation.react"
