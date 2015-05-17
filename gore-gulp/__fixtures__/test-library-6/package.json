@@ -4,7 +4,7 @@
         "lib": "library-with-externals"
     },
     "externals": {
-        "jquery": "jQuery"
+        "jquery": "var jQuery"
     },
     "name": "test-library-6"
 }

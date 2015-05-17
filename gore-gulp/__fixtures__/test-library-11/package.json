@@ -1,0 +1,10 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "./app/Resources/public/js"
+    },
+    "externals": {
+        "react": "React"
+    },
+    "name": "test-library-11"
+}

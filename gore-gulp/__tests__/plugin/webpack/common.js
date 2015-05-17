@@ -188,6 +188,17 @@ function setup(variant) {
             "fixture": "test-library-10",
             "name": "'react' is the special case for 'provide' library",
             "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
+                "test-library-11.common.min.js",
+                "test-library-11.common.min.js.map",
+                "test-library-11.symfony.min.js",
+                "test-library-11.symfony.min.js.map"
+            ],
+            "fixture": "test-library-11",
+            "name": "symfony package directory structure",
+            "notExpectFiles": []
         }
     ].forEach(function (testData) {
         it(testData.name, function (done) {

@@ -95,16 +95,20 @@ function run(config) {
 }
 
 function stub(config, pckgPromise) {
+
     return pckgPromise.then(function (pckg) {
-            return promisifiedGlob(path.resolve(config.baseDir, pckg.directories.lib, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            var libDir = path.resolve(config.baseDir, pckg.directories.lib);
+
+            return promisifiedGlob(path.resolve(libDir, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
                 .then(function (entries) {
                     return [
                         normalizeEntries(config, pckg, entries),
-                        pckg
+                        pckg,
+                        libDir
                     ];
                 });
         })
-        .spread(function (entries, pckg) {
+        .spread(function (entries, pckg, libDir) {
             return {
                 "bail": true,
                 "entry": entries,
@@ -119,8 +123,9 @@ function stub(config, pckgPromise) {
                             "loader": require.resolve("imports-loader") + "?this=>window"
                         },
                         {
+                            "include": libDir,
                             "test": function (filename) {
-                                return _.startsWith(filename, config.baseDir) && _.endsWith(filename, ".js");
+                                return _.endsWith(filename, ".js");
                             },
                             "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
                                 "blacklist": [
@@ -129,8 +134,9 @@ function stub(config, pckgPromise) {
                             }))
                         },
                         {
+                            "include": libDir,
                             "test": function (filename) {
-                                return _.startsWith(filename, config.baseDir) && _.endsWith(filename, ".jsx");
+                                return _.endsWith(filename, ".jsx");
                             },
                             "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
                                 "optional": [
@@ -138,7 +144,8 @@ function stub(config, pckgPromise) {
                                 ]
                             }))
                         }
-                    ]
+                    ],
+                    "noParse": /node_modules/
                 },
                 "output": {
                     "filename": pckg.name + ".[name].min.js",
@@ -146,7 +153,9 @@ function stub(config, pckgPromise) {
                 },
                 "plugins": [
                     new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
-                    new webpack.optimize.CommonsChunkPlugin(pckg.name + ".common.min.js")
+                    new webpack.optimize.CommonsChunkPlugin({
+                        "filename": pckg.name + ".common.min.js"
+                    })
                 ],
                 "resolve": {
                     "alias": normalizeAliasPaths(config, pckg),
