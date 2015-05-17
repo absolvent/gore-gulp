@@ -179,14 +179,9 @@ function setup(variant) {
             "notExpectFiles": []
         },
         {
-            "expectFiles": [
-                "test-library-10.common.min.js",
-                "test-library-10.common.min.js.map",
-                "test-library-10.index.min.js",
-                "test-library-10.index.min.js.map"
-            ],
+            "expectFiles": [],
             "fixture": "test-library-10",
-            "name": "'react' is the special case for 'provide' library",
+            "name": "karma runner library",
             "notExpectFiles": []
         },
         {
