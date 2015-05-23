@@ -11,16 +11,32 @@
 /*global describe: false, it: false */
 
 var path = require("path"),
+    _ = require("lodash"),
     gg = require(path.resolve(__dirname, "..", "..", "index")),
     Gulp = require("gulp").Gulp;
 
 describe("karma", function () {
-    it("starts karma server", function (done) {
-        gg(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-10"))
-            .plugins["karma.server"].task(new Gulp())()
-            .then(function () {
-                done();
-            })
-            .catch(done);
+    it("starts karma server and runs tests", function (done) {
+        var gulpInstance = new Gulp();
+
+        gg({
+            "baseDir": path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-10"),
+            "override": function (pckg) {
+                return _.merge(pckg, {
+                    "config": {
+                        "isSilent": true
+                    }
+                });
+            }
+        }).setup(gulpInstance);
+
+        gulpInstance.on("err", function (err) {
+            done(err.err);
+        });
+        gulpInstance.on("stop", function () {
+            done();
+        });
+
+        gulpInstance.start("karma");
     });
 });

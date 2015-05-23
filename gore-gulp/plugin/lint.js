@@ -14,6 +14,7 @@ var path = require("path"),
     eslint = require("gulp-eslint"),
     fs = require("fs"),
     gulpif = require("gulp-if"),
+    isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
     Promise = require("bluebird");
 
 function awaitEslintrc(config) {
@@ -70,7 +71,7 @@ module.exports = function (config, pckgPromise, gulp) {
                             ],
                             "useEslintrc": false
                         }))
-                        .pipe(gulpif(!pckg.config.isSilent, eslint.format()))
+                        .pipe(gulpif(!isSilent(pckg), eslint.format()))
                         .pipe(eslint.failAfterError())
                         // force data to flow by reading from pipe
                         .on("data", _.noop)

@@ -8,12 +8,21 @@
 
 "use strict";
 
-var Promise = require("bluebird");
+var karma = require("karma"),
+    Promise = require("bluebird");
 
 module.exports = function () {
     return function () {
-        return new Promise(function (resolve) {
-            resolve();
+        return new Promise(function (resolve, reject) {
+            karma.runner.run({
+                "port": 9876
+            }, function (exitCode) {
+                if (0 === exitCode) {
+                    resolve();
+                } else {
+                    reject(new Error("Karma runner has exited with non-zero exit code: " + exitCode));
+                }
+            });
         });
     };
 };

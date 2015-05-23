@@ -19,6 +19,7 @@
         "lodash": "3.x",
         "mocha": "2.x",
         "mustache": "2.x",
+        "portscanner": "1.x",
         "sinon": "1.x",
         "sinon-chai": "2.x",
         "tmp": "0.x",

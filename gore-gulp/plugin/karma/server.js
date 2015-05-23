@@ -90,7 +90,7 @@ module.exports = function (config) {
                         if (0 === exitCode) {
                             resolve();
                         } else {
-                            reject(new Error("Karma has exited with non-zero exit code: " + exitCode));
+                            reject(new Error("Karma server has exited with non-zero exit code: " + exitCode));
                         }
                     });
                 });

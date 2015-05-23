@@ -79,13 +79,6 @@ module.exports = function (config) {
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         })
-        .then(function (parsedPckg) {
-            return _.merge({
-                "config": {
-                    "isSilent": false
-                }
-            }, parsedPckg);
-        })
         .then(config.override);
 
     function plugin(definition) {
@@ -105,6 +98,11 @@ module.exports = function (config) {
         }
     };
 
+    plugin({
+        "dependencies": [],
+        "factory": karma.karma,
+        "name": "karma"
+    });
     plugin({
         "dependencies": [],
         "factory": karma.runner,

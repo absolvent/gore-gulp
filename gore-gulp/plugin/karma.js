@@ -9,10 +9,12 @@
 "use strict";
 
 var path = require("path"),
+    karma = require(path.resolve(__dirname, "karma", "karma")),
     runner = require(path.resolve(__dirname, "karma", "runner")),
     server = require(path.resolve(__dirname, "karma", "server"));
 
 module.exports = {
+    "karma": karma,
     "runner": runner,
     "server": server
 };

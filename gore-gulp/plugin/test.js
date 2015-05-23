@@ -10,23 +10,14 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    assert = require("chai").assert,
-    defaults = require(path.join(__dirname, "..", "defaults")),
+    defaults = require(path.resolve(__dirname, "..", "defaults")),
+    detectTestFileExtensionPrefix = require(path.resolve(__dirname, "..", "pckg", "detectTestFileExtensionPrefix")),
+    isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
     mocha = require("gulp-mocha"),
     Promise = require("bluebird");
 
-function detectTestFileExtensionPrefix(pckg) {
-    if (pckg.config && pckg.config.testFileExtensionPrefix) {
-        assert.isString(pckg.config.testFileExtensionPrefix);
-
-        return pckg.config.testFileExtensionPrefix;
-    }
-
-    return ".test";
-}
-
 function selectReporter(pckg) {
-    if (pckg.config.isSilent) {
+    if (isSilent(pckg)) {
         return _.noop;
     }
 
