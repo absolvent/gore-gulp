@@ -8,10 +8,8 @@
 
 "use strict";
 
-import {assert} from "chai";
-
 describe("test", function () {
-    it("should run in karma environment only", function () {
-        assert.ok(true);
+    it("should run in karma environment only", done => {
+        done();
     });
 });

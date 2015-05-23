@@ -8,41 +8,15 @@
 
 "use strict";
 
-var baseBabelConfig,
-    path = require("path"),
+var path = require("path"),
     _ = require("lodash"),
-    development = require(path.resolve(__dirname, "webpack", "development")),
+    development = require(path.resolve(__dirname, "..", "webpack", "config", "development")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
-    production = require(path.resolve(__dirname, "webpack", "production")),
+    production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
     Promise = require("bluebird"),
     promisifiedGlob = Promise.promisify(require("glob")),
-    querystring = require("querystring"),
-    reactNative = require(path.resolve(__dirname, "webpack", "react-native")),
     webpack = require("webpack");
-
-baseBabelConfig = {
-    "loose": [
-        "es6.modules",
-        "es6.properties.computed",
-        "es6.templateLiterals"
-    ],
-    "optional": [
-        "es3.runtime",
-        "minification.inlineExpressions",
-        "runtime",
-        "utility.deadCodeElimination",
-        "utility.inlineEnvironmentVariables"
-    ]
-};
-
-function normalizeAliasPaths(config, pckg) {
-    var alias = {};
-
-    alias[pckg.name] = path.resolve(config.baseDir, pckg.directories.lib);
-
-    return _.merge(alias, pckg.alias);
-}
 
 function normalizeEntries(config, pckg, entries) {
     var i,
@@ -75,14 +49,6 @@ function normalizeEntry(config, pckg, entry, fileExtensions) {
     return entry;
 }
 
-function normalizeProvidePaths(providePaths) {
-    if (!providePaths) {
-        return {};
-    }
-
-    return providePaths;
-}
-
 function run(config) {
     return new Promise(function (resolve, reject) {
         webpack(config, function (err) {
@@ -95,88 +61,30 @@ function run(config) {
     });
 }
 
-function stub(config, pckgPromise) {
-
-    return pckgPromise.then(function (pckg) {
-            var libDir = path.resolve(config.baseDir, pckg.directories.lib);
-
-            return promisifiedGlob(path.resolve(libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)))
-                .then(function (entries) {
-                    return [
-                        normalizeEntries(config, pckg, entries),
-                        pckg,
-                        libDir
-                    ];
-                });
-        })
-        .spread(function (entries, pckg, libDir) {
-            return {
-                "bail": true,
-                "entry": entries,
-                "externals": pckg.externals,
-                "module": {
-                    "loaders": [
-                        {
-                            // bower components usually expect to run in browser
-                            // environment and sometimes assume that global 'this'
-                            // is always the Window object which is a mistake
-                            "test": /bower_components/,
-                            "loader": require.resolve("imports-loader") + "?this=>window"
-                        },
-                        // {
-                        //     "include": libDir,
-                        //     "test": function (filename) {
-                        //         return _.endsWith(filename, ".js");
-                        //     },
-                        //     "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
-                        //         "blacklist": [
-                        //             "react"
-                        //         ]
-                        //     }))
-                        // },
-                        {
-                            "include": libDir,
-                            "test": /\.jsx?$/,
-                            // "test": function (filename) {
-                            //     return _.endsWith(filename, ".jsx");
-                            // },
-                            "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
-                                "optional": [
-                                    "validation.react"
-                                ]
-                            }))
-                        }
-                    ]
-                },
-                "output": {
-                    "filename": pckg.name + ".[name].min.js",
-                    "path": path.resolve(config.baseDir, pckg.directories.dist)
-                },
-                "plugins": [
-                    new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
-                    new webpack.optimize.CommonsChunkPlugin({
-                        "filename": pckg.name + ".common.min.js"
-                    })
-                ],
-                "resolve": {
-                    "alias": normalizeAliasPaths(config, pckg),
-                    "extensions": ecmaScriptFileExtensions(pckg),
-                    "root": config.baseDir
-                }
-            };
-        });
-}
-
 function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
-            return stub(config, pckgPromise).then(variant).then(run);
+            return pckgPromise.then(function (pckg) {
+                    var libDir = path.resolve(config.baseDir, pckg.directories.lib);
+
+                    return promisifiedGlob(path.resolve(libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)))
+                        .then(function (entries) {
+                            return [
+                                pckg,
+                                libDir,
+                                normalizeEntries(config, pckg, entries)
+                            ];
+                        });
+                })
+                .spread(function (pckg, libDir, entries) {
+                    return variant(config, pckg, libDir, entries);
+                })
+                .then(run);
         };
     };
 }
 
 module.exports = {
     "development": setupVariant(development),
-    "production": setupVariant(production),
-    "reactNative": setupVariant(reactNative)
+    "production": setupVariant(production)
 };

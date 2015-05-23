@@ -70,7 +70,9 @@ module.exports = function (config, pckgPromise) {
                             preprocessorPath
                         ],
                         "frameworks": [
-                            "mocha"
+                            "chai",
+                            "mocha",
+                            "sinon"
                         ],
                         "preprocessors": preprocessors,
                         "reporters": [
@@ -83,7 +85,7 @@ module.exports = function (config, pckgPromise) {
                                 "loaders": [
                                     {
                                         "loader": "babel-loader",
-                                        "test": /\.js$/
+                                        "test": /\.jsx?$/
                                     }
                                 ]
                             }

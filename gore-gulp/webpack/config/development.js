@@ -8,10 +8,12 @@
 
 "use strict";
 
-var _ = require("lodash");
+var _ = require("lodash"),
+    path = require("path"),
+    web = require(path.resolve(__dirname, "web"));
 
-function development(config) {
-    return _.merge(config, {
+function development(config, pckg, libDir, entries) {
+    return _.merge(web(config, pckg, libDir, entries), {
         "debug": true,
         "devtool": "cheap-source-map"
     });

@@ -9,10 +9,12 @@
 "use strict";
 
 var _ = require("lodash"),
+    path = require("path"),
+    web = require(path.resolve(__dirname, "web")),
     webpack = require("webpack");
 
-function production(config) {
-    return _.merge(config, {
+function production(config, pckg, libDir, entries) {
+    return _.merge(web(config, pckg, libDir, entries), {
         "debug": false,
         "devtool": "source-map",
         "plugins": [

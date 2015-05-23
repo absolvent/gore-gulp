@@ -73,7 +73,9 @@ function runDirectory(baseDir, variant) {
     }).setup(gulpInstance);
 
     return new Promise(function (resolve, reject) {
-        gulpInstance.on("err", reject);
+        gulpInstance.on("err", function (err) {
+            reject(err.err);
+        });
         gulpInstance.on("stop", resolve);
 
         gulpInstance.start(variant);
