@@ -8,10 +8,12 @@
 
 "use strict";
 
-var path = require("path"),
+var _ = require("lodash"),
+    path = require("path"),
     ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp")),
     fs = require("fs"),
     karma = require("karma"),
+    karmaWebpackConfig = require(path.resolve(__dirname, "..", "..", "webpack", "config", "karma")),
     mustache = require("mustache"),
     Promise = require("bluebird"),
     tmp = require("tmp"),
@@ -34,30 +36,34 @@ function awaitPreprocessorCode(config, pckg) {
 
 module.exports = function (config, pckgPromise) {
     return function () {
-        var cleanupCallback,
-            initPromises = [
-                pckgPromise.then(function (pckg) {
-                    return awaitPreprocessorCode(config, pckg);
-                }),
-                promisifiedTmpFile({
+        var cleanupCallback;
+
+        return Promise.props({
+                "pckg": pckgPromise,
+                "tmpfile": promisifiedTmpFile({
                     "postfix": ".js"
                 })
-            ];
-
-        return Promise.all(initPromises)
-            .spread(function (preprocessorCode, tmpfile) {
-                cleanupCallback = tmpfile[2];
-
-                return promisifiedWriteFile(tmpfile[0], preprocessorCode)
-                    .then(function () {
-                        return tmpfile[0];
-                    });
             })
-            .then(function (preprocessorPath) {
+            .then(function (results) {
+                return Promise.props(_.merge(results, {
+                    "preprocessorCode": awaitPreprocessorCode(config, results.pckg)
+                }));
+            })
+            .then(function (results) {
+                cleanupCallback = results.tmpfile[2];
+
+                return Promise.props(_.merge(results, {
+                    "preprocessorPath": promisifiedWriteFile(results.tmpfile[0], results.preprocessorCode)
+                        .then(function () {
+                            return results.tmpfile[0];
+                        })
+                }));
+            })
+            .then(function (results) {
                 return new Promise(function (resolve, reject) {
                     var preprocessors = {};
 
-                    preprocessors[preprocessorPath] = [
+                    preprocessors[results.preprocessorPath] = [
                         "sourcemap",
                         "webpack"
                     ];
@@ -67,7 +73,7 @@ module.exports = function (config, pckgPromise) {
                             "PhantomJS"
                         ],
                         "files": [
-                            preprocessorPath
+                            results.preprocessorPath
                         ],
                         "frameworks": [
                             "chai",
@@ -79,17 +85,7 @@ module.exports = function (config, pckgPromise) {
                             "dots"
                         ],
                         "singleRun": true,
-                        "webpack": {
-                            "devtool": "inline-source-map",
-                            "module": {
-                                "loaders": [
-                                    {
-                                        "loader": "babel-loader",
-                                        "test": /\.jsx?$/
-                                    }
-                                ]
-                            }
-                        },
+                        "webpack": karmaWebpackConfig({}, config, results.pckg),
                         "webpackServer": {
                             "noInfo": true
                         }

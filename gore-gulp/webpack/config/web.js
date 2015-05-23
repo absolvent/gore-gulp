@@ -13,8 +13,8 @@ var _ = require("lodash"),
     babel = require(path.resolve(__dirname, "babel")),
     webpack = require("webpack");
 
-function web(config, pckg, libDir, entries) {
-    return _.merge(babel(config, pckg, libDir, entries), {
+function web(webpackConfig, config, pckg, entries) {
+    return _.merge(babel(webpackConfig, config, pckg), {
         "entry": entries,
         "output": {
             "filename": pckg.name + ".[name].min.js",

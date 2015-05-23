@@ -10,27 +10,14 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    baseBabelConfig,
+    detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
     querystring = require("querystring");
 
-baseBabelConfig = {
-    "loose": [
-        "es6.modules",
-        "es6.properties.computed",
-        "es6.templateLiterals"
-    ],
-    "optional": [
-        "es3.runtime",
-        "minification.inlineExpressions",
-        "runtime",
-        "utility.deadCodeElimination",
-        "utility.inlineEnvironmentVariables"
-    ]
-};
+function babel(webpackConfig, config, pckg) {
+    var libDir = detectLibDir(pckg, config);
 
-function babel(config, pckg, libDir) {
-    return _.merge(config, {
+    return _.merge(webpackConfig, {
         "bail": true,
         "externals": pckg.externals,
         "module": {
@@ -45,26 +32,36 @@ function babel(config, pckg, libDir) {
                 {
                     "include": libDir,
                     "test": /\.jsx?$/,
-                    "loader": require.resolve("babel-loader") + "?" + querystring.stringify(_.merge(baseBabelConfig, {
+                    "loader": require.resolve("babel-loader") + "?" + querystring.stringify({
+                        "loose": [
+                            "es6.modules",
+                            "es6.properties.computed",
+                            "es6.templateLiterals"
+                        ],
                         "optional": [
+                            "es3.runtime",
+                            "minification.inlineExpressions",
+                            "runtime",
+                            "utility.deadCodeElimination",
+                            "utility.inlineEnvironmentVariables",
                             "validation.react"
                         ]
-                    }))
+                    })
                 }
             ]
         },
         "resolve": {
-            "alias": normalizeAliasPaths(config, pckg),
+            "alias": normalizeAliasPaths(webpackConfig, config, pckg, libDir),
             "extensions": ecmaScriptFileExtensions(pckg),
             "root": config.baseDir
         }
     });
 }
 
-function normalizeAliasPaths(config, pckg) {
+function normalizeAliasPaths(webpackConfig, config, pckg, libDir) {
     var alias = {};
 
-    alias[pckg.name] = path.resolve(config.baseDir, pckg.directories.lib);
+    alias[pckg.name] = libDir;
 
     return _.merge(alias, pckg.alias);
 }

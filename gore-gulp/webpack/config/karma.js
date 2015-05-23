@@ -8,8 +8,14 @@
 
 "use strict";
 
-function karma(config) {
-    return config;
+var _ = require("lodash"),
+    path = require("path"),
+    babel = require(path.resolve(__dirname, "babel"));
+
+function karma(webpackConfig, config, pckg) {
+    return _.merge(babel(webpackConfig, config, pckg), {
+        "devtool": "inline-source-map"
+    });
 }
 
 module.exports = karma;

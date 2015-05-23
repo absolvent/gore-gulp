@@ -13,8 +13,8 @@ var _ = require("lodash"),
     web = require(path.resolve(__dirname, "web")),
     webpack = require("webpack");
 
-function production(config, pckg, libDir, entries) {
-    return _.merge(web(config, pckg, libDir, entries), {
+function production(webpackConfig, config, pckg, entries) {
+    return _.merge(web(webpackConfig, config, pckg, entries), {
         "debug": false,
         "devtool": "source-map",
         "plugins": [
