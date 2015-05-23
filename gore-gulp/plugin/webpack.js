@@ -11,8 +11,9 @@
 var baseBabelConfig,
     path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.resolve(__dirname, "..", "defaults")),
     development = require(path.resolve(__dirname, "webpack", "development")),
+    ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
+    ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     production = require(path.resolve(__dirname, "webpack", "production")),
     Promise = require("bluebird"),
     promisifiedGlob = Promise.promisify(require("glob")),
@@ -48,7 +49,7 @@ function normalizeEntries(config, pckg, entries) {
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
-        ret[normalizeEntry(config, pckg, entries[i], defaults.ecmaScriptFileExtensions)] = entries[i];
+        ret[normalizeEntry(config, pckg, entries[i], ecmaScriptFileExtensions(pckg))] = entries[i];
     }
 
     return ret;
@@ -99,7 +100,7 @@ function stub(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
             var libDir = path.resolve(config.baseDir, pckg.directories.lib);
 
-            return promisifiedGlob(path.resolve(libDir, "**", "*.entry" + defaults.ecmaScriptFileExtensionsGlobPattern))
+            return promisifiedGlob(path.resolve(libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)))
                 .then(function (entries) {
                     return [
                         normalizeEntries(config, pckg, entries),
@@ -159,7 +160,7 @@ function stub(config, pckgPromise) {
                 ],
                 "resolve": {
                     "alias": normalizeAliasPaths(config, pckg),
-                    "extensions": defaults.ecmaScriptFileExtensions,
+                    "extensions": ecmaScriptFileExtensions(pckg),
                     "root": config.baseDir
                 }
             };

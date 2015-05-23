@@ -10,7 +10,6 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.resolve(__dirname, "..", "defaults")),
     detectTestFileExtensionPrefix = require(path.resolve(__dirname, "..", "pckg", "detectTestFileExtensionPrefix")),
     isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
     mocha = require("gulp-mocha"),
@@ -30,7 +29,7 @@ module.exports = function (config, pckgPromise, gulp) {
             var globPattern,
                 testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
 
-            globPattern = path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + defaults.ecmaScriptFileExtensionsGlobPattern);
+            globPattern = path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + ".js");
 
             return new Promise(function (resolve, reject) {
                 gulp.src(globPattern)

@@ -10,7 +10,7 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    defaults = require(path.resolve(__dirname, "..", "defaults")),
+    ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     eslint = require("gulp-eslint"),
     fs = require("fs"),
     gulpif = require("gulp-if"),
@@ -41,7 +41,7 @@ function awaitEslintrc(config) {
 function awaitGlobPattern(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
         return [
-            path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + defaults.ecmaScriptFileExtensionsGlobPattern),
+            path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + ecmaScriptFileExtensionsGlobPattern(pckg)),
             "!" + path.resolve(config.baseDir, pckg.directories.lib, "**", "__fixtures__", "**", "*")
         ];
     });

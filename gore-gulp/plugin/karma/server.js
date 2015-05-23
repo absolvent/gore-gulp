@@ -9,7 +9,7 @@
 "use strict";
 
 var path = require("path"),
-    defaults = require(path.resolve(__dirname, "..", "..", "defaults")),
+    ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp")),
     fs = require("fs"),
     karma = require("karma"),
     mustache = require("mustache"),
@@ -19,7 +19,7 @@ var path = require("path"),
     promisifiedTmpFile = Promise.promisify(tmp.file),
     promisifiedWriteFile = Promise.promisify(fs.writeFile);
 
-function awaitPreprocessorCode(config) {
+function awaitPreprocessorCode(config, pckg) {
     return promisifiedReadFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"))
         .then(function (preprocessorTemplateBuffer) {
             return preprocessorTemplateBuffer.toString();
@@ -27,16 +27,18 @@ function awaitPreprocessorCode(config) {
         .then(function (preprocessorTemplate) {
             return mustache.render(preprocessorTemplate, {
                 "config": config,
-                "defaults": defaults
+                "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg)
             });
         });
 }
 
-module.exports = function (config) {
+module.exports = function (config, pckgPromise) {
     return function () {
         var cleanupCallback,
             initPromises = [
-                awaitPreprocessorCode(config),
+                pckgPromise.then(function (pckg) {
+                    return awaitPreprocessorCode(config, pckg);
+                }),
                 promisifiedTmpFile({
                     "postfix": ".js"
                 })
@@ -61,6 +63,9 @@ module.exports = function (config) {
                     ];
 
                     karma.server.start({
+                        "browsers": [
+                            "PhantomJS"
+                        ],
                         "files": [
                             preprocessorPath
                         ],

@@ -15,7 +15,6 @@ var path = require("path"),
     Promise = require("bluebird"),
     _ = require("lodash"),
     assert = require("chai").assert,
-    defaults = require(path.resolve(__dirname, "..", "..", "..", "defaults")),
     fixtureDir = path.resolve(__dirname, "..", "..", "..", "__fixtures__"),
     fs = require("fs"),
     gg = require(path.resolve(__dirname, "..", "..", "..", "index")),
@@ -95,7 +94,7 @@ function setup(variant) {
                 "test-library-1.test.min.js.map"
             ],
             "fixture": "test-library-1",
-            "name": "generates output using .entry." + defaults.ecmaScriptFileExtensionsGlobPattern + " files",
+            "name": "generates output using .entry files",
             "notExpectFiles": []
         },
         {

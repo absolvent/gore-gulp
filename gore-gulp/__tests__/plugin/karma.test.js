@@ -16,6 +16,8 @@ var path = require("path"),
     Gulp = require("gulp").Gulp;
 
 describe("karma", function () {
+    this.timeout(30000);
+
     it("starts karma server and runs tests", function (done) {
         var gulpInstance = new Gulp();
 

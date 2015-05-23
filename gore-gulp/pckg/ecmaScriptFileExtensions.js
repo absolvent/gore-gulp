@@ -8,6 +8,16 @@
 
 "use strict";
 
-var context = require.context("{{&config.baseDir}}", true, {{&ecmaScriptTestFileExtensionsRegExp}});
+var ecmaScriptFileExtensionsList = [
+    "",
+    ".coffee",
+    ".js",
+    ".jsx",
+    ".min.js"
+];
 
-context.keys().forEach(context);
+function ecmaScriptFileExtensions() {
+    return ecmaScriptFileExtensionsList;
+}
+
+module.exports = ecmaScriptFileExtensions;

@@ -25,6 +25,9 @@
         "tmp": "0.x",
         "webpack": "1.x"
     },
+    "devDependencies": {
+        "karma-phantomjs-launcher": "0.x"
+    },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "directories": {
         "example": "example",
