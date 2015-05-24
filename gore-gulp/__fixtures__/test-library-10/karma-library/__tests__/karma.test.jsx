@@ -8,8 +8,14 @@
 
 "use strict";
 
+import {assert} from "chai";
+import Foo from "karma-library/React/Foo";
+import React from "react/addons";
+
 describe("test", function () {
-    it("should run in karma environment only", done => {
-        done();
+    it("should run in karma environment only", function () {
+        var foo = React.addons.TestUtils.renderIntoDocument(<Foo />);
+
+        assert.strictEqual(React.findDOMNode(foo).textContent, ":)");
     });
 });

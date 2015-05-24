@@ -12,22 +12,20 @@
         "gulp-mocha": "2.x",
         "imports-loader": "0.x",
         "karma": "0.x",
-        "karma-chai": "0.x",
         "karma-mocha": "0.x",
-        "karma-sinon": "1.x",
         "karma-sourcemap-loader": "0.x",
         "karma-webpack": "1.x",
         "lodash": "3.x",
         "mocha": "2.x",
         "mustache": "2.x",
-        "portscanner": "1.x",
         "sinon": "1.x",
         "sinon-chai": "2.x",
         "tmp": "0.x",
         "webpack": "1.x"
     },
     "devDependencies": {
-        "karma-phantomjs-launcher": "0.x"
+        "karma-phantomjs-launcher": "0.x",
+        "react": "0.x"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "directories": {

@@ -73,12 +73,11 @@ module.exports = function (config, pckgPromise) {
                             "PhantomJS"
                         ],
                         "files": [
+                            require.resolve("babel-core/browser-polyfill"),
                             results.preprocessorPath
                         ],
                         "frameworks": [
-                            "chai",
-                            "mocha",
-                            "sinon"
+                            "mocha"
                         ],
                         "preprocessors": preprocessors,
                         "reporters": [
