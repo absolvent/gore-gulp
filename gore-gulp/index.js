@@ -106,12 +106,12 @@ module.exports = function (config) {
     plugin({
         "dependencies": [],
         "factory": karma.runner,
-        "name": "karma.runner"
+        "name": "run"
     });
     plugin({
         "dependencies": [],
         "factory": karma.server,
-        "name": "karma.server"
+        "name": "grabber"
     });
     plugin({
         "dependencies": [],
@@ -119,23 +119,17 @@ module.exports = function (config) {
         "name": "lint"
     });
     plugin({
-        "dependencies": [
-            "lint"
-        ],
+        "dependencies": [],
         "factory": test,
         "name": "test"
     });
     plugin({
-        "dependencies": [
-            "lint"
-        ],
+        "dependencies": [],
         "factory": webpack.development,
         "name": "webpack.development"
     });
     plugin({
-        "dependencies": [
-            "lint"
-        ],
+        "dependencies": [],
         "factory": webpack.production,
         "name": "webpack.production"
     });
