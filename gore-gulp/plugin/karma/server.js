@@ -10,7 +10,7 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
+    ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp")),
     fs = require("fs"),
     karma = require("karma"),
     karmaWebpackConfig = require(path.resolve(__dirname, "..", "..", "webpack", "config", "karma")),
@@ -29,16 +29,9 @@ function awaitPreprocessorCode(config, pckg) {
         .then(function (preprocessorTemplate) {
             return mustache.render(preprocessorTemplate, {
                 "config": config,
-                "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg)
+                "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg, ".karma")
             });
         });
-}
-
-function ecmaScriptTestFileExtensionsRegExp(pckg) {
-    var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),
-        notEmptyExtensions = _.filter(ecmaScriptFileExtensionsList);
-
-    return new RegExp(".*" + _.escapeRegExp(".karma") + "(" + notEmptyExtensions.join("|") + ")" + "$");
 }
 
 module.exports = function (config, pckgPromise) {
