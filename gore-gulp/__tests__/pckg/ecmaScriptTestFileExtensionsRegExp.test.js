@@ -15,15 +15,13 @@ var assert = require("chai").assert,
     ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp"));
 
 describe("pckg/ecmaScriptTestFileExtensionsRegExp", function () {
-    it("should match karma files", function () {
-        var regExp = ecmaScriptTestFileExtensionsRegExp({}, ".karma");
+    var regExp = ecmaScriptTestFileExtensionsRegExp({}, ".karma");
 
+    it("should match karma files", function () {
         assert.ok(regExp.test("foo.karma.jsx"));
     });
 
     it("should not match fixtures", function () {
-        var regExp = ecmaScriptTestFileExtensionsRegExp({}, ".karma");
-
         assert.notOk(regExp.test("__fixtures__/foo.karma.jsx"));
     });
 });
