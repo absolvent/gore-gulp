@@ -10,7 +10,7 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp")),
+    ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
     fs = require("fs"),
     karma = require("karma"),
     karmaWebpackConfig = require(path.resolve(__dirname, "..", "..", "webpack", "config", "karma")),
@@ -32,6 +32,13 @@ function awaitPreprocessorCode(config, pckg) {
                 "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg)
             });
         });
+}
+
+function ecmaScriptTestFileExtensionsRegExp(pckg) {
+    var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),
+        notEmptyExtensions = _.filter(ecmaScriptFileExtensionsList);
+
+    return new RegExp(".*" + _.escapeRegExp(".karma") + "(" + notEmptyExtensions.join("|") + ")" + "$");
 }
 
 module.exports = function (config, pckgPromise) {
