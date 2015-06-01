@@ -50,5 +50,5 @@
         "preinstall": "npm i --ignore-scripts babel-eslint@3.x eslint@0.21.0 eslint-plugin-react@2.x gulp-eslint@0.x",
         "test": "gulp test"
     },
-    "version": "0.5.5"
+    "version": "0.5.6"
 }

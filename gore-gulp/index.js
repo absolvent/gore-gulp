@@ -160,5 +160,13 @@ module.exports = function (config) {
         "name": "default"
     });
 
+    plugin({
+        "dependencies": [
+            "webpack.production"
+        ],
+        "factory": _.noop,
+        "name": "heroku:production"
+    });
+
     return ret;
 };
