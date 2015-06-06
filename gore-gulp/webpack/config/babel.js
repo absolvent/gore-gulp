@@ -42,12 +42,12 @@ function babel(webpackConfig, config, pckg) {
                             // environment and sometimes assume that global 'this'
                             // is always the Window object which is a mistake
                             "test": /bower_components/,
-                            "loader": _.first(results["imports-loader"]) + "?this=>window"
+                            "loader": results["imports-loader"] + "?this=>window"
                         },
                         {
                             "include": libDir,
                             "test": /\.jsx?$/,
-                            "loader": _.first(results["babel-loader"]),
+                            "loader": results["babel-loader"],
                             "query": {
                                 "loose": [
                                     "es6.modules",

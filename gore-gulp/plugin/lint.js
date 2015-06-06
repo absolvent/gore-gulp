@@ -62,7 +62,7 @@ module.exports = function (config, pckgPromise, gulp) {
     return function () {
         return Promise.all(initPromises)
             .spread(function (eslintrc, globPattern, pckg, eslint) {
-                eslint = require(_.first(eslint));
+                eslint = require(eslint);
 
                 return new Promise(function (resolve, reject) {
                     gulp.src(globPattern)
