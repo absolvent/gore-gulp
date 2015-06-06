@@ -157,6 +157,14 @@ module.exports = function (config) {
             "webpack"
         ],
         "factory": _.noop,
+        "name": "build"
+    });
+
+    plugin({
+        "dependencies": [
+            "webpack"
+        ],
+        "factory": _.noop,
         "name": "default"
     });
 
