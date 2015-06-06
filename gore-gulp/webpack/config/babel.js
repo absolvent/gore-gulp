@@ -19,7 +19,7 @@ var _ = require("lodash"),
 function promisifiedResolve(config, name) {
     return Promise.fromNode(function (cb) {
         resolve(name, {
-            "basedir": config.baseDir
+            "basedir": __dirname
         }, cb);
     });
 }
@@ -55,7 +55,6 @@ function babel(webpackConfig, config, pckg) {
                                     "es6.templateLiterals"
                                 ],
                                 "optional": [
-                                    "runtime",
                                     "utility.inlineEnvironmentVariables",
                                     "validation.react"
                                 ]

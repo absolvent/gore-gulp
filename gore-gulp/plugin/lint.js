@@ -54,7 +54,7 @@ function normalizeGlobals(pckg) {
 function promisifiedResolve(config, name) {
     return Promise.fromNode(function (cb) {
         resolve(name, {
-            "basedir": config.baseDir
+            "basedir": __dirname
         }, cb);
     });
 }
