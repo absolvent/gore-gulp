@@ -13,9 +13,12 @@ var _ = require("lodash"),
     babel = require(path.resolve(__dirname, "babel"));
 
 function karma(webpackConfig, config, pckg) {
-    return _.merge(babel(webpackConfig, config, pckg), {
-        "devtool": "inline-source-map"
-    });
+    return babel(webpackConfig, config, pckg)
+        .then(function (babelConfig) {
+            return _.merge(babelConfig, {
+                "devtool": "inline-source-map"
+            });
+        });
 }
 
 module.exports = karma;

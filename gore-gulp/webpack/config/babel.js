@@ -8,57 +8,68 @@
 
 "use strict";
 
-// babel-eslint@3.x
-// eslint@0.21.0
-// eslint-plugin-react@2.x
-// gulp-eslint@0.x
-
 var _ = require("lodash"),
     path = require("path"),
     detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
+    Promise = require("bluebird"),
+    resolve = require("resolve"),
     querystring = require("querystring");
+
+function promisifiedResolve(config, name) {
+    return Promise.fromNode(function (cb) {
+        resolve(name, {
+            "basedir": config.baseDir
+        }, cb);
+    });
+}
 
 function babel(webpackConfig, config, pckg) {
     var libDir = detectLibDir(pckg, config);
 
-    return _.merge(webpackConfig, {
-        "bail": true,
-        "externals": pckg.externals,
-        "module": {
-            "loaders": [
-                {
-                    // bower components usually expect to run in browser
-                    // environment and sometimes assume that global 'this'
-                    // is always the Window object which is a mistake
-                    "test": /bower_components/,
-                    "loader": require.resolve("imports-loader") + "?this=>window"
+    return Promise.props({
+            "babel-loader": promisifiedResolve(config, "babel-loader"),
+            "imports-loader": promisifiedResolve(config, "imports-loader")
+        })
+        .then(function (results) {
+            return _.merge(webpackConfig, {
+                "bail": true,
+                "externals": pckg.externals,
+                "module": {
+                    "loaders": [
+                        {
+                            // bower components usually expect to run in browser
+                            // environment and sometimes assume that global 'this'
+                            // is always the Window object which is a mistake
+                            "test": /bower_components/,
+                            "loader": _.first(results["imports-loader"]) + "?this=>window"
+                        },
+                        {
+                            "include": libDir,
+                            "test": /\.jsx?$/,
+                            "loader": _.first(results["babel-loader"]),
+                            "query": {
+                                "loose": [
+                                    "es6.modules",
+                                    "es6.properties.computed",
+                                    "es6.templateLiterals"
+                                ],
+                                "optional": [
+                                    "runtime",
+                                    "utility.inlineEnvironmentVariables",
+                                    "validation.react"
+                                ]
+                            }
+                        }
+                    ]
                 },
-                {
-                    "include": libDir,
-                    "test": /\.jsx?$/,
-                    "loader": require.resolve("babel-loader"),
-                    "query": {
-                        "loose": [
-                            "es6.modules",
-                            "es6.properties.computed",
-                            "es6.templateLiterals"
-                        ],
-                        "optional": [
-                            "runtime",
-                            "utility.inlineEnvironmentVariables",
-                            "validation.react"
-                        ]
-                    }
+                "resolve": {
+                    "alias": normalizeAliasPaths(webpackConfig, config, pckg, libDir),
+                    "extensions": ecmaScriptFileExtensions(pckg),
+                    "root": config.baseDir
                 }
-            ]
-        },
-        "resolve": {
-            "alias": normalizeAliasPaths(webpackConfig, config, pckg, libDir),
-            "extensions": ecmaScriptFileExtensions(pckg),
-            "root": config.baseDir
-        }
-    });
+            });
+        });
 }
 
 function normalizeAliasPaths(webpackConfig, config, pckg, libDir) {

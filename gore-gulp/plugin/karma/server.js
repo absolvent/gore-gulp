@@ -46,7 +46,8 @@ module.exports = function (config, pckgPromise) {
             })
             .then(function (results) {
                 return Promise.props(_.merge(results, {
-                    "preprocessorCode": awaitPreprocessorCode(config, results.pckg)
+                    "preprocessorCode": awaitPreprocessorCode(config, results.pckg),
+                    "webpackConfig": karmaWebpackConfig({}, config, results.pckg)
                 }));
             })
             .then(function (results) {
@@ -84,7 +85,7 @@ module.exports = function (config, pckgPromise) {
                             "dots"
                         ],
                         "singleRun": true,
-                        "webpack": karmaWebpackConfig({}, config, results.pckg),
+                        "webpack": results.webpackConfig,
                         "webpackServer": {
                             "noInfo": true
                         }

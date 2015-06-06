@@ -11,11 +11,11 @@
 var path = require("path"),
     _ = require("lodash"),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
-    eslint = require("gulp-eslint"),
     fs = require("fs"),
     gulpif = require("gulp-if"),
     isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
-    Promise = require("bluebird");
+    Promise = require("bluebird"),
+    resolve = require("resolve");
 
 function awaitEslintrc(config) {
     var bundledEslintrc = path.resolve(__dirname, "..", "..", "eslint", ".eslintrc"),
@@ -51,16 +51,27 @@ function normalizeGlobals(pckg) {
     return _.mapValues(pckg.provide, _.constant(false));
 }
 
+function promisifiedResolve(config, name) {
+    return Promise.fromNode(function (cb) {
+        resolve(name, {
+            "basedir": config.baseDir
+        }, cb);
+    });
+}
+
 module.exports = function (config, pckgPromise, gulp) {
     var initPromises = [
         awaitEslintrc(config),
         awaitGlobPattern(config, pckgPromise),
-        pckgPromise
+        pckgPromise,
+        promisifiedResolve(config, "gulp-eslint")
     ];
 
     return function () {
         return Promise.all(initPromises)
-            .spread(function (eslintrc, globPattern, pckg) {
+            .spread(function (eslintrc, globPattern, pckg, eslint) {
+                eslint = require(_.first(eslint));
+
                 return new Promise(function (resolve, reject) {
                     gulp.src(globPattern)
                         .pipe(eslint({

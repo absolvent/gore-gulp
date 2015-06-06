@@ -14,13 +14,16 @@ var _ = require("lodash"),
     webpack = require("webpack");
 
 function production(webpackConfig, config, pckg, entries) {
-    return _.merge(web(webpackConfig, config, pckg, entries), {
-        "debug": false,
-        "devtool": "source-map",
-        "plugins": [
-            new webpack.optimize.UglifyJsPlugin()
-        ]
-    });
+    return web(webpackConfig, config, pckg, entries)
+        .then(function (webConfig) {
+            return _.merge(webConfig, {
+                "debug": false,
+                "devtool": "source-map",
+                "plugins": [
+                    new webpack.optimize.UglifyJsPlugin()
+                ]
+            });
+        });
 }
 
 module.exports = production;
