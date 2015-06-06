@@ -11,12 +11,19 @@
 var Promise = require("bluebird"),
     resolve = require("resolve");
 
-function findPackage(config, name) {
+function promisifiedResolve(baseDir, name) {
     return Promise.fromNode(function (cb) {
         resolve(name, {
-            "basedir": __dirname
+            "basedir": baseDir
         }, cb);
     });
+}
+
+function findPackage(config, name) {
+    return promisifiedResolve(config.baseDir, name)
+        .catch(function () {
+            return promisifiedResolve(__dirname, name);
+        });
 }
 
 module.exports = findPackage;
