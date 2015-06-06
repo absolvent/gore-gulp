@@ -56,12 +56,13 @@ module.exports = function (config, pckgPromise, gulp) {
         awaitEslintrc(config),
         awaitGlobPattern(config, pckgPromise),
         pckgPromise,
+        findPackage(config, "eslint-plugin-react"),
         findPackage(config, "gulp-eslint")
     ];
 
     return function () {
         return Promise.all(initPromises)
-            .spread(function (eslintrc, globPattern, pckg, eslint) {
+            .spread(function (eslintrc, globPattern, pckg, eslintPluginReact, eslint) {
                 eslint = require(eslint);
 
                 return new Promise(function (resolve, reject) {
@@ -70,7 +71,7 @@ module.exports = function (config, pckgPromise, gulp) {
                             "configFile": eslintrc,
                             "globals": normalizeGlobals(pckg),
                             "plugins": [
-                                "react"
+                                eslintPluginReact
                             ],
                             "useEslintrc": false
                         }))
