@@ -8,6 +8,11 @@
 
 "use strict";
 
+// babel-eslint@3.x
+// eslint@0.21.0
+// eslint-plugin-react@2.x
+// gulp-eslint@0.x
+
 var _ = require("lodash"),
     path = require("path"),
     detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
@@ -32,21 +37,19 @@ function babel(webpackConfig, config, pckg) {
                 {
                     "include": libDir,
                     "test": /\.jsx?$/,
-                    "loader": require.resolve("babel-loader") + "?" + querystring.stringify({
+                    "loader": require.resolve("babel-loader"),
+                    "query": {
                         "loose": [
                             "es6.modules",
                             "es6.properties.computed",
                             "es6.templateLiterals"
                         ],
                         "optional": [
-                            "es3.runtime",
-                            "minification.inlineExpressions",
                             "runtime",
-                            "utility.deadCodeElimination",
                             "utility.inlineEnvironmentVariables",
                             "validation.react"
                         ]
-                    })
+                    }
                 }
             ]
         },
