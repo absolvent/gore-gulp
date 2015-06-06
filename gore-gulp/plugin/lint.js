@@ -11,11 +11,11 @@
 var path = require("path"),
     _ = require("lodash"),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
+    findPackage = require(path.resolve(__dirname, "..", "findPackage")),
     fs = require("fs"),
     gulpif = require("gulp-if"),
     isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
-    Promise = require("bluebird"),
-    resolve = require("resolve");
+    Promise = require("bluebird");
 
 function awaitEslintrc(config) {
     var bundledEslintrc = path.resolve(__dirname, "..", "..", "eslint", ".eslintrc"),
@@ -51,20 +51,12 @@ function normalizeGlobals(pckg) {
     return _.mapValues(pckg.provide, _.constant(false));
 }
 
-function promisifiedResolve(config, name) {
-    return Promise.fromNode(function (cb) {
-        resolve(name, {
-            "basedir": __dirname
-        }, cb);
-    });
-}
-
 module.exports = function (config, pckgPromise, gulp) {
     var initPromises = [
         awaitEslintrc(config),
         awaitGlobPattern(config, pckgPromise),
         pckgPromise,
-        promisifiedResolve(config, "gulp-eslint")
+        findPackage(config, "gulp-eslint")
     ];
 
     return function () {

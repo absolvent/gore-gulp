@@ -12,8 +12,8 @@ var _ = require("lodash"),
     path = require("path"),
     detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
+    findPackage = require(path.resolve(__dirname, "..", "..", "findPackage")),
     Promise = require("bluebird"),
-    resolve = require("resolve"),
     querystring = require("querystring");
 
 function promisifiedResolve(config, name) {
@@ -28,8 +28,8 @@ function babel(webpackConfig, config, pckg) {
     var libDir = detectLibDir(pckg, config);
 
     return Promise.props({
-            "babel-loader": promisifiedResolve(config, "babel-loader"),
-            "imports-loader": promisifiedResolve(config, "imports-loader")
+            "babel-loader": findPackage(config, "babel-loader"),
+            "imports-loader": findPackage(config, "imports-loader")
         })
         .then(function (results) {
             return _.merge(webpackConfig, {
