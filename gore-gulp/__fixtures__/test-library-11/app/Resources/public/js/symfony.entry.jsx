@@ -8,6 +8,8 @@
 
 "use strict";
 
+/*eslint no-unused-vars: 0 */
+
 import React from "react";
 
 class FooElement extends React.Component {

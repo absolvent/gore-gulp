@@ -16,7 +16,6 @@ var path = require("path"),
     lint = require(path.resolve(__dirname, "plugin", "lint")),
     pckg = require(path.resolve(__dirname, "..", "package.json")),
     Promise = require("bluebird"),
-    promisifiedReadFile = Promise.promisify(fs.readFile),
     test = require(path.resolve(__dirname, "plugin", "test")),
     webpack = require(path.resolve(__dirname, "plugin", "webpack"));
 
@@ -75,7 +74,9 @@ module.exports = function (config) {
         "override": _.identity
     }, config);
 
-    pckgPromise = promisifiedReadFile(path.resolve(config.baseDir, "package.json"))
+    pckgPromise = Promise.fromNode(function (cb) {
+            fs.readFile(path.resolve(config.baseDir, "package.json"), cb);
+        })
         .then(function (pckgContents) {
             return JSON.parse(pckgContents);
         })
@@ -119,17 +120,23 @@ module.exports = function (config) {
         "name": "lint"
     });
     plugin({
-        "dependencies": [],
+        "dependencies": [
+            "lint"
+        ],
         "factory": test,
         "name": "test"
     });
     plugin({
-        "dependencies": [],
+        "dependencies": [
+            "test"
+        ],
         "factory": webpack.development,
         "name": "webpack.development"
     });
     plugin({
-        "dependencies": [],
+        "dependencies": [
+            "test"
+        ],
         "factory": webpack.production,
         "name": "webpack.production"
     });

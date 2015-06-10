@@ -13,10 +13,10 @@ var path = require("path"),
     development = require(path.resolve(__dirname, "..", "webpack", "config", "development")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
+    glob = require("glob"),
     libDir = require(path.resolve(__dirname, "..", "pckg", "libDir")),
     production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
     Promise = require("bluebird"),
-    promisifiedGlob = Promise.promisify(require("glob")),
     webpack = require("webpack");
 
 function normalizeEntries(config, pckg, entries) {
@@ -66,7 +66,9 @@ function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
             return pckgPromise.then(function (pckg) {
-                    return promisifiedGlob(path.resolve(libDir(pckg, config), "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)))
+                    return Promise.fromNode(function (cb) {
+                            glob(path.resolve(libDir(pckg, config), "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
+                        })
                         .then(function (entries) {
                             return [
                                 pckg,

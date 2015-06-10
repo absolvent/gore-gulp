@@ -11,6 +11,7 @@
 var path = require("path"),
     _ = require("lodash"),
     detectTestFileExtensionPrefix = require(path.resolve(__dirname, "..", "pckg", "detectTestFileExtensionPrefix")),
+    glob = require("glob"),
     isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
     mocha = require("gulp-mocha"),
     Promise = require("bluebird");
@@ -26,20 +27,30 @@ function selectReporter(pckg) {
 module.exports = function (config, pckgPromise, gulp) {
     return function () {
         return pckgPromise.then(function (pckg) {
-            var globPattern,
-                testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
+                var testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
 
-            globPattern = path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + ".js");
+                return Promise.props({
+                    "pckg": pckg,
+                    "testFiles": Promise.fromNode(function (cb) {
+                        glob(path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + testFileExtensionPrefix + ".js"), cb);
+                    })
+                });
+            })
+            .then(function (results) {
+                if (results.testFiles.length < 1) {
+                    // do not bother
+                    return Promise.resolve();
+                }
 
-            return new Promise(function (resolve, reject) {
-                gulp.src(globPattern)
-                    .pipe(mocha({
-                        "bail": true,
-                        "reporter": selectReporter(pckg)
-                    }))
-                    .on("error", reject)
-                    .on("end", resolve);
+                return new Promise(function (resolve, reject) {
+                    gulp.src(results.testFiles)
+                        .pipe(mocha({
+                            "bail": true,
+                            "reporter": selectReporter(results.pckg)
+                        }))
+                        .on("error", reject)
+                        .on("end", resolve);
+                });
             });
-        });
     };
 };

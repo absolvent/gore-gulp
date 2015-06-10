@@ -24,7 +24,6 @@ describe("example", function () {
                 "example.b.min.js",
                 "example.b.min.js.map"
             ]))
-            .then(done)
-            .catch(done);
+            .nodeify(done);
     });
 });

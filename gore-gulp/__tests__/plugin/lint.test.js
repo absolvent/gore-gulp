@@ -45,7 +45,7 @@ describe("lint", function () {
                 done(new Error("Linter should detect errors!"));
             })
             .catch(function (err) {
-                if ("ESLintError" === err.err.name) {
+                if ("ESLint" === err.err.plugin) {
                     done();
                 } else {
                     done(err);
@@ -54,10 +54,6 @@ describe("lint", function () {
     });
 
     it("should ignore errors when library uses 'provide' shim", function (done) {
-        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9"))
-            .then(function () {
-                done();
-            })
-            .catch(done);
+        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9")).nodeify(done);
     });
 });

@@ -9,7 +9,6 @@
 "use strict";
 
 var _ = require("lodash"),
-    path = require("path"),
     Promise = require("bluebird"),
     resolve = require("resolve");
 

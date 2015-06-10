@@ -5,15 +5,15 @@
         "babel-eslint": "3.x",
         "babel-loader": "5.x",
         "bluebird": "2.x",
-        "chai": "2.x",
+        "chai": "3.x",
         "deprecate": "0.x",
         "eslint": "0.x",
         "eslint-plugin-react": "2.x",
         "glob": "5.x",
         "gulp": "3.x",
-        "gulp-eslint": "0.x",
         "gulp-if": "1.x",
         "gulp-mocha": "2.x",
+        "gulp-util": "3.x",
         "imports-loader": "0.x",
         "karma": "0.x",
         "karma-mocha": "0.x",
@@ -22,6 +22,7 @@
         "lodash": "3.x",
         "mocha": "2.x",
         "mustache": "2.x",
+        "node-libs-browser": "0.x",
         "resolve": "1.x",
         "sinon": "1.x",
         "sinon-chai": "2.x",
@@ -30,6 +31,7 @@
     },
     "devDependencies": {
         "karma-phantomjs-launcher": "0.x",
+        "phantomjs": "1.x",
         "react": "0.x"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
@@ -54,5 +56,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.5.12"
+    "version": "0.6.0"
 }

@@ -16,13 +16,12 @@ var _ = require("lodash"),
     karmaWebpackConfig = require(path.resolve(__dirname, "..", "..", "webpack", "config", "karma")),
     mustache = require("mustache"),
     Promise = require("bluebird"),
-    tmp = require("tmp"),
-    promisifiedReadFile = Promise.promisify(fs.readFile),
-    promisifiedTmpFile = Promise.promisify(tmp.file),
-    promisifiedWriteFile = Promise.promisify(fs.writeFile);
+    tmp = require("tmp");
 
 function awaitPreprocessorCode(config, pckg) {
-    return promisifiedReadFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"))
+    return Promise.fromNode(function (cb) {
+            fs.readFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"), cb);
+        })
         .then(function (preprocessorTemplateBuffer) {
             return preprocessorTemplateBuffer.toString();
         })
@@ -40,8 +39,10 @@ module.exports = function (config, pckgPromise) {
 
         return Promise.props({
                 "pckg": pckgPromise,
-                "tmpfile": promisifiedTmpFile({
-                    "postfix": ".js"
+                "tmpfile": Promise.fromNode(function (cb) {
+                    tmp.file({
+                        "postfix": ".js"
+                    }, cb);
                 })
             })
             .then(function (results) {
@@ -54,7 +55,9 @@ module.exports = function (config, pckgPromise) {
                 cleanupCallback = results.tmpfile[2];
 
                 return Promise.props(_.merge(results, {
-                    "preprocessorPath": promisifiedWriteFile(results.tmpfile[0], results.preprocessorCode)
+                    "preprocessorPath": Promise.fromNode(function (cb) {
+                            fs.writeFile(results.tmpfile[0], results.preprocessorCode, cb);
+                        })
                         .then(function () {
                             return results.tmpfile[0];
                         })

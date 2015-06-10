@@ -13,16 +13,7 @@ var _ = require("lodash"),
     detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
     findPackage = require(path.resolve(__dirname, "..", "..", "findPackage")),
-    Promise = require("bluebird"),
-    querystring = require("querystring");
-
-function promisifiedResolve(config, name) {
-    return Promise.fromNode(function (cb) {
-        resolve(name, {
-            "basedir": __dirname
-        }, cb);
-    });
-}
+    Promise = require("bluebird");
 
 function babel(webpackConfig, config, pckg) {
     var libDir = detectLibDir(pckg, config);

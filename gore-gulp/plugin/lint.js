@@ -13,8 +13,10 @@ var path = require("path"),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     findPackage = require(path.resolve(__dirname, "..", "findPackage")),
     fs = require("fs"),
-    gulpif = require("gulp-if"),
+    glob = require("glob"),
+    gutil = require("gulp-util"),
     isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
+    CLIEngine = require("eslint").CLIEngine,
     Promise = require("bluebird");
 
 function awaitEslintrc(config) {
@@ -40,48 +42,67 @@ function awaitEslintrc(config) {
 
 function awaitGlobPattern(config, pckgPromise) {
     return pckgPromise.then(function (pckg) {
-        return [
-            path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + ecmaScriptFileExtensionsGlobPattern(pckg)),
-            "!" + path.resolve(config.baseDir, pckg.directories.lib, "**", "__fixtures__", "**", "*")
-        ];
+        return {
+            "pattern": path.resolve(config.baseDir, pckg.directories.lib, "**", "*" + ecmaScriptFileExtensionsGlobPattern(pckg)),
+            "ignore": path.resolve(config.baseDir, pckg.directories.lib, "**", "__fixtures__", "**", "*")
+        };
     });
 }
 
-function normalizeGlobals(pckg) {
-    return _.mapValues(pckg.provide, _.constant(false));
-}
-
-module.exports = function (config, pckgPromise, gulp) {
+module.exports = function (config, pckgPromise) {
     var initPromises = [
         awaitEslintrc(config),
         awaitGlobPattern(config, pckgPromise),
         pckgPromise,
-        findPackage(config, "eslint-plugin-react"),
-        findPackage(config, "gulp-eslint")
+        findPackage(config, "eslint-plugin-react").then(require)
     ];
 
     return function () {
-        return Promise.all(initPromises)
-            .spread(function (eslintrc, globPattern, pckg, eslintPluginReact, eslint) {
-                eslint = require(eslint);
+        return Promise.all(initPromises).spread(function (eslintrc, globPattern, pckg, eslintPluginReact) {
+            return Promise.fromNode(function (cb) {
+                    glob(globPattern.pattern, {
+                        "ignore": globPattern.ignore
+                    }, cb);
+                })
+                .then(function (lintableFiles) {
+                    var cli;
 
-                return new Promise(function (resolve, reject) {
-                    gulp.src(globPattern)
-                        .pipe(eslint({
-                            "configFile": eslintrc,
-                            "globals": normalizeGlobals(pckg),
-                            "plugins": [
-                                eslintPluginReact
-                            ],
-                            "useEslintrc": false
-                        }))
-                        .pipe(gulpif(!isSilent(pckg), eslint.format()))
-                        .pipe(eslint.failAfterError())
-                        // force data to flow by reading from pipe
-                        .on("data", _.noop)
-                        .on("error", reject)
-                        .on("finish", resolve);
+                    if (lintableFiles.length < 1) {
+                        // do not bother
+                        return Promise.resolve();
+                    }
+
+                    cli = new CLIEngine({
+                        "configFile": eslintrc,
+                        "globals": _.keys(pckg.provide),
+                        "useEslintrc": false
+                    });
+
+                    // !isSilent(pckg)
+                    cli.addPlugin("react", eslintPluginReact);
+
+                    return Promise.props({
+                        "cli": cli,
+                        "formatter": cli.getFormatter(),
+                        "report": cli.executeOnFiles(lintableFiles)
+                    });
+                })
+                .then(function (results) {
+                    if (!results) {
+                        return;
+                    }
+
+                    if ((results.report.errorCount || results.report.warningCount) && !isSilent(pckg)) {
+                        gutil.log(results.formatter(results.report.results));
+                    }
+
+                    if (results.report.errorCount) {
+                        throw new gutil.PluginError({
+                            "plugin": "ESLint",
+                            "message": new Error("ESLint detected errors.")
+                        });
+                    }
                 });
-            });
+        });
     };
 };

@@ -18,13 +18,14 @@ var path = require("path"),
     fixtureDir = path.resolve(__dirname, "..", "..", "..", "__fixtures__"),
     fs = require("fs"),
     gg = require(path.resolve(__dirname, "..", "..", "..", "index")),
-    promisifiedStat = Promise.promisify(fs.stat),
-    promisifiedTmp = Promise.promisify(require("tmp").dir);
+    tmp = require("tmp");
 
 function doFiles(paths, cb) {
     return function (distDir) {
         paths = paths.map(function (pth) {
-            return promisifiedStat(path.resolve(distDir, pth))
+            return Promise.fromNode(function (statCb) {
+                    fs.stat(path.resolve(distDir, pth), statCb);
+                })
                 .then(function (stats) {
                     return cb(stats.isFile(), pth);
                 })
@@ -56,7 +57,7 @@ function runDirectory(baseDir, variant) {
     gg({
         "baseDir": baseDir,
         "override": function (pckg) {
-            return promisifiedTmp()
+            return Promise.fromNode(tmp.dir)
                 .spread(function (tmpDir) {
                     distDir = path.join(tmpDir, pckg.directories.dist);
 
@@ -205,8 +206,7 @@ function setup(variant) {
                     return distDir;
                 })
                 .then(notExpectFiles(testData.notExpectFiles))
-                .then(done)
-                .catch(done);
+                .nodeify(done);
         });
     });
 }
