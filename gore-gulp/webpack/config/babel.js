@@ -29,13 +29,6 @@ function babel(webpackConfig, config, pckg) {
                 "module": {
                     "loaders": [
                         {
-                            // bower components usually expect to run in browser
-                            // environment and sometimes assume that global 'this'
-                            // is always the Window object which is a mistake
-                            "test": /bower_components/,
-                            "loader": results["imports-loader"] + "?this=>window"
-                        },
-                        {
                             "include": libDir,
                             "test": /\.jsx?$/,
                             "loader": results["babel-loader"],
