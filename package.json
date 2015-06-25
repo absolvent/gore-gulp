@@ -23,6 +23,7 @@
         "mocha": "2.x",
         "mustache": "2.x",
         "node-libs-browser": "0.x",
+        "path-is-absolute": "1.x",
         "resolve": "1.x",
         "sinon": "1.x",
         "sinon-chai": "2.x",
@@ -56,5 +57,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.6.2"
+    "version": "0.6.3"
 }
