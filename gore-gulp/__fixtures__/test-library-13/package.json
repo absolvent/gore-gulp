@@ -1,0 +1,10 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": [
+            "multiple-libs-1",
+            "multiple-libs-2"
+        ]
+    },
+    "name": "test-library-13"
+}

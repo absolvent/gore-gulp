@@ -14,22 +14,21 @@ var _ = require("lodash"),
     webpack = require("webpack");
 
 function web(webpackConfig, config, pckg, entries) {
-    return babel(webpackConfig, config, pckg)
-        .then(function (babelConfig) {
-            return _.merge(babelConfig, {
-                "entry": entries,
-                "output": {
-                    "filename": pckg.name + ".[name].min.js",
-                    "path": path.resolve(config.baseDir, pckg.directories.dist)
-                },
-                "plugins": [
-                    new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
-                    new webpack.optimize.CommonsChunkPlugin({
-                        "filename": pckg.name + ".common.min.js"
-                    })
-                ]
-            });
+    return babel(webpackConfig, config, pckg).then(function (babelConfig) {
+        return _.merge(babelConfig, {
+            "entry": entries,
+            "output": {
+                "filename": pckg.name + ".[name].min.js",
+                "path": path.resolve(config.baseDir, pckg.directories.dist)
+            },
+            "plugins": [
+                new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
+                new webpack.optimize.CommonsChunkPlugin({
+                    "filename": pckg.name + ".common.min.js"
+                })
+            ]
         });
+    });
 }
 
 function normalizeProvidePaths(providePaths) {

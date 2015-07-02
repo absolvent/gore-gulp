@@ -10,55 +10,56 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    detectLibDir = require(path.resolve(__dirname, "..", "..", "pckg", "libDir")),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
     findPackage = require(path.resolve(__dirname, "..", "..", "findPackage")),
+    libDirs = require(path.resolve(__dirname, "..", "..", "pckg", "libDirs")),
     Promise = require("bluebird");
 
 function babel(webpackConfig, config, pckg) {
-    var libDir = detectLibDir(pckg, config);
-
     return Promise.props({
-            "babel-loader": findPackage(config, "babel-loader"),
-            "imports-loader": findPackage(config, "imports-loader")
-        })
-        .then(function (results) {
-            return _.merge(webpackConfig, {
-                "bail": true,
-                "externals": pckg.externals,
-                "module": {
-                    "loaders": [
-                        {
-                            "include": libDir,
-                            "test": /\.jsx?$/,
-                            "loader": results["babel-loader"],
-                            "query": {
-                                "loose": [
-                                    "es6.modules",
-                                    "es6.properties.computed",
-                                    "es6.templateLiterals"
-                                ],
-                                "optional": [
-                                    "utility.inlineEnvironmentVariables",
-                                    "validation.react"
-                                ]
-                            }
+        "babel-loader": findPackage(config, "babel-loader"),
+        "imports-loader": findPackage(config, "imports-loader")
+    }).then(function (results) {
+        return _.merge(webpackConfig, {
+            "bail": true,
+            "externals": pckg.externals,
+            "module": {
+                "loaders": [
+                    {
+                        "include": _.map(libDirs(pckg), function (libDir) {
+                            return path.resolve(config.baseDir, libDir);
+                        }),
+                        "test": /\.jsx?$/,
+                        "loader": results["babel-loader"],
+                        "query": {
+                            "loose": [
+                                "es6.modules",
+                                "es6.properties.computed",
+                                "es6.templateLiterals"
+                            ],
+                            "optional": [
+                                "utility.inlineEnvironmentVariables",
+                                "validation.react"
+                            ]
                         }
-                    ]
-                },
-                "resolve": {
-                    "alias": normalizeAliasPaths(webpackConfig, config, pckg, libDir),
-                    "extensions": ecmaScriptFileExtensions(pckg),
-                    "root": config.baseDir
-                }
-            });
+                    }
+                ]
+            },
+            "resolve": {
+                "alias": normalizeAliasPaths(webpackConfig, config, pckg),
+                "extensions": ecmaScriptFileExtensions(pckg),
+                "root": config.baseDir
+            }
         });
+    });
 }
 
-function normalizeAliasPaths(webpackConfig, config, pckg, libDir) {
+function normalizeAliasPaths(webpackConfig, config, pckg) {
     var alias = {};
 
-    alias[pckg.name] = libDir;
+    if (!_.isArray(pckg.directories.lib)) {
+        alias[pckg.name] = pckg.directories.lib;
+    }
 
     return _.merge(alias, pckg.alias);
 }

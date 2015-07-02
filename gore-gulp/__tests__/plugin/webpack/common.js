@@ -190,6 +190,17 @@ function setup(variant) {
             "fixture": "test-library-11",
             "name": "symfony package directory structure",
             "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
+                "test-library-13.common.min.js",
+                "test-library-13.common.min.js.map",
+                "test-library-13.first.min.js",
+                "test-library-13.second.min.js.map"
+            ],
+            "fixture": "test-library-13",
+            "name": "multiple library paths",
+            "notExpectFiles": []
         }
     ].forEach(function (testData) {
         it(testData.name, function (done) {

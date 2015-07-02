@@ -21,13 +21,11 @@ function promisifiedResolve(baseDir, name) {
 }
 
 function findPackage(config, name) {
-    return promisifiedResolve(config.baseDir, name)
-        .catch(function () {
-            return promisifiedResolve(__dirname, name);
-        })
-        .then(function (result) {
-            return _.first(result);
-        });
+    return promisifiedResolve(config.baseDir, name).catch(function () {
+        return promisifiedResolve(__dirname, name);
+    }).then(function (result) {
+        return _.first(result);
+    });
 }
 
 module.exports = findPackage;

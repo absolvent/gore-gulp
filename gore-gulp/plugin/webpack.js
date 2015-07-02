@@ -14,23 +14,23 @@ var path = require("path"),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     glob = require("glob"),
-    libDir = require(path.resolve(__dirname, "..", "pckg", "libDir")),
+    libDirs = require(path.resolve(__dirname, "..", "pckg", "libDirs")),
     production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
     Promise = require("bluebird"),
     webpack = require("webpack");
 
-function normalizeEntries(config, pckg, entries) {
+function normalizeEntries(config, pckg, libDir, entries) {
     var i,
         ret = {};
 
     for (i = 0; i < entries.length; i += 1) {
-        ret[normalizeEntry(config, pckg, entries[i], ecmaScriptFileExtensions(pckg))] = entries[i];
+        ret[normalizeEntry(config, pckg, libDir, entries[i], ecmaScriptFileExtensions(pckg))] = entries[i];
     }
 
     return ret;
 }
 
-function normalizeEntry(config, pckg, entry, fileExtensions) {
+function normalizeEntry(config, pckg, libDir, entry, fileExtensions) {
     var i,
         entryPointStem,
         fileExtension;
@@ -38,7 +38,7 @@ function normalizeEntry(config, pckg, entry, fileExtensions) {
     for (i = 0; i < fileExtensions.length; i += 1) {
         fileExtension = ".entry" + fileExtensions[i];
         if (_.endsWith(entry, fileExtension)) {
-            entryPointStem = path.relative(path.resolve(config.baseDir, pckg.directories.lib), entry);
+            entryPointStem = path.relative(path.resolve(config.baseDir, libDir), entry);
             // replace all path.sep with spaces for more meaningful slugss
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
@@ -66,20 +66,23 @@ function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
             return pckgPromise.then(function (pckg) {
+                return Promise.all(_.map(libDirs(pckg), function (libDir) {
                     return Promise.fromNode(function (cb) {
-                            glob(path.resolve(libDir(pckg, config), "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
-                        })
-                        .then(function (entries) {
-                            return [
-                                pckg,
-                                normalizeEntries(config, pckg, entries)
-                            ];
-                        });
-                })
-                .spread(function (pckg, entries) {
-                    return variant({}, config, pckg, entries);
-                })
-                .then(run);
+                        glob(path.resolve(config.baseDir, libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
+                    }).then(function (entries) {
+                        return normalizeEntries(config, pckg, libDir, entries);
+                    });
+                })).then(function (entries) {
+                    return [
+                        pckg,
+                        _.reduce(entries, function (acc, entry) {
+                            return _.merge(acc, entry);
+                        }, {})
+                    ];
+                });
+            }).spread(function (pckg, entries) {
+                return variant({}, config, pckg, entries);
+            }).then(run);
         };
     };
 }

@@ -8,10 +8,14 @@
 
 "use strict";
 
-var path = require("path");
+var _ = require("lodash");
 
-function libDir(pckg, config) {
-    return path.resolve(config.baseDir, pckg.directories.lib);
+function globSpread(pattern) {
+    if (_.isArray(pattern)) {
+        return "{" + pattern.join(",") + "}";
+    }
+
+    return pattern;
 }
 
-module.exports = libDir;
+module.exports = globSpread;

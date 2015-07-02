@@ -75,12 +75,10 @@ module.exports = function (config) {
     }, config);
 
     pckgPromise = Promise.fromNode(function (cb) {
-            fs.readFile(path.resolve(config.baseDir, "package.json"), cb);
-        })
-        .then(function (pckgContents) {
-            return JSON.parse(pckgContents);
-        })
-        .then(config.override);
+        fs.readFile(path.resolve(config.baseDir, "package.json"), cb);
+    }).then(function (pckgContents) {
+        return JSON.parse(pckgContents);
+    }).then(config.override);
 
     function plugin(definition) {
         plugins[definition.name] = {
