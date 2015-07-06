@@ -46,7 +46,7 @@ feature. If you configure your `package.json` like this:
 
 It would make `webpack` task to look for all `*.entry.js`, `*.entry.jsx` and
 `*.entry.coffee` files inside `./my-package` and output
-production-ready to the `./dist` directory.
+production-ready to the `./dist` directory. For `lib` you can also configure multiple sources by placing an array of directories.
 
 ## Why is gore-gulp so special?
 
