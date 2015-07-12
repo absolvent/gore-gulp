@@ -8,6 +8,7 @@
         "chai": "3.x",
         "deprecate": "0.x",
         "eslint": "0.x",
+        "eslint-config-goreutils": "0.x",
         "eslint-plugin-react": "2.x",
         "glob": "5.x",
         "gulp": "3.x",
@@ -57,5 +58,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.7.0"
+    "version": "0.8.0"
 }
