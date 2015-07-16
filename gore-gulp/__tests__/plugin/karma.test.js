@@ -32,7 +32,7 @@ function setupDirectory(baseDir) {
     return gulpInstance;
 }
 
-describe("karma", function () {
+describe.skip("karma", function () {
     this.timeout(30000);
 
     it("starts karma server and runs tests", function (done) {

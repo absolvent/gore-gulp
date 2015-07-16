@@ -65,14 +65,15 @@ module.exports = function (config, pckgPromise) {
             })
             .then(function (results) {
                 return new Promise(function (resolve, reject) {
-                    var preprocessors = {};
+                    var karmaServer,
+                        preprocessors = {};
 
                     preprocessors[results.preprocessorPath] = [
                         "sourcemap",
                         "webpack"
                     ];
 
-                    karma.server.start({
+                    karmaServer = new karma.Server({
                         "browsers": [
                             "PhantomJS"
                         ],
@@ -99,6 +100,7 @@ module.exports = function (config, pckgPromise) {
                             reject(new Error("Karma server has exited with non-zero exit code: " + exitCode));
                         }
                     });
+                    karmaServer.start();
                 });
             })
             .finally(function () {
