@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false, it: false */
+/* global describe: false, it: false */
 
 describe("nightmare", function () {
     it("tests package using browser");

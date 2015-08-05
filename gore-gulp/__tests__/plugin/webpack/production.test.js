@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false */
+/* global describe: false */
 
 var path = require("path"),
     common = require(path.resolve(__dirname, "common"));

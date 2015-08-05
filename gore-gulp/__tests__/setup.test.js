@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global afterEach:false, beforeEach: false, describe: false, it: false */
+/* global afterEach:false, beforeEach: false, describe: false, it: false */
 
 var path = require("path"),
     _ = require("lodash"),

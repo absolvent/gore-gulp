@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false, it: false */
+/* global describe: false, it: false */
 
 var assert = require("chai").assert,
     path = require("path"),

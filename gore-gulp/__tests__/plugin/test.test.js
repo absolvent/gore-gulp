@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false */
+/* global describe: false */
 
 describe.skip("test", function () {
 });
