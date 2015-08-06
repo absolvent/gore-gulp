@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false, it: false */
+/* global describe: false, it: false */
 
 var path = require("path"),
     common = require(path.resolve(__dirname, "plugin", "webpack", "common"));

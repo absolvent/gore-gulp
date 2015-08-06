@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global it: false */
+/* global it: false */
 
 var path = require("path"),
     Gulp = require("gulp").Gulp,

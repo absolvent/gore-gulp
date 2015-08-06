@@ -3,7 +3,7 @@
  * For licensing, see LICENSE
  */
 
-/*global document: false */
+/* global document: false */
 
 "use strict";
 

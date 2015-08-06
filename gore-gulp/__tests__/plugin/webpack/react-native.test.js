@@ -8,7 +8,7 @@
 
 "use strict";
 
-/*global describe: false, it: false */
+/* global describe: false, it: false */
 
 describe.skip("webpack/react-native", function () {
     it("tests something", function () {
