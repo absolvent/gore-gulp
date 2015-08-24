@@ -7,7 +7,7 @@
         "bluebird": "2.x",
         "chai": "3.x",
         "deprecate": "0.x",
-        "eslint": "1.1.x",
+        "eslint": "1.2.x",
         "eslint-config-goreutils": "0.x",
         "eslint-plugin-react": "3.x",
         "glob": "5.x",
