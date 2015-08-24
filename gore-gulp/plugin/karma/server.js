@@ -38,13 +38,13 @@ module.exports = function (config, pckgPromise) {
         var cleanupCallback;
 
         return Promise.props({
-                "pckg": pckgPromise,
-                "tmpfile": Promise.fromNode(function (cb) {
-                    tmp.file({
-                        "postfix": ".js"
-                    }, cb);
-                })
+            "pckg": pckgPromise,
+            "tmpfile": Promise.fromNode(function (cb) {
+                tmp.file({
+                    "postfix": ".js"
+                }, cb);
             })
+        })
             .then(function (results) {
                 return Promise.props(_.merge(results, {
                     "preprocessorCode": awaitPreprocessorCode(config, results.pckg),
