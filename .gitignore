@@ -4,6 +4,8 @@
 # generated files
 *.cache
 *.log
+/example/basic/output
+/example/hot-module-replacement/output
 
 # vendor libraries
 /node_modules

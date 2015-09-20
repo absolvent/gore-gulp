@@ -15,6 +15,7 @@ var path = require("path"),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     glob = require("glob"),
     hmr = require(path.resolve(__dirname, "..", "webpack", "config", "hmr")),
+    hotModuleReplacementServer = require(path.resolve(__dirname, "..", "webpack", "hotModuleReplacementServer")),
     libDirs = require(path.resolve(__dirname, "..", "pckg", "libDirs")),
     production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
     Promise = require("bluebird"),
@@ -51,16 +52,26 @@ function normalizeEntry(config, pckg, libDir, entry, fileExtensions) {
     return entry;
 }
 
-function run(config) {
+function run(pckg, entries, webpackConfig) {
     return new Promise(function (resolve, reject) {
-        webpack(config, function (err) {
+        webpack(webpackConfig, function (err) {
             if (err) {
                 reject(err);
             } else {
-                resolve();
+                resolve([
+                    pckg, entries, webpackConfig
+                ]);
             }
         });
     });
+}
+
+function setupHotModuleReplacementServer(config, pckgPromise) {
+    return function () {
+        return setupVariant(hmr)(config, pckgPromise)().spread(function (pckg, entries, webpackConfig) {
+            return hotModuleReplacementServer(config, pckg, entries, webpackConfig);
+        });
+    };
 }
 
 function setupVariant(variant) {
@@ -82,14 +93,20 @@ function setupVariant(variant) {
                     ];
                 });
             }).spread(function (pckg, entries) {
-                return variant({}, config, pckg, entries);
-            }).then(run);
+                return [
+                    pckg,
+                    entries,
+                    variant({}, config, pckg, entries)
+                ];
+            }).spread(function (pckg, entries, webpackConfig) {
+                return run(pckg, entries, webpackConfig);
+            });
         };
     };
 }
 
 module.exports = {
     "development": setupVariant(development),
-    "hmr": setupVariant(hmr),
+    "hmr": setupHotModuleReplacementServer,
     "production": setupVariant(production)
 };

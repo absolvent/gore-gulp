@@ -8,32 +8,35 @@
 
 "use strict";
 
-var app,
-    compiler,
-    path = require("path"),
+var path = require("path"),
     express = require("express"),
+    Promise = require("bluebird"),
     webpack = require("webpack"),
-    config = require("./webpack.config.dev");
+    webpackDevMiddleware = require("webpack-dev-middleware"),
+    webpackHotMiddleware = require("webpack-hot-middleware");
 
-app = express();
-compiler = webpack(config);
+function hotModuleReplacementServer(config, pckg, entries, webpackConfig) {
+    var app = express(),
+        compiler = webpack(webpackConfig);
 
-app.use(require("webpack-dev-middleware")(compiler, {
-    "noInfo": true,
-    "publicPath": config.output.publicPath
-}));
+    app.use(webpackDevMiddleware(compiler, {
+        "noInfo": true,
+        "publicPath": "/static/"
+    }));
+    app.use(webpackHotMiddleware(compiler));
 
-app.use(require("webpack-hot-middleware")(compiler));
+    return new Promise(function (resolve, reject) {
+        app.listen(3000, "localhost", function (err) {
+            if (err) {
+                reject(err);
 
-app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
+                return;
+            }
 
-app.listen(3000, "localhost", function (err) {
-    if (err) {
-        console.log(err);
-        return;
-    }
+            console.log("Listening at http://localhost:3000");
+            resolve(app);
+        });
+    });
+}
 
-    console.log("Listening at http://localhost:3000");
-});
+module.exports = hotModuleReplacementServer;

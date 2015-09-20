@@ -18,7 +18,8 @@ function hmr(webpackConfig, config, pckg, entries) {
         return _.merge(webConfig, {
             "devtool": "eval",
             "plugins": [
-                new webpack.HotModuleReplacementPlugin()
+                new webpack.HotModuleReplacementPlugin(),
+                new webpack.NoErrorsPlugin()
             ]
         });
     });
