@@ -24,18 +24,16 @@ function doFiles(paths, cb) {
     return function (distDir) {
         paths = paths.map(function (pth) {
             return Promise.fromNode(function (statCb) {
-                    fs.stat(path.resolve(distDir, pth), statCb);
-                })
-                .then(function (stats) {
-                    return cb(stats.isFile(), pth);
-                })
-                .catch(function (err) {
-                    if ("ENOENT" === err.code) {
-                        return cb(false, pth);
-                    }
+                fs.stat(path.resolve(distDir, pth), statCb);
+            }).then(function (stats) {
+                return cb(stats.isFile(), pth);
+            }).catch(function (err) {
+                if ("ENOENT" === err.code) {
+                    return cb(false, pth);
+                }
 
-                    throw err;
-                });
+                throw err;
+            });
         });
 
         return Promise.all(paths).then(_.noop);

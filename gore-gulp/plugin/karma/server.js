@@ -20,17 +20,15 @@ var _ = require("lodash"),
 
 function awaitPreprocessorCode(config, pckg) {
     return Promise.fromNode(function (cb) {
-            fs.readFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"), cb);
-        })
-        .then(function (preprocessorTemplateBuffer) {
-            return preprocessorTemplateBuffer.toString();
-        })
-        .then(function (preprocessorTemplate) {
-            return mustache.render(preprocessorTemplate, {
-                "config": config,
-                "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg, ".karma")
-            });
+        fs.readFile(path.resolve(__dirname, "..", "..", "..", "karma", "preprocessor.js.mustache"), cb);
+    }).then(function (preprocessorTemplateBuffer) {
+        return preprocessorTemplateBuffer.toString();
+    }).then(function (preprocessorTemplate) {
+        return mustache.render(preprocessorTemplate, {
+            "config": config,
+            "ecmaScriptTestFileExtensionsRegExp": ecmaScriptTestFileExtensionsRegExp(pckg, ".karma")
         });
+    });
 }
 
 module.exports = function (config, pckgPromise) {
@@ -56,11 +54,10 @@ module.exports = function (config, pckgPromise) {
 
                 return Promise.props(_.merge(results, {
                     "preprocessorPath": Promise.fromNode(function (cb) {
-                            fs.writeFile(results.tmpfile[0], results.preprocessorCode, cb);
-                        })
-                        .then(function () {
-                            return results.tmpfile[0];
-                        })
+                        fs.writeFile(results.tmpfile[0], results.preprocessorCode, cb);
+                    }).then(function () {
+                        return results.tmpfile[0];
+                    })
                 }));
             })
             .then(function (results) {
