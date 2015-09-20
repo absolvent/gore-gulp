@@ -135,6 +135,13 @@ module.exports = function (config) {
         "dependencies": [
             "test"
         ],
+        "factory": webpack.hmr,
+        "name": "webpack.hmr"
+    });
+    plugin({
+        "dependencies": [
+            "test"
+        ],
         "factory": webpack.production,
         "name": "webpack.production"
     });

@@ -14,6 +14,7 @@ var path = require("path"),
     ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
     ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
     glob = require("glob"),
+    hmr = require(path.resolve(__dirname, "..", "webpack", "config", "hmr")),
     libDirs = require(path.resolve(__dirname, "..", "pckg", "libDirs")),
     production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
     Promise = require("bluebird"),
@@ -89,5 +90,6 @@ function setupVariant(variant) {
 
 module.exports = {
     "development": setupVariant(development),
+    "hmr": setupVariant(hmr),
     "production": setupVariant(production)
 };

@@ -13,16 +13,15 @@ var _ = require("lodash"),
     web = require(path.resolve(__dirname, "web")),
     webpack = require("webpack");
 
-function production(webpackConfig, config, pckg, entries) {
+function hmr(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
         return _.merge(webConfig, {
-            "debug": false,
-            "devtool": "source-map",
+            "devtool": "eval",
             "plugins": [
-                new webpack.optimize.UglifyJsPlugin()
+                new webpack.HotModuleReplacementPlugin()
             ]
         });
     });
 }
 
-module.exports = production;
+module.exports = hmr;
