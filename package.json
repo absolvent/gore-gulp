@@ -9,7 +9,7 @@
         "eslint": "1.5.x",
         "eslint-config-goreutils": "0.x",
         "eslint-plugin-react": "3.x",
-        "express": "4.x",
+        "express": "^4.13.3",
         "glob": "5.x",
         "gulp": "3.x",
         "gulp-if": "1.x",
@@ -55,5 +55,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.8.3"
+    "version": "0.8.4"
 }

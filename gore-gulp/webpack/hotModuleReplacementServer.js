@@ -32,7 +32,6 @@ function hotModuleReplacementServer(config, pckg, entries, webpackConfig) {
                 return;
             }
 
-            console.log("Listening at http://localhost:3000");
             resolve(app);
         });
     });
