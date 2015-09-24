@@ -8,8 +8,7 @@
 
 "use strict";
 
-var path = require("path"),
-    express = require("express"),
+var express = require("express"),
     Promise = require("bluebird"),
     webpack = require("webpack"),
     webpackDevMiddleware = require("webpack-dev-middleware"),

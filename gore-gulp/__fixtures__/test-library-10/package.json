@@ -1,7 +1,0 @@
-{
-    "directories": {
-        "dist": "dist",
-        "lib": "karma-library"
-    },
-    "name": "test-library-10"
-}

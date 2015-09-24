@@ -12,7 +12,6 @@ var path = require("path"),
     _ = require("lodash"),
     deprecate = require("deprecate"),
     fs = require("fs"),
-    karma = require(path.resolve(__dirname, "plugin", "karma")),
     lint = require(path.resolve(__dirname, "plugin", "lint")),
     pckg = require(path.resolve(__dirname, "..", "package.json")),
     Promise = require("bluebird"),
@@ -97,21 +96,6 @@ module.exports = function (config) {
         }
     };
 
-    plugin({
-        "dependencies": [],
-        "factory": karma.karma,
-        "name": "karma"
-    });
-    plugin({
-        "dependencies": [],
-        "factory": karma.runner,
-        "name": "run"
-    });
-    plugin({
-        "dependencies": [],
-        "factory": karma.server,
-        "name": "grabber"
-    });
     plugin({
         "dependencies": [],
         "factory": lint,

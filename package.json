@@ -16,10 +16,6 @@
         "gulp-mocha": "2.x",
         "gulp-util": "3.x",
         "imports-loader": "0.x",
-        "karma": "0.x",
-        "karma-mocha": "0.x",
-        "karma-sourcemap-loader": "0.x",
-        "karma-webpack": "1.x",
         "lodash": "3.x",
         "mocha": "2.x",
         "mustache": "2.x",
@@ -34,8 +30,6 @@
         "webpack-hot-middleware": "2.x"
     },
     "devDependencies": {
-        "karma-phantomjs-launcher": "0.x",
-        "phantomjs": "1.x",
         "react": "0.x"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
@@ -46,6 +40,7 @@
     "engines": {
         "node": ">=0.10"
     },
+    "license": "MIT",
     "keywords": [
         "framework",
         "gulp",

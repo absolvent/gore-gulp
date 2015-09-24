@@ -1,7 +1,0 @@
-{
-    "directories": {
-        "dist": "dist",
-        "lib": "karma-skips-fixtures"
-    },
-    "name": "test-library-12"
-}
