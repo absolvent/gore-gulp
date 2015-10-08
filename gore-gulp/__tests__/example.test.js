@@ -14,7 +14,7 @@ var path = require("path"),
     common = require(path.resolve(__dirname, "plugin", "webpack", "common"));
 
 describe("example", function () {
-    it("tests example package", function (done) {
+    it("tests example basic package", function (done) {
         common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
             .then(common.expectFiles([
                 "example.common.min.js",

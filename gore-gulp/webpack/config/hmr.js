@@ -10,6 +10,7 @@
 
 var _ = require("lodash"),
     path = require("path"),
+    pckgPublicPath = require(path.resolve(__dirname, "..", "..", "pckg", "publicPath")),
     web = require(path.resolve(__dirname, "web")),
     webpack = require("webpack");
 
@@ -17,6 +18,10 @@ function hmr(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
         return _.merge(webConfig, {
             "devtool": "eval",
+            "output": {
+                "filename": "bundle.js",
+                "publicPath": pckgPublicPath(pckg)
+            },
             "plugins": [
                 new webpack.HotModuleReplacementPlugin(),
                 new webpack.NoErrorsPlugin()

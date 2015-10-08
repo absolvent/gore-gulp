@@ -8,7 +8,9 @@
 
 "use strict";
 
-var express = require("express"),
+var path = require("path"),
+    express = require("express"),
+    pckgPublicPath = require(path.resolve(__dirname, "..", "pckg/publicPath")),
     Promise = require("bluebird"),
     webpack = require("webpack"),
     webpackDevMiddleware = require("webpack-dev-middleware"),
@@ -20,7 +22,7 @@ function hotModuleReplacementServer(config, pckg, entries, webpackConfig) {
 
     app.use(webpackDevMiddleware(compiler, {
         "noInfo": true,
-        "publicPath": "/static/"
+        "publicPath": pckgPublicPath(pckg)
     }));
     app.use(webpackHotMiddleware(compiler));
 

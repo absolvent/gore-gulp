@@ -15,7 +15,7 @@ var _ = require("lodash"),
     libDirs = require(path.resolve(__dirname, "..", "..", "pckg", "libDirs")),
     Promise = require("bluebird");
 
-function babel(webpackConfig, config, pckg) {
+function babel(webpackConfig, config, pckg, babelOverride) {
     return Promise.props({
         "babel-loader": findPackage(config, "babel-loader"),
         "imports-loader": findPackage(config, "imports-loader")
@@ -31,7 +31,7 @@ function babel(webpackConfig, config, pckg) {
                         }),
                         "test": /\.jsx?$/,
                         "loader": results["babel-loader"],
-                        "query": {
+                        "query": _.merge({
                             "loose": [
                                 "es6.modules",
                                 "es6.properties.computed",
@@ -41,7 +41,7 @@ function babel(webpackConfig, config, pckg) {
                                 "utility.inlineEnvironmentVariables",
                                 "validation.react"
                             ]
-                        }
+                        }, babelOverride)
                     }
                 ]
             },

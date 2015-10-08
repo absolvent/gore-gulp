@@ -55,19 +55,18 @@ function runDirectory(baseDir, variant) {
     gg({
         "baseDir": baseDir,
         "override": function (pckg) {
-            return Promise.fromNode(tmp.dir)
-                .spread(function (tmpDir) {
-                    distDir = path.join(tmpDir, pckg.directories.dist);
+            return Promise.fromNode(tmp.dir).spread(function (tmpDir) {
+                distDir = path.join(tmpDir, pckg.directories.dist);
 
-                    return _.merge(pckg, {
-                        "config": {
-                            "isSilent": true
-                        },
-                        "directories": {
-                            "dist": distDir
-                        }
-                    });
+                return _.merge(pckg, {
+                    "config": {
+                        "isSilent": true
+                    },
+                    "directories": {
+                        "dist": distDir
+                    }
                 });
+            });
         }
     }).setup(gulpInstance);
 

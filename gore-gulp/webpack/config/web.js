@@ -13,8 +13,8 @@ var _ = require("lodash"),
     babel = require(path.resolve(__dirname, "babel")),
     webpack = require("webpack");
 
-function web(webpackConfig, config, pckg, entries) {
-    return babel(webpackConfig, config, pckg).then(function (babelConfig) {
+function web(webpackConfig, config, pckg, entries, babelOverride) {
+    return babel(webpackConfig, config, pckg, babelOverride).then(function (babelConfig) {
         return _.merge(babelConfig, {
             "entry": entries,
             "output": {

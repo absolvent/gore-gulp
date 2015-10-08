@@ -13,7 +13,7 @@ var _ = require("lodash"),
     web = require(path.resolve(__dirname, "web"));
 
 function development(webpackConfig, config, pckg, entries) {
-    return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
+    return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {
         return _.merge(webConfig, {
             "debug": true,
             "devtool": "cheap-source-map"

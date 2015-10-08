@@ -14,7 +14,12 @@ var _ = require("lodash"),
     webpack = require("webpack");
 
 function production(webpackConfig, config, pckg, entries) {
-    return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
+    return web(webpackConfig, config, pckg, entries, {
+        "optional": [
+            "optimisation.react.constantElements",
+            "optimisation.react.inlineElements"
+        ]
+    }).then(function (webConfig) {
         return _.merge(webConfig, {
             "debug": false,
             "devtool": "source-map",

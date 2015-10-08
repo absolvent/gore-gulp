@@ -9,7 +9,8 @@
     },
     "directories": {
         "dist": "output",
-        "lib": "src"
+        "lib": "src",
+        "publicPath": "/static/"
     },
     "engines": {
         "node": ">=0.12"
