@@ -15,10 +15,10 @@ var _ = require("lodash"),
 
 function production(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {
-        "optional": [
-            "optimisation.react.constantElements",
-            "optimisation.react.inlineElements"
-        ]
+        // "optional": [
+        //     "optimisation.react.constantElements",
+        //     "optimisation.react.inlineElements"
+        // ]
     }).then(function (webConfig) {
         return _.merge(webConfig, {
             "debug": false,
