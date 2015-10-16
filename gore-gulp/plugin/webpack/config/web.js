@@ -8,14 +8,14 @@
 
 "use strict";
 
-var _ = require("lodash"),
+var babel = require("./babel"),
+    merge = require("lodash/object/merge"),
     path = require("path"),
-    babel = require("./babel"),
     webpack = require("webpack");
 
 function web(webpackConfig, config, pckg, entries, babelOverride) {
     return babel(webpackConfig, config, pckg, babelOverride).then(function (babelConfig) {
-        return _.merge(babelConfig, {
+        return merge(babelConfig, {
             "entry": entries,
             "output": {
                 "filename": pckg.name + ".[name].min.js",

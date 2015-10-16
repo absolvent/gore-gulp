@@ -8,11 +8,13 @@
 
 "use strict";
 
-var _ = require("lodash"),
-    path = require("path"),
-    ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions"),
+var ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions"),
     findPackage = require("../../../findPackage"),
+    isArray = require("lodash/lang/isArray"),
     libDirs = require("../../../pckg/libDirs"),
+    map = require("lodash/collection/map"),
+    merge = require("lodash/object/merge"),
+    path = require("path"),
     Promise = require("bluebird");
 
 function babel(webpackConfig, config, pckg, babelOverride) {
@@ -20,18 +22,18 @@ function babel(webpackConfig, config, pckg, babelOverride) {
         "babel-loader": findPackage(config, "babel-loader"),
         "imports-loader": findPackage(config, "imports-loader")
     }).then(function (results) {
-        return _.merge(webpackConfig, {
+        return merge(webpackConfig, {
             "bail": true,
             "externals": pckg.externals,
             "module": {
                 "loaders": [
                     {
-                        "include": _.map(libDirs(pckg), function (libDir) {
+                        "include": map(libDirs(pckg), function (libDir) {
                             return path.resolve(config.baseDir, libDir);
                         }),
                         "test": /\.jsx?$/,
                         "loader": results["babel-loader"],
-                        "query": _.merge({
+                        "query": merge({
                             "loose": [
                                 "es6.modules",
                                 "es6.properties.computed",
@@ -57,11 +59,11 @@ function babel(webpackConfig, config, pckg, babelOverride) {
 function normalizeAliasPaths(webpackConfig, config, pckg) {
     var alias = {};
 
-    if (!_.isArray(pckg.directories.lib)) {
+    if (!isArray(pckg.directories.lib)) {
         alias[pckg.name] = pckg.directories.lib;
     }
 
-    return _.merge(alias, pckg.alias);
+    return merge(alias, pckg.alias);
 }
 
 module.exports = babel;

@@ -10,11 +10,11 @@
 
 /* global afterEach:false, beforeEach: false, describe: false, it: false */
 
-var path = require("path"),
-    _ = require("lodash"),
-    assert = require("chai").assert,
+var assert = require("chai").assert,
     gg = require(".."),
     Gulp = require("gulp").Gulp,
+    noop = require("lodash/utility/noop"),
+    path = require("path"),
     sinon = require("sinon");
 
 describe("setup", function () {
@@ -69,7 +69,7 @@ describe("setup", function () {
             ]
         }).plugin({
             "dependencies": [],
-            "factory": _.noop,
+            "factory": noop,
             "name": "my-test-plugin"
         }).setup(gulpInstance);
 

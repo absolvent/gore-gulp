@@ -10,14 +10,15 @@
 
 /* global it: false */
 
-var path = require("path"),
-    Gulp = require("gulp").Gulp,
-    Promise = require("bluebird"),
-    _ = require("lodash"),
-    assert = require("chai").assert,
-    fixtureDir = path.resolve(__dirname, "..", "..", "..", "__fixtures__"),
+var assert = require("chai").assert,
+    fixtureDir = "../../../__fixtures__",
     fs = require("fs"),
     gg = require("../../../index"),
+    Gulp = require("gulp").Gulp,
+    merge = require("lodash/object/merge"),
+    noop = require("lodash/utility/noop"),
+    path = require("path"),
+    Promise = require("bluebird"),
     tmp = require("tmp");
 
 function doFiles(paths, cb) {
@@ -36,7 +37,7 @@ function doFiles(paths, cb) {
             });
         });
 
-        return Promise.all(paths).then(_.noop);
+        return Promise.all(paths).then(noop);
     };
 }
 
@@ -58,7 +59,7 @@ function runDirectory(baseDir, variant) {
             return Promise.fromNode(tmp.dir).spread(function (tmpDir) {
                 distDir = path.join(tmpDir, pckg.directories.dist);
 
-                return _.merge(pckg, {
+                return merge(pckg, {
                     "config": {
                         "isSilent": true
                     },
@@ -203,7 +204,7 @@ function setup(variant) {
         it(testData.name, function (done) {
             var distDir;
 
-            runDirectory(path.resolve(fixtureDir, testData.fixture), variant)
+            runDirectory(path.resolve(__dirname, fixtureDir, testData.fixture), variant)
                 .then(function (dd) {
                     distDir = dd;
 

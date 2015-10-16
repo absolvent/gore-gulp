@@ -8,12 +8,12 @@
 
 "use strict";
 
-var _ = require("lodash"),
+var merge = require("lodash/object/merge"),
     web = require("./web");
 
 function development(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {
-        return _.merge(webConfig, {
+        return merge(webConfig, {
             "debug": true,
             "devtool": "cheap-source-map"
         });

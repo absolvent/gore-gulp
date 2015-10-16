@@ -8,18 +8,18 @@
 
 "use strict";
 
-var path = require("path"),
-    _ = require("lodash"),
-    detectTestFileExtensionPrefix = require("../pckg/detectTestFileExtensionPrefix"),
+var detectTestFileExtensionPrefix = require("../pckg/detectTestFileExtensionPrefix"),
     glob = require("glob"),
     globSpread = require("../globSpread"),
     isSilent = require("../pckg/isSilent"),
     mocha = require("gulp-mocha"),
+    noop = require("lodash/utility/noop"),
+    path = require("path"),
     Promise = require("bluebird");
 
 function selectReporter(pckg) {
     if (isSilent(pckg)) {
-        return _.noop;
+        return noop;
     }
 
     return "dot";

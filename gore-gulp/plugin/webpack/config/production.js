@@ -8,7 +8,7 @@
 
 "use strict";
 
-var _ = require("lodash"),
+var merge = require("lodash/object/merge"),
     web = require("./web"),
     webpack = require("webpack");
 
@@ -19,7 +19,7 @@ function production(webpackConfig, config, pckg, entries) {
         //     "optimisation.react.inlineElements"
         // ]
     }).then(function (webConfig) {
-        return _.merge(webConfig, {
+        return merge(webConfig, {
             "debug": false,
             "devtool": "source-map",
             "plugins": [

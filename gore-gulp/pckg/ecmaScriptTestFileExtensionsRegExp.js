@@ -8,14 +8,15 @@
 
 "use strict";
 
-var _ = require("lodash"),
-    ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions");
+var ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions"),
+    escapeRegExp = require("lodash/string/escapeRegExp"),
+    filter = require("lodash/collection/filter");
 
 function ecmaScriptTestFileExtensionsRegExp(pckg, prefix) {
     var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),
-        notEmptyExtensions = _.filter(ecmaScriptFileExtensionsList);
+        notEmptyExtensions = filter(ecmaScriptFileExtensionsList);
 
-    return new RegExp("^((?!__fixtures__).)*" + _.escapeRegExp(prefix) + "(" + notEmptyExtensions.join("|") + ")" + "$");
+    return new RegExp("^((?!__fixtures__).)*" + escapeRegExp(prefix) + "(" + notEmptyExtensions.join("|") + ")" + "$");
 }
 
 module.exports = ecmaScriptTestFileExtensionsRegExp;

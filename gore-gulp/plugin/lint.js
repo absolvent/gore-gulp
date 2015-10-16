@@ -8,8 +8,7 @@
 
 "use strict";
 
-var path = require("path"),
-    _ = require("lodash"),
+var CLIEngine = require("eslint").CLIEngine,
     ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern"),
     findPackage = require("../findPackage"),
     fs = require("fs"),
@@ -17,7 +16,8 @@ var path = require("path"),
     globSpread = require("../globSpread"),
     gutil = require("gulp-util"),
     isSilent = require("../pckg/isSilent"),
-    CLIEngine = require("eslint").CLIEngine,
+    keys = require("lodash/object/keys"),
+    path = require("path"),
     Promise = require("bluebird");
 
 function awaitEslintrc(config) {
@@ -74,7 +74,7 @@ module.exports = function (config, pckgPromise) {
 
                 cli = new CLIEngine({
                     "configFile": eslintrc,
-                    "globals": _.keys(pckg.provide),
+                    "globals": keys(pckg.provide),
                     "useEslintrc": false
                 });
 

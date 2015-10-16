@@ -8,10 +8,10 @@
 
 "use strict";
 
-var _ = require("lodash");
+var isArray = require("lodash/lang/isArray");
 
 function libDirs(pckg) {
-    if (_.isArray(pckg.directories.lib)) {
+    if (isArray(pckg.directories.lib)) {
         return pckg.directories.lib;
     }
 

@@ -10,10 +10,10 @@
 
 /* global describe: false, it: false */
 
-var path = require("path"),
-    _ = require("lodash"),
-    gg = require("../index"),
-    Gulp = require("gulp").Gulp;
+var gg = require("../index"),
+    Gulp = require("gulp").Gulp,
+    noop = require("lodash/utility/noop"),
+    path = require("path");
 
 describe("plugin", function () {
     it("allows to attach a custom plugin", function (done) {
@@ -50,7 +50,7 @@ describe("plugin", function () {
             .plugin({
                 "dependencies": ["first"],
                 "factory": function () {
-                    return _.noop;
+                    return noop;
                 },
                 "name": "second"
             })

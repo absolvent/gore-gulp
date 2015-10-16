@@ -10,10 +10,10 @@
 
 /* global describe: false, it: false */
 
-var path = require("path"),
-    _ = require("lodash"),
-    gg = require(path.join(__dirname, "..", "..", "index")),
+var gg = require("../../index"),
     Gulp = require("gulp").Gulp,
+    merge = require("lodash/object/merge"),
+    path = require("path"),
     Promise = require("bluebird");
 
 function runDirectory(baseDir) {
@@ -22,7 +22,7 @@ function runDirectory(baseDir) {
     gg({
         "baseDir": baseDir,
         "override": function (pckg) {
-            return _.merge(pckg, {
+            return merge(pckg, {
                 "config": {
                     "isSilent": true
                 }

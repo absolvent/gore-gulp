@@ -8,17 +8,21 @@
 
 "use strict";
 
-var path = require("path"),
-    _ = require("lodash"),
-    development = require("./config/development"),
+var development = require("./config/development"),
     ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions"),
     ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
+    endsWith = require("lodash/string/endsWith"),
     glob = require("glob"),
     hmr = require("./config/hmr"),
     hotModuleReplacementServer = require("./hotModuleReplacementServer"),
+    kebabCase = require("lodash/string/kebabCase"),
     libDirs = require("../../pckg/libDirs"),
+    map = require("lodash/collection/map"),
+    merge = require("lodash/object/merge"),
+    path = require("path"),
     production = require("./config/production"),
     Promise = require("bluebird"),
+    reduce = require("lodash/collection/reduce"),
     webpack = require("webpack");
 
 function normalizeEntries(config, pckg, libDir, entries) {
@@ -39,13 +43,13 @@ function normalizeEntry(config, pckg, libDir, entry, fileExtensions) {
 
     for (i = 0; i < fileExtensions.length; i += 1) {
         fileExtension = ".entry" + fileExtensions[i];
-        if (_.endsWith(entry, fileExtension)) {
+        if (endsWith(entry, fileExtension)) {
             entryPointStem = path.relative(path.resolve(config.baseDir, libDir), entry);
             // replace all path.sep with spaces for more meaningful slugss
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);
 
-            return _.kebabCase(entryPointStem);
+            return kebabCase(entryPointStem);
         }
     }
 
@@ -78,7 +82,7 @@ function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
             return pckgPromise.then(function (pckg) {
-                return Promise.all(_.map(libDirs(pckg), function (libDir) {
+                return Promise.all(map(libDirs(pckg), function (libDir) {
                     return Promise.fromNode(function (cb) {
                         glob(path.resolve(config.baseDir, libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
                     }).then(function (entries) {
@@ -87,8 +91,8 @@ function setupVariant(variant) {
                 })).then(function (entries) {
                     return [
                         pckg,
-                        _.reduce(entries, function (acc, entry) {
-                            return _.merge(acc, entry);
+                        reduce(entries, function (acc, entry) {
+                            return merge(acc, entry);
                         }, {})
                     ];
                 });

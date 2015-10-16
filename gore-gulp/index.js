@@ -8,11 +8,14 @@
 
 "use strict";
 
-var path = require("path"),
-    _ = require("lodash"),
-    deprecate = require("deprecate"),
+var deprecate = require("deprecate"),
     fs = require("fs"),
+    identity = require("lodash/utility/identity"),
+    isEmpty = require("lodash/lang/isEmpty"),
     lint = require("./plugin/lint"),
+    merge = require("lodash/object/merge"),
+    noop = require("lodash/utility/noop"),
+    path = require("path"),
     pckg = require("../package.json"),
     Promise = require("bluebird"),
     test = require("./plugin/test"),
@@ -40,7 +43,7 @@ function setup(options, pckgPromise, plugins, gulp) {
 }
 
 function setupDependencies(config, dependencies) {
-    if (!_.isEmpty(config.dependencies)) {
+    if (!isEmpty(config.dependencies)) {
         return config.dependencies.concat(dependencies);
     }
 
@@ -68,9 +71,9 @@ module.exports = function (config) {
         };
     }
 
-    config = _.merge({
+    config = merge({
         "dependencies": [],
-        "override": _.identity
+        "override": identity
     }, config);
 
     pckgPromise = Promise.fromNode(function (cb) {
@@ -135,7 +138,7 @@ module.exports = function (config) {
             "dependencies": [
                 "webpack.production"
             ],
-            "factory": _.noop,
+            "factory": noop,
             "name": "webpack"
         });
     } else {
@@ -143,7 +146,7 @@ module.exports = function (config) {
             "dependencies": [
                 "webpack.development"
             ],
-            "factory": _.noop,
+            "factory": noop,
             "name": "webpack"
         });
     }
@@ -152,7 +155,7 @@ module.exports = function (config) {
         "dependencies": [
             "webpack"
         ],
-        "factory": _.noop,
+        "factory": noop,
         "name": "build"
     });
 
@@ -160,7 +163,7 @@ module.exports = function (config) {
         "dependencies": [
             "webpack"
         ],
-        "factory": _.noop,
+        "factory": noop,
         "name": "default"
     });
 
@@ -168,7 +171,7 @@ module.exports = function (config) {
         "dependencies": [
             "webpack.production"
         ],
-        "factory": _.noop,
+        "factory": noop,
         "name": "heroku:production"
     });
 
