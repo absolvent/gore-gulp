@@ -10,10 +10,10 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    detectTestFileExtensionPrefix = require(path.resolve(__dirname, "..", "pckg", "detectTestFileExtensionPrefix")),
+    detectTestFileExtensionPrefix = require("../pckg/detectTestFileExtensionPrefix"),
     glob = require("glob"),
-    globSpread = require(path.resolve(__dirname, "..", "globSpread")),
-    isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
+    globSpread = require("../globSpread"),
+    isSilent = require("../pckg/isSilent"),
     mocha = require("gulp-mocha"),
     Promise = require("bluebird");
 

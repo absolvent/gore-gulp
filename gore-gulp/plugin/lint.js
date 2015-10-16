@@ -10,13 +10,13 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
-    findPackage = require(path.resolve(__dirname, "..", "findPackage")),
+    ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern"),
+    findPackage = require("../findPackage"),
     fs = require("fs"),
     glob = require("glob"),
-    globSpread = require(path.resolve(__dirname, "..", "globSpread")),
+    globSpread = require("../globSpread"),
     gutil = require("gulp-util"),
-    isSilent = require(path.resolve(__dirname, "..", "pckg", "isSilent")),
+    isSilent = require("../pckg/isSilent"),
     CLIEngine = require("eslint").CLIEngine,
     Promise = require("bluebird");
 

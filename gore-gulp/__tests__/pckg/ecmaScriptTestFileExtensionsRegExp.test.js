@@ -11,8 +11,7 @@
 /* global describe: false, it: false */
 
 var assert = require("chai").assert,
-    path = require("path"),
-    ecmaScriptTestFileExtensionsRegExp = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptTestFileExtensionsRegExp"));
+    ecmaScriptTestFileExtensionsRegExp = require("../../pckg/ecmaScriptTestFileExtensionsRegExp");
 
 describe("pckg/ecmaScriptTestFileExtensionsRegExp", function () {
     var regExp = ecmaScriptTestFileExtensionsRegExp({}, ".karma");

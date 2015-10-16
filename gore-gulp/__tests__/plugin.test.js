@@ -12,7 +12,7 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    gg = require(path.resolve(__dirname, "..", "index")),
+    gg = require("../index"),
     Gulp = require("gulp").Gulp;
 
 describe("plugin", function () {

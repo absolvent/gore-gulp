@@ -10,9 +10,9 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "..", "pckg", "ecmaScriptFileExtensions")),
-    findPackage = require(path.resolve(__dirname, "..", "..", "findPackage")),
-    libDirs = require(path.resolve(__dirname, "..", "..", "pckg", "libDirs")),
+    ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions"),
+    findPackage = require("../../../findPackage"),
+    libDirs = require("../../../pckg/libDirs"),
     Promise = require("bluebird");
 
 function babel(webpackConfig, config, pckg, babelOverride) {

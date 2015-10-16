@@ -8,9 +8,8 @@
 
 "use strict";
 
-var path = require("path"),
-    express = require("express"),
-    pckgPublicPath = require(path.resolve(__dirname, "..", "pckg/publicPath")),
+var express = require("express"),
+    pckgPublicPath = require("../../pckg/publicPath"),
     Promise = require("bluebird"),
     webpack = require("webpack"),
     webpackDevMiddleware = require("webpack-dev-middleware"),

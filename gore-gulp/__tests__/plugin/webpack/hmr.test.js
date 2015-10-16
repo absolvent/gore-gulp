@@ -11,10 +11,10 @@
 /* global describe: false, it: false */
 
 var path = require("path"),
-    gg = require(path.resolve(__dirname, "..", "..", "..", "index")),
+    gg = require("../../../index"),
     Gulp = require("gulp").Gulp;
 
-describe.skip("webpack/hmr", function () {
+describe("webpack/hmr", function () {
     it("runs hot module replacement server and serves compiled bundle", function (done) {
         var gulpInstance = new Gulp();
 

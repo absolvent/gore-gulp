@@ -9,9 +9,8 @@
 "use strict";
 
 var _ = require("lodash"),
-    path = require("path"),
-    pckgPublicPath = require(path.resolve(__dirname, "..", "..", "pckg", "publicPath")),
-    web = require(path.resolve(__dirname, "web")),
+    pckgPublicPath = require("../../../pckg/publicPath"),
+    web = require("./web"),
     webpack = require("webpack");
 
 function hmr(webpackConfig, config, pckg, entries) {

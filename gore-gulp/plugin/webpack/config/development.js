@@ -9,8 +9,7 @@
 "use strict";
 
 var _ = require("lodash"),
-    path = require("path"),
-    web = require(path.resolve(__dirname, "web"));
+    web = require("./web");
 
 function development(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {

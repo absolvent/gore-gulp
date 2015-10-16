@@ -10,14 +10,14 @@
 
 var path = require("path"),
     _ = require("lodash"),
-    development = require(path.resolve(__dirname, "..", "webpack", "config", "development")),
-    ecmaScriptFileExtensions = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensions")),
-    ecmaScriptFileExtensionsGlobPattern = require(path.resolve(__dirname, "..", "pckg", "ecmaScriptFileExtensionsGlobPattern")),
+    development = require("./config/development"),
+    ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions"),
+    ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
     glob = require("glob"),
-    hmr = require(path.resolve(__dirname, "..", "webpack", "config", "hmr")),
-    hotModuleReplacementServer = require(path.resolve(__dirname, "..", "webpack", "hotModuleReplacementServer")),
-    libDirs = require(path.resolve(__dirname, "..", "pckg", "libDirs")),
-    production = require(path.resolve(__dirname, "..", "webpack", "config", "production")),
+    hmr = require("./config/hmr"),
+    hotModuleReplacementServer = require("./hotModuleReplacementServer"),
+    libDirs = require("../../pckg/libDirs"),
+    production = require("./config/production"),
     Promise = require("bluebird"),
     webpack = require("webpack");
 

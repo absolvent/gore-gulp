@@ -10,8 +10,7 @@
 
 /* global describe: false */
 
-var path = require("path"),
-    common = require(path.resolve(__dirname, "common"));
+var common = require("./common");
 
 describe("webpack/development", function () {
     common.setup("webpack.development");

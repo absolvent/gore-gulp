@@ -9,8 +9,7 @@
 "use strict";
 
 var _ = require("lodash"),
-    path = require("path"),
-    ecmaScriptFileExtensions = require(path.resolve(__dirname, "ecmaScriptFileExtensions"));
+    ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions");
 
 function ecmaScriptTestFileExtensionsRegExp(pckg, prefix) {
     var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),

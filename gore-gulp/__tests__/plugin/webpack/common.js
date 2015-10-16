@@ -17,7 +17,7 @@ var path = require("path"),
     assert = require("chai").assert,
     fixtureDir = path.resolve(__dirname, "..", "..", "..", "__fixtures__"),
     fs = require("fs"),
-    gg = require(path.resolve(__dirname, "..", "..", "..", "index")),
+    gg = require("../../../index"),
     tmp = require("tmp");
 
 function doFiles(paths, cb) {

@@ -10,7 +10,7 @@
 
 var _ = require("lodash"),
     path = require("path"),
-    babel = require(path.resolve(__dirname, "babel")),
+    babel = require("./babel"),
     webpack = require("webpack");
 
 function web(webpackConfig, config, pckg, entries, babelOverride) {

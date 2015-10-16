@@ -13,7 +13,7 @@
 var path = require("path"),
     _ = require("lodash"),
     assert = require("chai").assert,
-    gg = require(path.resolve(__dirname, "..")),
+    gg = require(".."),
     Gulp = require("gulp").Gulp,
     sinon = require("sinon");
 

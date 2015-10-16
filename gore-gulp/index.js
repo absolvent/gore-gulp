@@ -12,11 +12,11 @@ var path = require("path"),
     _ = require("lodash"),
     deprecate = require("deprecate"),
     fs = require("fs"),
-    lint = require(path.resolve(__dirname, "plugin", "lint")),
-    pckg = require(path.resolve(__dirname, "..", "package.json")),
+    lint = require("./plugin/lint"),
+    pckg = require("../package.json"),
     Promise = require("bluebird"),
-    test = require(path.resolve(__dirname, "plugin", "test")),
-    webpack = require(path.resolve(__dirname, "plugin", "webpack"));
+    test = require("./plugin/test"),
+    webpack = require("./plugin/webpack");
 
 function setup(options, pckgPromise, plugins, gulp) {
     var name;
