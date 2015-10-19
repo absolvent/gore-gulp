@@ -26,14 +26,14 @@ function hotModuleReplacementServer(config, pckg, entries, webpackConfig) {
     app.use(webpackHotMiddleware(compiler));
 
     return new Promise(function (resolve, reject) {
-        app.listen(3000, "localhost", function (err) {
+        var server = app.listen(3000, "localhost", function (err) {
             if (err) {
                 reject(err);
 
                 return;
             }
 
-            resolve(app);
+            resolve(server);
         });
     });
 }

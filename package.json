@@ -30,7 +30,8 @@
         "webpack-hot-middleware": "2.x"
     },
     "devDependencies": {
-        "react": "0.x"
+        "react": "0.x",
+        "request": "^2.65.0"
     },
     "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
     "directories": {

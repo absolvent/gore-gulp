@@ -74,6 +74,12 @@ function setupHotModuleReplacementServer(config, pckgPromise) {
     return function () {
         return setupVariant(hmr)(config, pckgPromise)().spread(function (pckg, entries, webpackConfig) {
             return hotModuleReplacementServer(config, pckg, entries, webpackConfig);
+        }).then(function (httpServer) {
+            if (config.onStart) {
+                return config.onStart(httpServer);
+            }
+
+            return httpServer;
         });
     };
 }
