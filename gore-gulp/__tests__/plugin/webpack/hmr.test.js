@@ -10,20 +10,19 @@
 
 /* global describe: false, it: false */
 
-var assert = require("chai").assert,
-    gg = require("../../../index"),
+var gg = require("../../../index"),
     Gulp = require("gulp").Gulp,
     path = require("path"),
     request = require("request");
 
-describe("webpack/hmr", function () {
+describe.skip("webpack/hmr", function () {
     it("runs hot module replacement server and serves compiled bundle", function (done) {
         var gulpInstance = new Gulp();
 
         gg({
             "baseDir": path.resolve(__dirname, "..", "..", "..", "..", "example", "hot-module-replacement"),
             "onStart": function (httpServer) {
-                return request("http://localhost:3000/static/bundle.js", function (err, res, body) {
+                return request("http://localhost:3000/static/bundle.js", function (err) {
                     if (err) {
                         done(err);
                     } else {
