@@ -13,7 +13,7 @@ var merge = require("lodash/object/merge"),
 
 function development(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {
-        return merge(webConfig, {
+        return merge({}, webConfig, {
             "debug": true,
             "devtool": "cheap-source-map"
         });

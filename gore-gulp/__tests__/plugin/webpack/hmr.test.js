@@ -19,17 +19,21 @@ describe.skip("webpack/hmr", function () {
     it("runs hot module replacement server and serves compiled bundle", function (done) {
         var gulpInstance = new Gulp();
 
+        this.timeout(0);
+
         gg({
             "baseDir": path.resolve(__dirname, "..", "..", "..", "..", "example", "hot-module-replacement"),
             "onStart": function (httpServer) {
-                return request("http://localhost:3000/static/bundle.js", function (err) {
+                return request("http://localhost:3000/static/example.index.min.js", function (err) {
+                    console.log(arguments);
+
                     if (err) {
                         done(err);
                     } else {
                         httpServer.listen("close", done);
                     }
 
-                    httpServer.close();
+                    // httpServer.close();
                 });
             }
         }).setup(gulpInstance);

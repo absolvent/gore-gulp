@@ -15,7 +15,7 @@ var babel = require("./babel"),
 
 function web(webpackConfig, config, pckg, entries, babelOverride) {
     return babel(webpackConfig, config, pckg, babelOverride).then(function (babelConfig) {
-        return merge(babelConfig, {
+        return merge({}, babelConfig, {
             "entry": entries,
             "output": {
                 "filename": pckg.name + ".[name].min.js",

@@ -8,17 +8,17 @@
 
 "use strict";
 
-var merge = require("lodash/object/merge"),
+var mapValues = require("lodash/object/mapValues"),
+    merge = require("lodash/object/merge"),
     pckgPublicPath = require("../../../pckg/publicPath"),
     web = require("./web"),
     webpack = require("webpack");
 
 function hmr(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
-        return merge(webConfig, {
+        var hmrConfig = merge({}, webConfig, {
             "devtool": "eval",
             "output": {
-                "filename": "bundle.js",
                 "publicPath": pckgPublicPath(pckg)
             },
             "plugins": [
@@ -26,6 +26,18 @@ function hmr(webpackConfig, config, pckg, entries) {
                 new webpack.NoErrorsPlugin()
             ]
         });
+
+        hmrConfig.entry = normalizeEntriesForHmr(hmrConfig.entry);
+
+        return hmrConfig;
+    });
+}
+
+function normalizeEntriesForHmr(entries) {
+    return mapValues(entries, function (entry) {
+        return [
+            "webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr"
+        ].concat(entry);
     });
 }
 

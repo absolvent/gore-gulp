@@ -19,7 +19,7 @@ function production(webpackConfig, config, pckg, entries) {
         //     "optimisation.react.inlineElements"
         // ]
     }).then(function (webConfig) {
-        return merge(webConfig, {
+        return merge({}, webConfig, {
             "debug": false,
             "devtool": "source-map",
             "plugins": [

@@ -22,7 +22,7 @@ function babel(webpackConfig, config, pckg, babelOverride) {
         "babel-loader": findPackage(config, "babel-loader"),
         "imports-loader": findPackage(config, "imports-loader")
     }).then(function (results) {
-        return merge(webpackConfig, {
+        return merge({}, webpackConfig, {
             "bail": true,
             "externals": pckg.externals,
             "module": {
