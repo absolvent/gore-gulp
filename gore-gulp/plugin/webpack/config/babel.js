@@ -40,6 +40,7 @@ function babel(webpackConfig, config, pckg, babelOverride) {
                                 "es6.templateLiterals"
                             ],
                             "optional": [
+                                "es7.classProperties",
                                 "utility.inlineEnvironmentVariables",
                                 "validation.react"
                             ]
