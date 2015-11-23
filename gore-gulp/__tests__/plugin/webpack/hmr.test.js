@@ -25,8 +25,6 @@ describe.skip("webpack/hmr", function () {
             "baseDir": path.resolve(__dirname, "..", "..", "..", "..", "example", "hot-module-replacement"),
             "onStart": function (httpServer) {
                 return request("http://localhost:3000/static/example.index.min.js", function (err) {
-                    console.log(arguments);
-
                     if (err) {
                         done(err);
                     } else {

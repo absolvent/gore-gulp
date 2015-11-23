@@ -24,6 +24,7 @@ function web(webpackConfig, config, pckg, entries, babelOverride) {
             "plugins": [
                 new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
                 new webpack.optimize.CommonsChunkPlugin({
+                    "name": pckg.name,
                     "filename": pckg.name + ".common.min.js"
                 })
             ]
