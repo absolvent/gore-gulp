@@ -56,8 +56,8 @@ function runDirectory(baseDir, variant) {
     gg({
         "baseDir": baseDir,
         "override": function (pckg) {
-            return Promise.fromNode(tmp.dir).spread(function (tmpDir) {
-                distDir = path.join(tmpDir, pckg.directories.dist);
+            return Promise.fromNode(tmp.dir).then(function (tmpDir) {
+                distDir = path.resolve(tmpDir, pckg.directories.dist);
 
                 return merge(pckg, {
                     "config": {

@@ -34,15 +34,12 @@ function babel(webpackConfig, config, pckg, babelOverride) {
                         "test": /\.jsx?$/,
                         "loader": results["babel-loader"],
                         "query": merge({
-                            "loose": [
-                                "es6.modules",
-                                "es6.properties.computed",
-                                "es6.templateLiterals"
+                            "plugins": [
+                                "syntax-jsx"
                             ],
-                            "optional": [
-                                "es7.classProperties",
-                                "utility.inlineEnvironmentVariables",
-                                "validation.react"
+                            "presets": [
+                                "es2015",
+                                "react"
                             ]
                         }, babelOverride)
                     }

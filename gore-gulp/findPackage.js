@@ -8,8 +8,7 @@
 
 "use strict";
 
-var first = require("lodash/array/first"),
-    Promise = require("bluebird"),
+var Promise = require("bluebird"),
     resolve = require("resolve");
 
 function promisifiedResolve(baseDir, name) {
@@ -23,8 +22,6 @@ function promisifiedResolve(baseDir, name) {
 function findPackage(config, name) {
     return promisifiedResolve(config.baseDir, name).catch(function () {
         return promisifiedResolve(__dirname, name);
-    }).then(function (result) {
-        return first(result);
     });
 }
 
