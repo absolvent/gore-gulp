@@ -9,11 +9,10 @@
         "bluebird": "^3.0.5",
         "chai": "^3.4.1",
         "deprecate": "^0.1.0",
-        "eslint": "^1.10.1",
         "eslint-config-goreutils": "^0.5.1",
-        "eslint-plugin-react": "^3.10.0",
         "express": "^4.13.3",
         "glob": "^6.0.1",
+        "gore-eslint": "^1.4.1",
         "gulp": "^3.9.0",
         "gulp-if": "^2.0.0",
         "gulp-mocha": "^2.2.0",
@@ -59,5 +58,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.11.0"
+    "version": "0.11.1"
 }

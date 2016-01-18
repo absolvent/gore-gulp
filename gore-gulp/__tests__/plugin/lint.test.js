@@ -45,7 +45,7 @@ describe("lint", function () {
                 done(new Error("Linter should detect errors!"));
             })
             .catch(function (err) {
-                if ("ESLint" === err.err.plugin) {
+                if ("gore-eslint" === err.err.plugin) {
                     done();
                 } else {
                     done(err);
