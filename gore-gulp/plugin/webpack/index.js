@@ -13,8 +13,6 @@ var development = require("./config/development"),
     ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
     endsWith = require("lodash/endsWith"),
     glob = require("glob"),
-    hmr = require("./config/hmr"),
-    hotModuleReplacementServer = require("./hotModuleReplacementServer"),
     kebabCase = require("lodash/kebabCase"),
     libDirs = require("../../pckg/libDirs"),
     map = require("lodash/map"),
@@ -70,20 +68,6 @@ function run(pckg, entries, webpackConfig) {
     });
 }
 
-function setupHotModuleReplacementServer(config, pckgPromise) {
-    return function () {
-        return setupVariant(hmr)(config, pckgPromise)().spread(function (pckg, entries, webpackConfig) {
-            return hotModuleReplacementServer(config, pckg, entries, webpackConfig);
-        }).then(function (httpServer) {
-            if (config.onStart) {
-                return config.onStart(httpServer);
-            }
-
-            return httpServer;
-        });
-    };
-}
-
 function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
@@ -117,6 +101,5 @@ function setupVariant(variant) {
 
 module.exports = {
     "development": setupVariant(development),
-    "hmr": setupHotModuleReplacementServer,
     "production": setupVariant(production)
 };

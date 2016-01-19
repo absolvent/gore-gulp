@@ -12,7 +12,6 @@
 
 var gg = require("../../index"),
     Gulp = require("gulp").Gulp,
-    merge = require("lodash/merge"),
     path = require("path"),
     Promise = require("bluebird");
 
@@ -20,14 +19,7 @@ function runDirectory(baseDir) {
     var gulpInstance = new Gulp();
 
     gg({
-        "baseDir": baseDir,
-        "override": function (pckg) {
-            return merge(pckg, {
-                "config": {
-                    "isSilent": true
-                }
-            });
-        }
+        "baseDir": baseDir
     }).setup(gulpInstance);
 
     return new Promise(function (resolve, reject) {

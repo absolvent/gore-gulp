@@ -60,9 +60,6 @@ function runDirectory(baseDir, variant) {
                 distDir = path.resolve(tmpDir, pckg.directories.dist);
 
                 return merge(pckg, {
-                    "config": {
-                        "isSilent": true
-                    },
                     "directories": {
                         "dist": distDir
                     }

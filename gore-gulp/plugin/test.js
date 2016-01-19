@@ -8,49 +8,14 @@
 
 "use strict";
 
-var detectTestFileExtensionPrefix = require("../pckg/detectTestFileExtensionPrefix"),
-    glob = require("glob"),
-    globSpread = require("../globSpread"),
-    isSilent = require("../pckg/isSilent"),
-    mocha = require("gulp-mocha"),
-    noop = require("lodash/noop"),
-    path = require("path"),
-    Promise = require("bluebird");
+var globSpread = require("../globSpread"),
+    mocha = require("gore-mocha"),
+    path = require("path");
 
-function selectReporter(pckg) {
-    if (isSilent(pckg)) {
-        return noop;
-    }
-
-    return "dot";
-}
-
-module.exports = function (config, pckgPromise, gulp) {
+module.exports = function (config, pckgPromise) {
     return function () {
         return pckgPromise.then(function (pckg) {
-            var testFileExtensionPrefix = detectTestFileExtensionPrefix(pckg);
-
-            return Promise.props({
-                "pckg": pckg,
-                "testFiles": Promise.fromNode(function (cb) {
-                    glob(path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "*" + testFileExtensionPrefix + ".js"), cb);
-                })
-            });
-        }).then(function (results) {
-            if (results.testFiles.length < 1) {
-                // do not bother
-                return Promise.resolve();
-            }
-
-            return new Promise(function (resolve, reject) {
-                gulp.src(results.testFiles)
-                    .pipe(mocha({
-                        "bail": true,
-                        "reporter": selectReporter(results.pckg)
-                    }))
-                    .on("error", reject)
-                    .on("end", resolve);
-            });
+            return mocha(path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "*.test.js"));
         });
     };
 };
