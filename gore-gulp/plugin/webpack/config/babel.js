@@ -35,7 +35,7 @@ function babel(webpackConfig, config, pckg, babelOverride) {
                         "loader": results["babel-loader"],
                         "query": merge({
                             "plugins": [
-                                "syntax-jsx"
+                                require.resolve("babel-plugin-syntax-jsx")
                             ],
                             "presets": [
                                 "es2015",
