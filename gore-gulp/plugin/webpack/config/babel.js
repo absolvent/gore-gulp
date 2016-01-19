@@ -38,8 +38,8 @@ function babel(webpackConfig, config, pckg, babelOverride) {
                                 require.resolve("babel-plugin-syntax-jsx")
                             ],
                             "presets": [
-                                "es2015",
-                                "react"
+                                require.resolve("babel-preset-es2015"),
+                                require.resolve("babel-preset-react")
                             ]
                         }, babelOverride)
                     }
