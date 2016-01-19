@@ -8,8 +8,8 @@
 
 "use strict";
 
-var mapValues = require("lodash/object/mapValues"),
-    merge = require("lodash/object/merge"),
+var mapValues = require("lodash/mapValues"),
+    merge = require("lodash/merge"),
     pckgPublicPath = require("../../../pckg/publicPath"),
     web = require("./web"),
     webpack = require("webpack");

@@ -12,7 +12,7 @@
 
 var gg = require("../../index"),
     Gulp = require("gulp").Gulp,
-    merge = require("lodash/object/merge"),
+    merge = require("lodash/merge"),
     path = require("path"),
     Promise = require("bluebird");
 

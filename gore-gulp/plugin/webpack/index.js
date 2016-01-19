@@ -11,18 +11,18 @@
 var development = require("./config/development"),
     ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions"),
     ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
-    endsWith = require("lodash/string/endsWith"),
+    endsWith = require("lodash/endsWith"),
     glob = require("glob"),
     hmr = require("./config/hmr"),
     hotModuleReplacementServer = require("./hotModuleReplacementServer"),
-    kebabCase = require("lodash/string/kebabCase"),
+    kebabCase = require("lodash/kebabCase"),
     libDirs = require("../../pckg/libDirs"),
-    map = require("lodash/collection/map"),
-    merge = require("lodash/object/merge"),
+    map = require("lodash/map"),
+    merge = require("lodash/merge"),
     path = require("path"),
     production = require("./config/production"),
     Promise = require("bluebird"),
-    reduce = require("lodash/collection/reduce"),
+    reduce = require("lodash/reduce"),
     webpack = require("webpack");
 
 function normalizeEntries(config, pckg, libDir, entries) {

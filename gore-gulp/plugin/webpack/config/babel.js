@@ -10,10 +10,10 @@
 
 var ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions"),
     findPackage = require("../../../findPackage"),
-    isArray = require("lodash/lang/isArray"),
+    isArray = require("lodash/isArray"),
     libDirs = require("../../../pckg/libDirs"),
-    map = require("lodash/collection/map"),
-    merge = require("lodash/object/merge"),
+    map = require("lodash/map"),
+    merge = require("lodash/merge"),
     path = require("path"),
     Promise = require("bluebird");
 

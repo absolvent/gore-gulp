@@ -13,7 +13,7 @@
 var assert = require("chai").assert,
     gg = require(".."),
     Gulp = require("gulp").Gulp,
-    noop = require("lodash/utility/noop"),
+    noop = require("lodash/noop"),
     path = require("path"),
     sinon = require("sinon");
 

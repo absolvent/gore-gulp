@@ -8,7 +8,7 @@
 
 "use strict";
 
-var isArray = require("lodash/lang/isArray");
+var isArray = require("lodash/isArray");
 
 function globSpread(pattern) {
     if (isArray(pattern)) {

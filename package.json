@@ -12,15 +12,15 @@
         "eslint-config-goreutils": "^0.5.1",
         "express": "^4.13.3",
         "glob": "^6.0.1",
-        "gore-eslint": "^1.4.1",
+        "gore-eslint": "^1.4.3",
         "gulp": "^3.9.0",
         "gulp-if": "^2.0.0",
         "gulp-mocha": "^2.2.0",
         "gulp-util": "^3.0.7",
         "imports-loader": "^0.6.5",
-        "lodash": "^3.10.1",
+        "lodash": "^4.0.0",
         "mocha": "^2.3.4",
-        "mustache": "^2.2.0",
+        "mustache": "^2.2.1",
         "node-libs-browser": "^0.5.3",
         "path-is-absolute": "^1.0.0",
         "resolve": "^1.1.6",
@@ -58,5 +58,5 @@
     "scripts": {
         "test": "gulp test"
     },
-    "version": "0.11.1"
+    "version": "0.11.2"
 }

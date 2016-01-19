@@ -9,8 +9,8 @@
 "use strict";
 
 var ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions"),
-    escapeRegExp = require("lodash/string/escapeRegExp"),
-    filter = require("lodash/collection/filter");
+    escapeRegExp = require("lodash/escapeRegExp"),
+    filter = require("lodash/filter");
 
 function ecmaScriptTestFileExtensionsRegExp(pckg, prefix) {
     var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),

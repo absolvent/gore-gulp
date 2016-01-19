@@ -13,7 +13,7 @@ var detectTestFileExtensionPrefix = require("../pckg/detectTestFileExtensionPref
     globSpread = require("../globSpread"),
     isSilent = require("../pckg/isSilent"),
     mocha = require("gulp-mocha"),
-    noop = require("lodash/utility/noop"),
+    noop = require("lodash/noop"),
     path = require("path"),
     Promise = require("bluebird");
 

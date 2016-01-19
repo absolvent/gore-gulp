@@ -9,7 +9,7 @@
 "use strict";
 
 var ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions"),
-    filter = require("lodash/collection/filter");
+    filter = require("lodash/filter");
 
 function ecmaScriptFileExtensionsGlobPattern(pckg) {
     var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),

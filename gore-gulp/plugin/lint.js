@@ -12,7 +12,7 @@ var ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensi
     eslint = require("gore-eslint"),
     fs = require("fs"),
     globSpread = require("../globSpread"),
-    keys = require("lodash/object/keys"),
+    keys = require("lodash/keys"),
     path = require("path"),
     Promise = require("bluebird");
 
