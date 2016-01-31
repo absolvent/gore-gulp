@@ -9,7 +9,7 @@
 "use strict";
 
 var ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern"),
-    eslint = require("gore-eslint"),
+    eslint = require("space-preconfigured-eslint"),
     fs = require("fs"),
     globSpread = require("../globSpread"),
     keys = require("lodash/keys"),

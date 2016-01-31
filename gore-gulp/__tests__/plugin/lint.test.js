@@ -37,7 +37,7 @@ describe("lint", function () {
                 done(new Error("Linter should detect errors!"));
             })
             .catch(function (err) {
-                if ("gore-eslint" === err.err.plugin) {
+                if ("space-preconfigured-eslint" === err.err.plugin) {
                     done();
                 } else {
                     done(err);
