@@ -21,7 +21,7 @@ function production(webpackConfig, config, pckg, entries) {
     }).then(function (webConfig) {
         return merge({}, webConfig, {
             "debug": false,
-            "devtool": "source-map",
+            "devtool": config.productionDevtool || "source-map",
             "plugins": [
                 new webpack.optimize.UglifyJsPlugin()
             ]
