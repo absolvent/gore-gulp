@@ -8,8 +8,6 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "bluebird": "^3.3.4",
-    "chai": "^3.5.0",
-    "deprecate": "^0.1.0",
     "eslint-config-goreutils": "^0.5.1",
     "glob": "^7.0.3",
     "gulp": "^3.9.1",
@@ -17,13 +15,13 @@
     "lodash": "^4.7.0",
     "resolve": "^1.1.7",
     "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0",
     "space-preconfigured-eslint": "^1.4.11",
     "space-preconfigured-mocha": "^1.1.2",
     "tmp": "^0.0.28",
     "webpack": "^1.12.14"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "react": "^0.14.8",
     "request": "^2.69.0"
   },

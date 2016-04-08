@@ -8,7 +8,6 @@
 
 "use strict";
 
-const deprecate = require("deprecate");
 const fs = require("fs");
 const identity = require("lodash/identity");
 const isEmpty = require("lodash/isEmpty");
@@ -16,7 +15,6 @@ const lint = require("./plugin/lint");
 const merge = require("lodash/merge");
 const noop = require("lodash/noop");
 const path = require("path");
-const pckg = require("../package.json");
 const Promise = require("bluebird");
 const test = require("./plugin/test");
 const webpack = require("./plugin/webpack");
@@ -27,17 +25,6 @@ function setup(options, pckgPromise, plugins, gulp) {
             gulp.task(name, plugins[name].dependencies, plugins[name].task(gulp));
         }
     }
-
-    gulp.task("webpack.full", [
-        "webpack.production"
-    ], function () {
-        deprecate(pckg.name + " - webpack.full task is deprecated, please use webpack.production instead");
-    });
-    gulp.task("webpack.quick", [
-        "webpack.development"
-    ], function () {
-        deprecate(pckg.name + " - webpack.quick task is deprecated, please use webpack.development instead");
-    });
 }
 
 function setupDependencies(config, dependencies) {
@@ -155,14 +142,6 @@ module.exports = function (config) {
         ],
         "factory": noop,
         "name": "default"
-    });
-
-    plugin({
-        "dependencies": [
-            "webpack.production"
-        ],
-        "factory": noop,
-        "name": "heroku:production"
     });
 
     return ret;
