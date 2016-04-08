@@ -8,7 +8,7 @@
 
 "use strict";
 
-var development = require("./config/development"),
+var development = require("./config/babel/web/development"),
     ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions"),
     ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
     endsWith = require("lodash/endsWith"),
@@ -18,7 +18,7 @@ var development = require("./config/development"),
     map = require("lodash/map"),
     merge = require("lodash/merge"),
     path = require("path"),
-    production = require("./config/production"),
+    production = require("./config/babel/web/production"),
     Promise = require("bluebird"),
     reduce = require("lodash/reduce"),
     webpack = require("webpack");

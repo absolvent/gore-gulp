@@ -9,7 +9,7 @@
 "use strict";
 
 var merge = require("lodash/merge"),
-    web = require("./web"),
+    web = require("../web"),
     webpack = require("webpack");
 
 function production(webpackConfig, config, pckg, entries) {
@@ -22,14 +22,14 @@ function production(webpackConfig, config, pckg, entries) {
         return merge({}, webConfig, {
             "debug": false,
             "devtool": config.productionDevtool || "source-map",
-            "plugins": [
+            "plugins": webConfig.plugins.concat([
                 new webpack.DefinePlugin({
                     "process.env": {
                         "NODE_ENV": JSON.stringify("production")
                     }
                 }),
                 new webpack.optimize.UglifyJsPlugin()
-            ]
+            ])
         });
     });
 }

@@ -8,7 +8,7 @@
 
 "use strict";
 
-var babel = require("./babel"),
+var babel = require("../babel"),
     merge = require("lodash/merge"),
     path = require("path"),
     webpack = require("webpack");
