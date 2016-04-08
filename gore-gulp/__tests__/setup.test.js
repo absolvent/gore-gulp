@@ -11,6 +11,7 @@
 /* global afterEach:false, beforeEach: false, describe: false, it: false */
 
 var assert = require("chai").assert,
+    config = require("./config"),
     gg = require(".."),
     Gulp = require("gulp").Gulp,
     noop = require("lodash/noop"),
@@ -20,6 +21,8 @@ var assert = require("chai").assert,
 describe("setup", function () {
     var fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1"),
         previousNodeEnv;
+
+    this.timeout(config.timeout);
 
     function doTestWebpackSetup(done, environment, taskName) {
         var gulpInstance = new Gulp();

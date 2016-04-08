@@ -10,7 +10,8 @@
 
 /* global describe: false, it: false */
 
-var gg = require("../../index"),
+var config = require("../config"),
+    gg = require("../../index"),
     Gulp = require("gulp").Gulp,
     path = require("path"),
     Promise = require("bluebird");
@@ -31,6 +32,8 @@ function runDirectory(baseDir) {
 }
 
 describe("lint", function () {
+    this.timeout(config.timeout);
+
     it("detects code flaws", function (done) {
         runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
             .then(function () {

@@ -10,12 +10,15 @@
 
 /* global describe: false, it: false */
 
-var gg = require("../index"),
+var config = require("./config"),
+    gg = require("../index"),
     Gulp = require("gulp").Gulp,
     noop = require("lodash/noop"),
     path = require("path");
 
 describe("plugin", function () {
+    this.timeout(config.timeout);
+
     it("allows to attach a custom plugin", function (done) {
         var gulpInstance = new Gulp();
 

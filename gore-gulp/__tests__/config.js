@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015-present, goreutils
+ * Copyright (c) 2016-present, goreutils
  * All rights reserved.
  *
  * This source code is licensed under the MIT-style license found in the
@@ -8,7 +8,6 @@
 
 "use strict";
 
-/* global describe: false */
-
-describe.skip("test", function () {
-});
+module.exports = {
+    "timeout": 15000
+};

@@ -10,10 +10,13 @@
 
 /* global describe: false, it: false */
 
-var path = require("path"),
-    common = require("./plugin/webpack/common");
+var config = require("./config"),
+    common = require("./plugin/webpack/common"),
+    path = require("path");
 
 describe("example", function () {
+    this.timeout(config.timeout);
+
     it("tests example basic package", function (done) {
         common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
             .then(common.expectFiles([
