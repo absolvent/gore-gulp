@@ -8,26 +8,25 @@
 
 "use strict";
 
-var development = require("./config/babel/web/development"),
-    ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions"),
-    ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern"),
-    endsWith = require("lodash/endsWith"),
-    glob = require("glob"),
-    kebabCase = require("lodash/kebabCase"),
-    libDirs = require("../../pckg/libDirs"),
-    map = require("lodash/map"),
-    merge = require("lodash/merge"),
-    path = require("path"),
-    production = require("./config/babel/web/production"),
-    Promise = require("bluebird"),
-    reduce = require("lodash/reduce"),
-    webpack = require("webpack");
+const development = require("./config/babel/web/development");
+const ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions");
+const ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern");
+const endsWith = require("lodash/endsWith");
+const glob = require("glob");
+const kebabCase = require("lodash/kebabCase");
+const libDirs = require("../../pckg/libDirs");
+const map = require("lodash/map");
+const merge = require("lodash/merge");
+const path = require("path");
+const production = require("./config/babel/web/production");
+const Promise = require("bluebird");
+const reduce = require("lodash/reduce");
+const webpack = require("webpack");
 
 function normalizeEntries(config, pckg, libDir, entries) {
-    var i,
-        ret = {};
+    const ret = {};
 
-    for (i = 0; i < entries.length; i += 1) {
+    for (let i = 0; i < entries.length; i += 1) {
         ret[normalizeEntry(config, pckg, libDir, entries[i], ecmaScriptFileExtensions(pckg))] = entries[i];
     }
 
@@ -35,14 +34,10 @@ function normalizeEntries(config, pckg, libDir, entries) {
 }
 
 function normalizeEntry(config, pckg, libDir, entry, fileExtensions) {
-    var i,
-        entryPointStem,
-        fileExtension;
-
-    for (i = 0; i < fileExtensions.length; i += 1) {
-        fileExtension = ".entry" + fileExtensions[i];
+    for (let i = 0; i < fileExtensions.length; i += 1) {
+        let fileExtension = ".entry" + fileExtensions[i];
         if (endsWith(entry, fileExtension)) {
-            entryPointStem = path.relative(path.resolve(config.baseDir, libDir), entry);
+            let entryPointStem = path.relative(path.resolve(config.baseDir, libDir), entry);
             // replace all path.sep with spaces for more meaningful slugss
             entryPointStem = entryPointStem.split(path.sep).join(" ");
             entryPointStem = entryPointStem.substr(0, entryPointStem.length - fileExtension.length);

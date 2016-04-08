@@ -8,10 +8,10 @@
 
 "use strict";
 
-var babel = require("../babel"),
-    merge = require("lodash/merge"),
-    path = require("path"),
-    webpack = require("webpack");
+const babel = require("../babel");
+const merge = require("lodash/merge");
+const path = require("path");
+const webpack = require("webpack");
 
 function web(webpackConfig, config, pckg, entries, babelOverride) {
     return babel(webpackConfig, config, pckg, babelOverride).then(function (babelConfig) {

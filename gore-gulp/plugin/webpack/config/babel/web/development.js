@@ -8,8 +8,8 @@
 
 "use strict";
 
-var merge = require("lodash/merge"),
-    web = require("../web");
+const merge = require("lodash/merge");
+const web = require("../web");
 
 function development(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {

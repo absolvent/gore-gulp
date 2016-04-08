@@ -8,14 +8,14 @@
 
 "use strict";
 
-var ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions"),
-    findPackage = require("../../../findPackage"),
-    isArray = require("lodash/isArray"),
-    libDirs = require("../../../pckg/libDirs"),
-    map = require("lodash/map"),
-    merge = require("lodash/merge"),
-    path = require("path"),
-    Promise = require("bluebird");
+const ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions");
+const findPackage = require("../../../findPackage");
+const isArray = require("lodash/isArray");
+const libDirs = require("../../../pckg/libDirs");
+const map = require("lodash/map");
+const merge = require("lodash/merge");
+const path = require("path");
+const Promise = require("bluebird");
 
 function babel(webpackConfig, config, pckg, babelOverride) {
     return Promise.props({
@@ -56,7 +56,7 @@ function babel(webpackConfig, config, pckg, babelOverride) {
 }
 
 function normalizeAliasPaths(webpackConfig, config, pckg) {
-    var alias = {};
+    const alias = {};
 
     if (!isArray(pckg.directories.lib)) {
         alias[pckg.name] = pckg.directories.lib;

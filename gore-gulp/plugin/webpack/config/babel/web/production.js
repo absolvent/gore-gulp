@@ -8,9 +8,9 @@
 
 "use strict";
 
-var merge = require("lodash/merge"),
-    web = require("../web"),
-    webpack = require("webpack");
+const merge = require("lodash/merge");
+const web = require("../web");
+const webpack = require("webpack");
 
 function production(webpackConfig, config, pckg, entries) {
     return web(webpackConfig, config, pckg, entries, {
