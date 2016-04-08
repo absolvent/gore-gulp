@@ -10,14 +10,14 @@
 
 /* global describe: false, it: false */
 
-var config = require("../config"),
-    gg = require("../../index"),
-    Gulp = require("gulp").Gulp,
-    path = require("path"),
-    Promise = require("bluebird");
+const config = require("../config");
+const gg = require("../../index");
+const Gulp = require("gulp").Gulp;
+const path = require("path");
+const Promise = require("bluebird");
 
 function runDirectory(baseDir) {
-    var gulpInstance = new Gulp();
+    const gulpInstance = new Gulp();
 
     gg({
         "baseDir": baseDir

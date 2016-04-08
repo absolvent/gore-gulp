@@ -10,8 +10,8 @@
 
 /* global describe: false */
 
-var common = require("./common"),
-    config = require("../../config");
+const common = require("./common");
+const config = require("../../config");
 
 describe("webpack/development", function () {
     this.timeout(config.timeout);

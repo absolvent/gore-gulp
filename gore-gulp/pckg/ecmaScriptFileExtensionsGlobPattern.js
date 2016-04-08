@@ -8,12 +8,12 @@
 
 "use strict";
 
-var ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions"),
-    filter = require("lodash/filter");
+const ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions");
+const filter = require("lodash/filter");
 
 function ecmaScriptFileExtensionsGlobPattern(pckg) {
-    var ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg),
-        notEmptyExtensions = filter(ecmaScriptFileExtensionsList);
+    const ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg);
+    const notEmptyExtensions = filter(ecmaScriptFileExtensionsList);
 
     return "{" + notEmptyExtensions.join(",") + "}";
 }

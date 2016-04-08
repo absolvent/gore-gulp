@@ -10,16 +10,16 @@
 
 /* global it: false */
 
-var assert = require("chai").assert,
-    fixtureDir = "../../../__fixtures__",
-    fs = require("fs"),
-    gg = require("../../../index"),
-    Gulp = require("gulp").Gulp,
-    merge = require("lodash/merge"),
-    noop = require("lodash/noop"),
-    path = require("path"),
-    Promise = require("bluebird"),
-    tmp = require("tmp");
+const assert = require("chai").assert;
+const fixtureDir = "../../../__fixtures__";
+const fs = require("fs");
+const gg = require("../../../index");
+const Gulp = require("gulp").Gulp;
+const merge = require("lodash/merge");
+const noop = require("lodash/noop");
+const path = require("path");
+const Promise = require("bluebird");
+const tmp = require("tmp");
 
 function doFiles(paths, cb) {
     return function (distDir) {
@@ -50,8 +50,8 @@ function notExpectFiles(paths) {
 }
 
 function runDirectory(baseDir, variant) {
-    var distDir,
-        gulpInstance = new Gulp();
+    const gulpInstance = new Gulp();
+    var distDir;
 
     gg({
         "baseDir": baseDir,

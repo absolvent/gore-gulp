@@ -10,17 +10,17 @@
 
 /* global describe: false, it: false */
 
-var config = require("./config"),
-    gg = require("../index"),
-    Gulp = require("gulp").Gulp,
-    noop = require("lodash/noop"),
-    path = require("path");
+const config = require("./config");
+const gg = require("../index");
+const Gulp = require("gulp").Gulp;
+const noop = require("lodash/noop");
+const path = require("path");
 
 describe("plugin", function () {
     this.timeout(config.timeout);
 
     it("allows to attach a custom plugin", function (done) {
-        var gulpInstance = new Gulp();
+        const gulpInstance = new Gulp();
 
         gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({
@@ -38,7 +38,7 @@ describe("plugin", function () {
     });
 
     it("is chainable", function (done) {
-        var gulpInstance = new Gulp();
+        const gulpInstance = new Gulp();
 
         gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({

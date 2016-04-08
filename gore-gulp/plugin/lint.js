@@ -8,17 +8,17 @@
 
 "use strict";
 
-var ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern"),
-    eslint = require("space-preconfigured-eslint"),
-    fs = require("fs"),
-    globSpread = require("../globSpread"),
-    keys = require("lodash/keys"),
-    path = require("path"),
-    Promise = require("bluebird");
+const ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern");
+const eslint = require("space-preconfigured-eslint");
+const fs = require("fs");
+const globSpread = require("../globSpread");
+const keys = require("lodash/keys");
+const path = require("path");
+const Promise = require("bluebird");
 
 function awaitEslintrc(config) {
-    var bundledEslintrc = path.resolve(__dirname, "..", "..", "eslint", "eslintrc.js"),
-        userEslintrc = path.resolve(config.baseDir, ".eslintrc");
+    const bundledEslintrc = path.resolve(__dirname, "..", "..", "eslint", "eslintrc.js");
+    const userEslintrc = path.resolve(config.baseDir, ".eslintrc");
 
     return new Promise(function (resolve, reject) {
         fs.stat(userEslintrc, function (err, stat) {
@@ -47,7 +47,7 @@ function awaitGlobPattern(config, pckgPromise) {
 }
 
 module.exports = function (config, pckgPromise) {
-    var initPromises = [
+    const initPromises = [
         awaitEslintrc(config),
         awaitGlobPattern(config, pckgPromise),
         pckgPromise

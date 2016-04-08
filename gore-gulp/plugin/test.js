@@ -8,9 +8,9 @@
 
 "use strict";
 
-var globSpread = require("../globSpread"),
-    mocha = require("space-preconfigured-mocha"),
-    path = require("path");
+const globSpread = require("../globSpread");
+const mocha = require("space-preconfigured-mocha");
+const path = require("path");
 
 module.exports = function (config, pckgPromise) {
     return function () {

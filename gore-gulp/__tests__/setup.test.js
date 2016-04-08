@@ -10,22 +10,22 @@
 
 /* global afterEach:false, beforeEach: false, describe: false, it: false */
 
-var assert = require("chai").assert,
-    config = require("./config"),
-    gg = require(".."),
-    Gulp = require("gulp").Gulp,
-    noop = require("lodash/noop"),
-    path = require("path"),
-    sinon = require("sinon");
+const assert = require("chai").assert;
+const config = require("./config");
+const gg = require("..");
+const Gulp = require("gulp").Gulp;
+const noop = require("lodash/noop");
+const path = require("path");
+const sinon = require("sinon");
 
 describe("setup", function () {
-    var fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1"),
-        previousNodeEnv;
+    const fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1");
+    var previousNodeEnv;
 
     this.timeout(config.timeout);
 
     function doTestWebpackSetup(done, environment, taskName) {
-        var gulpInstance = new Gulp();
+        const gulpInstance = new Gulp();
 
         process.env.NODE_ENV = environment;
 
@@ -54,7 +54,7 @@ describe("setup", function () {
     });
 
     it("provides the default task", function () {
-        var gulpInstance = new Gulp();
+        const gulpInstance = new Gulp();
 
         gg(fixtureLibraryPath).setup(gulpInstance);
 
@@ -62,8 +62,8 @@ describe("setup", function () {
     });
 
     it("provides package dependencies", function () {
-        var gulpInstance = new Gulp(),
-            spy = sinon.spy();
+        const gulpInstance = new Gulp();
+        const spy = sinon.spy();
 
         gg({
             "baseDir": fixtureLibraryPath,

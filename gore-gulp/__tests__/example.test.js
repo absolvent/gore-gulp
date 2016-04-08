@@ -10,9 +10,9 @@
 
 /* global describe: false, it: false */
 
-var config = require("./config"),
-    common = require("./plugin/webpack/common"),
-    path = require("path");
+const config = require("./config");
+const common = require("./plugin/webpack/common");
+const path = require("path");
 
 describe("example", function () {
     this.timeout(config.timeout);

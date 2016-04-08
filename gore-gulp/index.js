@@ -8,23 +8,21 @@
 
 "use strict";
 
-var deprecate = require("deprecate"),
-    fs = require("fs"),
-    identity = require("lodash/identity"),
-    isEmpty = require("lodash/isEmpty"),
-    lint = require("./plugin/lint"),
-    merge = require("lodash/merge"),
-    noop = require("lodash/noop"),
-    path = require("path"),
-    pckg = require("../package.json"),
-    Promise = require("bluebird"),
-    test = require("./plugin/test"),
-    webpack = require("./plugin/webpack");
+const deprecate = require("deprecate");
+const fs = require("fs");
+const identity = require("lodash/identity");
+const isEmpty = require("lodash/isEmpty");
+const lint = require("./plugin/lint");
+const merge = require("lodash/merge");
+const noop = require("lodash/noop");
+const path = require("path");
+const pckg = require("../package.json");
+const Promise = require("bluebird");
+const test = require("./plugin/test");
+const webpack = require("./plugin/webpack");
 
 function setup(options, pckgPromise, plugins, gulp) {
-    var name;
-
-    for (name in plugins) {
+    for (let name in plugins) {
         if (plugins.hasOwnProperty(name)) {
             gulp.task(name, plugins[name].dependencies, plugins[name].task(gulp));
         }
@@ -61,9 +59,8 @@ function setupTask(config, pckgPromise, factory) {
 }
 
 module.exports = function (config) {
-    var pckgPromise,
-        plugins = {},
-        ret;
+    const plugins = {};
+    var ret;
 
     if ("string" === typeof config) {
         config = {
@@ -76,7 +73,7 @@ module.exports = function (config) {
         "override": identity
     }, config);
 
-    pckgPromise = Promise.fromNode(function (cb) {
+    const pckgPromise = Promise.fromNode(function (cb) {
         fs.readFile(path.resolve(config.baseDir, "package.json"), cb);
     }).then(function (pckgContents) {
         return JSON.parse(pckgContents);

@@ -8,8 +8,8 @@
 
 "use strict";
 
-var Promise = require("bluebird"),
-    resolve = require("resolve");
+const Promise = require("bluebird");
+const resolve = require("resolve");
 
 function promisifiedResolve(baseDir, name) {
     return Promise.fromNode(function (cb) {

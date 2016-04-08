@@ -8,7 +8,7 @@
 
 "use strict";
 
-var ecmaScriptFileExtensionsList = [
+const ecmaScriptFileExtensionsList = [
     "",
     ".coffee",
     ".js",
