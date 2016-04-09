@@ -52,8 +52,7 @@ bar = {
 
 // objectLiteralShorthandMethods
 bar = {
-    constructor(hoho) {
-        super(hoho);
+    constructor() {
     }
 };
 

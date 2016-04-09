@@ -8,6 +8,7 @@
 
 "use strict";
 
+const babel = require("../babel");
 const development = require("./config/babel/web/development");
 const ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions");
 const ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern");
@@ -22,6 +23,7 @@ const production = require("./config/babel/web/production");
 const Promise = require("bluebird");
 const reduce = require("lodash/reduce");
 const webpack = require("webpack");
+const webpackGetOutputFilename = require("./webpackGetOutputFilename");
 
 function normalizeEntries(config, pckg, libDir, entries) {
     const ret = {};
@@ -68,7 +70,7 @@ function setupVariant(variant) {
         return function () {
             return pckgPromise.then(function (pckg) {
                 return Promise.all(map(libDirs(pckg), function (libDir) {
-                    return Promise.fromNode(function (cb) {
+                    return Promise.fromCallback(function (cb) {
                         glob(path.resolve(config.baseDir, libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
                     }).then(function (entries) {
                         return normalizeEntries(config, pckg, libDir, entries);
@@ -87,8 +89,14 @@ function setupVariant(variant) {
                     entries,
                     variant({}, config, pckg, entries)
                 ];
-            }).spread(function (pckg, entries, webpackConfig) {
-                return run(pckg, entries, webpackConfig);
+            }).spread(run).spread(function (pckg, entries, webpackConfig) {
+                return Promise.all(Object.keys(entries).map(function (entry) {
+                    const outputFilename = webpackGetOutputFilename(webpackConfig, entry);
+
+                    return babel.inPlace(path.resolve(webpackConfig.output.path, outputFilename));
+                })).then(function () {
+                    return [pckg, entries, webpackConfig];
+                });
             });
         };
     };

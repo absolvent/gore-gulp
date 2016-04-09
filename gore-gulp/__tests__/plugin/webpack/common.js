@@ -24,7 +24,7 @@ const tmp = require("tmp");
 function doFiles(paths, cb) {
     return function (distDir) {
         paths = paths.map(function (pth) {
-            return Promise.fromNode(function (statCb) {
+            return Promise.fromCallback(function (statCb) {
                 fs.stat(path.resolve(distDir, pth), statCb);
             }).then(function (stats) {
                 return cb(stats.isFile(), pth);
@@ -56,7 +56,7 @@ function runDirectory(baseDir, variant) {
     gg({
         "baseDir": baseDir,
         "override": function (pckg) {
-            return Promise.fromNode(tmp.dir).then(function (tmpDir) {
+            return Promise.fromCallback(tmp.dir).then(function (tmpDir) {
                 distDir = path.resolve(tmpDir, pckg.directories.dist);
 
                 return merge(pckg, {
@@ -85,11 +85,8 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-1.common.min.js",
-                "test-library-1.common.min.js.map",
                 "test-library-1.module.min.js",
-                "test-library-1.module.min.js.map",
-                "test-library-1.test.min.js",
-                "test-library-1.test.min.js.map"
+                "test-library-1.test.min.js"
             ],
             "fixture": "test-library-1",
             "name": "generates output using .entry files",
@@ -98,23 +95,18 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-2.common.min.js",
-                "test-library-2.common.min.js.map",
-                "test-library-2.true.min.js",
-                "test-library-2.true.min.js.map"
+                "test-library-2.true.min.js"
             ],
             "fixture": "test-library-2",
             "name": "uses library location specified in package configuration",
             "notExpectFiles": [
-                "test-library-2.not-an.min.js",
-                "test-library-2.not-an.min.js.map"
+                "test-library-2.not-an.min.js"
             ]
         },
         {
             "expectFiles": [
                 "test-library-3.common.min.js",
-                "test-library-3.common.min.js.map",
-                "test-library-3.index.min.js",
-                "test-library-3.index.min.js.map"
+                "test-library-3.index.min.js"
             ],
             "fixture": "test-library-3",
             "name": "uses vendor libraries configuration field",
@@ -123,9 +115,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-4.common.min.js",
-                "test-library-4.common.min.js.map",
-                "test-library-4.index.min.js",
-                "test-library-4.index.min.js.map"
+                "test-library-4.index.min.js"
             ],
             "fixture": "test-library-4",
             "name": "resolves nested modules paths",
@@ -134,9 +124,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-5.common.min.js",
-                "test-library-5.common.min.js.map",
-                "test-library-5.fake-module-holder.min.js",
-                "test-library-5.fake-module-holder.min.js.map"
+                "test-library-5.fake-module-holder.min.js"
             ],
             "fixture": "test-library-5",
             "name": "resolves node_modules paths",
@@ -145,9 +133,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-6.common.min.js",
-                "test-library-6.common.min.js.map",
-                "test-library-6.index.min.js",
-                "test-library-6.index.min.js.map"
+                "test-library-6.index.min.js"
             ],
             "fixture": "test-library-6",
             "name": "uses externals settings",
@@ -156,10 +142,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-7.common.min.js",
-                "test-library-7.common.min.js.map",
-                "test-library-7.first-pointof.min.js",
-                "test-library-7.second-pointof.min.js.map",
-                "test-library-7.third-nested-pointof.min.js.map"
+                "test-library-7.first-pointof.min.js"
             ],
             "fixture": "test-library-7",
             "name": "resolves multiple entry points",
@@ -168,7 +151,6 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-9.common.min.js",
-                "test-library-9.common.min.js.map",
                 "test-library-9.index.min.js"
             ],
             "fixture": "test-library-9",
@@ -178,9 +160,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-11.common.min.js",
-                "test-library-11.common.min.js.map",
-                "test-library-11.symfony.min.js",
-                "test-library-11.symfony.min.js.map"
+                "test-library-11.symfony.min.js"
             ],
             "fixture": "test-library-11",
             "name": "symfony package directory structure",
@@ -189,9 +169,7 @@ function setup(variant) {
         {
             "expectFiles": [
                 "test-library-13.common.min.js",
-                "test-library-13.common.min.js.map",
-                "test-library-13.first.min.js",
-                "test-library-13.second.min.js.map"
+                "test-library-13.first.min.js"
             ],
             "fixture": "test-library-13",
             "name": "multiple library paths",
@@ -212,7 +190,7 @@ function setup(variant) {
                     return distDir;
                 })
                 .then(notExpectFiles(testData.notExpectFiles))
-                .nodeify(done);
+                .asCallback(done);
         });
     });
 }

@@ -17,16 +17,12 @@ const path = require("path");
 describe("example", function () {
     this.timeout(config.timeout);
 
-    it("tests example basic package", function (done) {
-        common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
+    it("tests example basic package", function () {
+        return common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
             .then(common.expectFiles([
                 "example.common.min.js",
-                "example.common.min.js.map",
                 "example.a.min.js",
-                "example.a.min.js.map",
-                "example.b.min.js",
-                "example.b.min.js.map"
-            ]))
-            .nodeify(done);
+                "example.b.min.js"
+            ]));
     });
 });

@@ -13,6 +13,9 @@
     "gulp": "^3.9.1",
     "imports-loader": "^0.6.5",
     "lodash": "^4.7.0",
+    "minimist": "^1.2.0",
+    "node-haste": "^2.9.6",
+    "replace-ext": "0.0.1",
     "resolve": "^1.1.7",
     "sinon": "^1.17.3",
     "space-preconfigured-eslint": "^1.4.11",
@@ -22,8 +25,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "fs-extra": "^0.26.7",
     "react": "^0.14.8",
-    "request": "^2.69.0"
+    "request": "^2.69.0",
+    "rimraf": "^2.5.2"
   },
   "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
   "directories": {

@@ -49,6 +49,6 @@ describe("lint", function () {
     });
 
     it("should ignore errors when library uses 'provide' shim", function (done) {
-        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9")).nodeify(done);
+        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9")).asCallback(done);
     });
 });

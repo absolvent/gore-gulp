@@ -12,10 +12,10 @@ const merge = require("lodash/merge");
 const web = require("../web");
 
 function development(webpackConfig, config, pckg, entries) {
-    return web(webpackConfig, config, pckg, entries, {}).then(function (webConfig) {
+    return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
         return merge({}, webConfig, {
             "debug": true,
-            "devtool": config.developmentDevtool || "cheap-source-map"
+            "devtool": config.developmentDevtool || "none"
         });
     });
 }

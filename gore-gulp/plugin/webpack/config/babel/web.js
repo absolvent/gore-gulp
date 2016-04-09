@@ -13,8 +13,8 @@ const merge = require("lodash/merge");
 const path = require("path");
 const webpack = require("webpack");
 
-function web(webpackConfig, config, pckg, entries, babelOverride) {
-    return babel(webpackConfig, config, pckg, babelOverride).then(function (babelConfig) {
+function web(webpackConfig, config, pckg, entries) {
+    return babel(webpackConfig, config, pckg).then(function (babelConfig) {
         return merge({}, babelConfig, {
             "entry": entries,
             "output": {

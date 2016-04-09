@@ -239,6 +239,13 @@ new Promise(function () {
 });
 ```
 
+### How to run a subset of tests?
+
+You can use the `glob` switch:
+
+```bash
+$ gulp test --glob ./mylibrary/__tests__/subdir/*.test.js
+```
 
 ## Summary
 

@@ -13,15 +13,10 @@ const web = require("../web");
 const webpack = require("webpack");
 
 function production(webpackConfig, config, pckg, entries) {
-    return web(webpackConfig, config, pckg, entries, {
-        // "optional": [
-        //     "optimisation.react.constantElements",
-        //     "optimisation.react.inlineElements"
-        // ]
-    }).then(function (webConfig) {
+    return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
         return merge({}, webConfig, {
             "debug": false,
-            "devtool": config.productionDevtool || "source-map",
+            "devtool": config.productionDevtool || "none",
             "plugins": webConfig.plugins.concat([
                 new webpack.DefinePlugin({
                     "process.env": {

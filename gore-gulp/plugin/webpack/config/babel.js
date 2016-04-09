@@ -8,6 +8,7 @@
 
 "use strict";
 
+const babelConfig = require("../../babel/config");
 const ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions");
 const findPackage = require("../../../findPackage");
 const isArray = require("lodash/isArray");
@@ -17,7 +18,7 @@ const merge = require("lodash/merge");
 const path = require("path");
 const Promise = require("bluebird");
 
-function babel(webpackConfig, config, pckg, babelOverride) {
+function babel(webpackConfig, config, pckg) {
     return Promise.props({
         "babel-loader": findPackage(config, "babel-loader"),
         "imports-loader": findPackage(config, "imports-loader")
@@ -33,16 +34,7 @@ function babel(webpackConfig, config, pckg, babelOverride) {
                         }),
                         "test": /\.jsx?$/,
                         "loader": results["babel-loader"],
-                        "query": merge({
-                            "plugins": [
-                                require.resolve("babel-plugin-syntax-jsx")
-                            ],
-                            "presets": [
-                                require.resolve("babel-preset-es2015"),
-                                require.resolve("babel-preset-react"),
-                                require.resolve("babel-preset-stage-0")
-                            ]
-                        }, babelOverride)
+                        "query": babelConfig
                     }
                 ]
             },

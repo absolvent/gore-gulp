@@ -9,13 +9,21 @@
 "use strict";
 
 const globSpread = require("../globSpread");
+const minimist = require("minimist");
 const mocha = require("space-preconfigured-mocha");
 const path = require("path");
 
 module.exports = function (config, pckgPromise) {
     return function () {
         return pckgPromise.then(function (pckg) {
-            return mocha(path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "*.test.js"));
+            const options = minimist(process.argv.slice(2), {
+                "string": "glob",
+                "default": {
+                    "glob": path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**/*.test.js")
+                }
+            });
+
+            return mocha(options.glob);
         });
     };
 };
