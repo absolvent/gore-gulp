@@ -84,7 +84,6 @@ function setup(variant) {
     [
         {
             "expectFiles": [
-                "test-library-1.common.min.js",
                 "test-library-1.module.min.js",
                 "test-library-1.test.min.js"
             ],
@@ -94,7 +93,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-2.common.min.js",
                 "test-library-2.true.min.js"
             ],
             "fixture": "test-library-2",
@@ -105,7 +103,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-3.common.min.js",
                 "test-library-3.index.min.js"
             ],
             "fixture": "test-library-3",
@@ -114,7 +111,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-4.common.min.js",
                 "test-library-4.index.min.js"
             ],
             "fixture": "test-library-4",
@@ -123,7 +119,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-5.common.min.js",
                 "test-library-5.fake-module-holder.min.js"
             ],
             "fixture": "test-library-5",
@@ -132,7 +127,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-6.common.min.js",
                 "test-library-6.index.min.js"
             ],
             "fixture": "test-library-6",
@@ -141,7 +135,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-7.common.min.js",
                 "test-library-7.first-pointof.min.js"
             ],
             "fixture": "test-library-7",
@@ -150,7 +143,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-9.common.min.js",
                 "test-library-9.index.min.js"
             ],
             "fixture": "test-library-9",
@@ -159,7 +151,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-11.common.min.js",
                 "test-library-11.symfony.min.js"
             ],
             "fixture": "test-library-11",
@@ -168,7 +159,6 @@ function setup(variant) {
         },
         {
             "expectFiles": [
-                "test-library-13.common.min.js",
                 "test-library-13.first.min.js"
             ],
             "fixture": "test-library-13",

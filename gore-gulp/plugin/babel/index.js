@@ -14,10 +14,14 @@ const fs = require("fs");
 const Promise = require("bluebird");
 const replaceExt = require("replace-ext");
 
-function inPlace(filename) {
+function transformFile(filename) {
     return Promise.fromCallback(done => {
         return babel.transformFile(filename, config, done);
-    }).then(function (result) {
+    });
+}
+
+function inPlace(filename) {
+    return transformFile(filename).then(function (result) {
         const mapFilename = replaceExt(filename, ".map.min.js");
 
         return Promise.all([
@@ -28,5 +32,6 @@ function inPlace(filename) {
 }
 
 module.exports = {
-    inPlace: inPlace
+    inPlace: inPlace,
+    transformFile: transformFile
 };

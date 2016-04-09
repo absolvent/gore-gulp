@@ -20,7 +20,6 @@ describe("example", function () {
     it("tests example basic package", function () {
         return common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
             .then(common.expectFiles([
-                "example.common.min.js",
                 "example.a.min.js",
                 "example.b.min.js"
             ]));

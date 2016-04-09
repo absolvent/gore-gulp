@@ -9,9 +9,6 @@
 "use strict";
 
 module.exports = {
-    "plugins": [
-        require.resolve("babel-plugin-syntax-jsx")
-    ],
     "presets": [
         require.resolve("babel-preset-es2015"),
         require.resolve("babel-preset-react"),

@@ -13,21 +13,17 @@ const merge = require("lodash/merge");
 const path = require("path");
 const webpack = require("webpack");
 
-function web(webpackConfig, config, pckg, entries) {
-    return babel(webpackConfig, config, pckg).then(function (babelConfig) {
+function web(config, pckg, entries) {
+    return babel(config, pckg).then(function (babelConfig) {
         return merge({}, babelConfig, {
             "entry": entries,
             "output": {
                 "filename": pckg.name + ".[name].min.js",
                 "path": path.resolve(config.baseDir, pckg.directories.dist)
             },
-            "plugins": [
-                new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
-                new webpack.optimize.CommonsChunkPlugin({
-                    "name": pckg.name,
-                    "filename": pckg.name + ".common.min.js"
-                })
-            ]
+            "plugins": babelConfig.plugins.concat([
+                new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide))
+            ])
         });
     });
 }

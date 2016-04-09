@@ -8,22 +8,76 @@
 
 "use strict";
 
-const babel = require("../babel");
-const development = require("./config/babel/web/development");
+const chunk = require("lodash/chunk");
 const ecmaScriptFileExtensions = require("../../pckg/ecmaScriptFileExtensions");
 const ecmaScriptFileExtensionsGlobPattern = require("../../pckg/ecmaScriptFileExtensionsGlobPattern");
 const endsWith = require("lodash/endsWith");
-const glob = require("glob");
+const flatten = require("lodash/flatten");
+const glob = require("ultra-glob");
+const groupBy = require("lodash/groupBy");
 const kebabCase = require("lodash/kebabCase");
 const libDirs = require("../../pckg/libDirs");
 const map = require("lodash/map");
-const merge = require("lodash/merge");
+const mapValues = require("lodash/mapValues");
+const os = require("os");
 const path = require("path");
-const production = require("./config/babel/web/production");
 const Promise = require("bluebird");
 const reduce = require("lodash/reduce");
-const webpack = require("webpack");
-const webpackGetOutputFilename = require("./webpackGetOutputFilename");
+const values = require("lodash/values");
+const workerFarm = require("worker-farm");
+
+const cpus = os.cpus();
+
+function groupEntries(config, pckgPromise) {
+    return pckgPromise.then(pckg => {
+        return Promise.all(map(libDirs(pckg), function (libDir) {
+            const pattern = path.resolve(config.baseDir, libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg));
+
+            return glob(pattern).then(entries => {
+                return map(entries, entry => ({
+                    "entry": entry,
+                    "libDir": libDir,
+                    "pckg": pckg
+                }));
+            });
+        })).then(results => {
+            return flatten(results);
+        }).then(results => {
+            return groupBy(results, "libDir");
+        }).then(results => {
+            return values(mapValues(results, entryPoints => {
+                const chunkLength = Math.ceil(entryPoints.length / cpus.length);
+
+                return chunk(entryPoints, chunkLength);
+            }));
+        }).then(results => {
+            return map(results, entryPointsChunk => {
+                return map(entryPointsChunk, entryPoints => {
+                    return reduce(entryPoints, (acc, entryPoint) => {
+                        return {
+                            "entries": acc.entries.concat(entryPoint.entry),
+                            "libDir": entryPoint.libDir,
+                            "pckg": entryPoint.pckg
+                        };
+                    }, {
+                        "entries": [],
+                        "libDir": null,
+                        "pckg": null
+                    });
+                });
+            });
+        }).then(results => {
+            return flatten(results);
+        }).then(results => {
+            return map(results, result => {
+                return {
+                    "entries": normalizeEntries(config, result.pckg, result.libDir, result.entries),
+                    "pckg": result.pckg
+                };
+            });
+        });
+    });
+}
 
 function normalizeEntries(config, pckg, libDir, entries) {
     const ret = {};
@@ -51,58 +105,33 @@ function normalizeEntry(config, pckg, libDir, entry, fileExtensions) {
     return entry;
 }
 
-function run(pckg, entries, webpackConfig) {
-    return new Promise(function (resolve, reject) {
-        webpack(webpackConfig, function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve([
-                    pckg, entries, webpackConfig
-                ]);
-            }
-        });
-    });
-}
-
 function setupVariant(variant) {
     return function (config, pckgPromise) {
         return function () {
-            return pckgPromise.then(function (pckg) {
-                return Promise.all(map(libDirs(pckg), function (libDir) {
-                    return Promise.fromCallback(function (cb) {
-                        glob(path.resolve(config.baseDir, libDir, "**", "*.entry" + ecmaScriptFileExtensionsGlobPattern(pckg)), cb);
-                    }).then(function (entries) {
-                        return normalizeEntries(config, pckg, libDir, entries);
-                    });
-                })).then(function (entries) {
-                    return [
-                        pckg,
-                        reduce(entries, function (acc, entry) {
-                            return merge(acc, entry);
-                        }, {})
-                    ];
-                });
-            }).spread(function (pckg, entries) {
-                return [
-                    pckg,
-                    entries,
-                    variant({}, config, pckg, entries)
-                ];
-            }).spread(run).spread(function (pckg, entries, webpackConfig) {
-                return Promise.all(Object.keys(entries).map(function (entry) {
-                    const outputFilename = webpackGetOutputFilename(webpackConfig, entry);
+            const runnerPath = require.resolve(path.resolve(__dirname, "forkableRunner"));
+            const workers = workerFarm(runnerPath);
 
-                    return babel.inPlace(path.resolve(webpackConfig.output.path, outputFilename));
-                })).then(function () {
-                    return [pckg, entries, webpackConfig];
-                });
+            return groupEntries(config, pckgPromise).then(results => {
+                return Promise.all(results.map(result => {
+                    return Promise.fromCallback(callback => {
+                        workers({
+                            "config": {
+                                "baseDir": config.baseDir
+                            },
+                            "entries": result.entries,
+                            "pckg": result.pckg,
+                            "variant": variant
+                        }, callback);
+                    });
+                }));
+            }).finally(() => {
+                workerFarm.end(workers);
             });
         };
     };
 }
 
 module.exports = {
-    "development": setupVariant(development),
-    "production": setupVariant(production)
+    "development": setupVariant("development"),
+    "production": setupVariant("production")
 };

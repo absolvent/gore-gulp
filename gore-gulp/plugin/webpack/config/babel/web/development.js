@@ -11,8 +11,8 @@
 const merge = require("lodash/merge");
 const web = require("../web");
 
-function development(webpackConfig, config, pckg, entries) {
-    return web(webpackConfig, config, pckg, entries).then(function (webConfig) {
+function development(config, pckg, entries) {
+    return web(config, pckg, entries).then(function (webConfig) {
         return merge({}, webConfig, {
             "debug": true,
             "devtool": config.developmentDevtool || "none"

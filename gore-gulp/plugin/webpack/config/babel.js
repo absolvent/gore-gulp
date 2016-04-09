@@ -8,9 +8,7 @@
 
 "use strict";
 
-const babelConfig = require("../../babel/config");
 const ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions");
-const findPackage = require("../../../findPackage");
 const isArray = require("lodash/isArray");
 const libDirs = require("../../../pckg/libDirs");
 const map = require("lodash/map");
@@ -18,36 +16,31 @@ const merge = require("lodash/merge");
 const path = require("path");
 const Promise = require("bluebird");
 
-function babel(webpackConfig, config, pckg) {
-    return Promise.props({
-        "babel-loader": findPackage(config, "babel-loader"),
-        "imports-loader": findPackage(config, "imports-loader")
-    }).then(function (results) {
-        return merge({}, webpackConfig, {
-            "bail": true,
-            "externals": pckg.externals,
-            "module": {
-                "loaders": [
-                    {
-                        "include": map(libDirs(pckg), function (libDir) {
-                            return path.resolve(config.baseDir, libDir);
-                        }),
-                        "test": /\.jsx?$/,
-                        "loader": results["babel-loader"],
-                        "query": babelConfig
-                    }
-                ]
-            },
-            "resolve": {
-                "alias": normalizeAliasPaths(webpackConfig, config, pckg),
-                "extensions": ecmaScriptFileExtensions(pckg),
-                "root": config.baseDir
-            }
-        });
-    });
+function babel(config, pckg) {
+    return Promise.resolve(merge({}, {
+        "bail": true,
+        "externals": pckg.externals,
+        "module": {
+            "loaders": [
+                {
+                    "include": map(libDirs(pckg), function (libDir) {
+                        return path.resolve(config.baseDir, libDir);
+                    }),
+                    "test": /\.jsx?$/,
+                    "loader": path.resolve(__dirname, "..", "babelLoader")
+                }
+            ]
+        },
+        "plugins": [],
+        "resolve": {
+            "alias": normalizeAliasPaths(config, pckg),
+            "extensions": ecmaScriptFileExtensions(pckg),
+            "root": config.baseDir
+        }
+    }));
 }
 
-function normalizeAliasPaths(webpackConfig, config, pckg) {
+function normalizeAliasPaths(config, pckg) {
     const alias = {};
 
     if (!isArray(pckg.directories.lib)) {
