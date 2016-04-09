@@ -9,14 +9,19 @@
 "use strict";
 
 const ecmaScriptFileExtensions = require("../../../pckg/ecmaScriptFileExtensions");
+const gorePckg = require("../../../../package.json");
 const isArray = require("lodash/isArray");
 const libDirs = require("../../../pckg/libDirs");
 const map = require("lodash/map");
 const merge = require("lodash/merge");
+const os = require("os");
 const path = require("path");
 const Promise = require("bluebird");
 
 function babel(config, pckg) {
+    const cacheIdentifier = gorePckg.name + gorePckg.version + pckg.name + pckg.version;
+    const cacheDirectory = path.resolve(os.tmpdir(), cacheIdentifier);
+
     return Promise.resolve(merge({}, {
         "bail": true,
         "externals": pckg.externals,
@@ -27,7 +32,11 @@ function babel(config, pckg) {
                         return path.resolve(config.baseDir, libDir);
                     }),
                     "test": /\.jsx?$/,
-                    "loader": path.resolve(__dirname, "..", "babelLoader")
+                    "loader": path.resolve(__dirname, "..", "babelLoader"),
+                    "query": {
+                        "cacheDirectory": cacheDirectory,
+                        "cacheIdentifier": cacheIdentifier
+                    }
                 }
             ]
         },

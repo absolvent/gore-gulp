@@ -9,6 +9,7 @@
     "bluebird": "^3.3.4",
     "eslint-config-goreutils": "^0.5.1",
     "glob": "^7.0.3",
+    "loader-utils": "^0.2.14",
     "lodash": "^4.7.0",
     "minimist": "^1.2.0",
     "replace-ext": "0.0.1",

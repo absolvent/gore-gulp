@@ -9,12 +9,18 @@
 "use strict";
 
 const config = require("../babel/config");
+const loaderUtils = require("loader-utils");
 const vanillaBabelLoader = require("babel-loader");
 
 function babelLoader(source, initialSourceMap) {
-    this.options.babel = config;
+    const query = loaderUtils.parseQuery(this.query);
 
-    return vanillaBabelLoader.call(this, source, initialSourceMap);
+    this.options.babel = config;
+    this.options.babel.cacheDirectory = query.cacheDirectory;
+    this.options.babel.cacheIdentifier = query.cacheIdentifier;
+
+    this.query = "";
+    vanillaBabelLoader.call(this, source, initialSourceMap);
 }
 
 module.exports = babelLoader;
