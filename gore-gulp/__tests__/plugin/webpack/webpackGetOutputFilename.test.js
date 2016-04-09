@@ -11,7 +11,7 @@
 /* global describe: false, it: false */
 
 const assert = require("chai").assert;
-const webpackGetOutputFilename = require("../../webpackGetOutputFilename");
+const webpackGetOutputFilename = require("../../../plugin/webpack/webpackGetOutputFilename");
 
 describe("webpack/webpackGetOutputFilename", function () {
     it("normalizes filename", function () {
