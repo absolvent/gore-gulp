@@ -12,21 +12,19 @@ const babel = require("babel-core");
 const config = require("./config");
 const fs = require("fs");
 const Promise = require("bluebird");
-const replaceExt = require("replace-ext");
 
 function transformFile(filename) {
     return Promise.fromCallback(done => {
-        return babel.transformFile(filename, config, done);
+        return babel.transformFile(filename, config.create(), done);
     });
 }
 
 function inPlace(filename) {
     return transformFile(filename).then(function (result) {
-        const mapFilename = replaceExt(filename, ".map.min.js");
-
+        // const mapFilename = filename;
         return Promise.all([
-            Promise.fromCallback(done => fs.writeFile(filename, result.code, done)),
-            Promise.fromCallback(done => fs.writeFile(mapFilename, result.map, done))
+            Promise.fromCallback(done => fs.writeFile(filename, result.code, done))
+            // Promise.fromCallback(done => fs.writeFile(mapFilename, result.map, done))
         ]);
     });
 }

@@ -15,7 +15,7 @@ const vanillaBabelLoader = require("babel-loader");
 function babelLoader(source, initialSourceMap) {
     const query = loaderUtils.parseQuery(this.query);
 
-    this.options.babel = config;
+    this.options.babel = config.create();
     this.options.babel.cacheDirectory = query.cacheDirectory;
     this.options.babel.cacheIdentifier = query.cacheIdentifier;
 
