@@ -164,6 +164,14 @@ function setup(variant) {
             "fixture": "test-library-13",
             "name": "multiple library paths",
             "notExpectFiles": []
+        },
+        {
+            "expectFiles": [
+                "test-library-14.index.min.js"
+            ],
+            "fixture": "test-library-14",
+            "name": "uses ES6 decorators",
+            "notExpectFiles": []
         }
     ].forEach(function (testData) {
         it(testData.name, function (done) {

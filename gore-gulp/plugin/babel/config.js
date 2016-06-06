@@ -10,6 +10,9 @@
 
 function createConfig() {
     return {
+        "plugins": [
+            require.resolve("babel-plugin-transform-decorators-legacy")
+        ],
         "presets": [
             require.resolve("babel-preset-es2015"),
             require.resolve("babel-preset-react"),

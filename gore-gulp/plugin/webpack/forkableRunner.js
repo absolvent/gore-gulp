@@ -26,5 +26,11 @@ module.exports = function (inp, callback) {
                 webpackCallback(err, webpackConfig);
             });
         });
-    }).asCallback(callback);
+    }).asCallback(function (err, data) {
+        if (err) {
+            callback(err.toString(), data);
+        } else {
+            callback(null, data);
+        }
+    });
 };

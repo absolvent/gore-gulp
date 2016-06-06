@@ -1,0 +1,7 @@
+{
+    "directories": {
+        "dist": "dist",
+        "lib": "."
+    },
+    "name": "test-library-14"
+}

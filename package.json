@@ -1,31 +1,32 @@
 {
   "dependencies": {
-    "babel-core": "^6.7.4",
-    "babel-eslint": "^6.0.2",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.6.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
-    "bluebird": "^3.3.4",
+    "bluebird": "^3.4.0",
     "eslint-config-goreutils": "^0.5.1",
     "glob": "^7.0.3",
-    "loader-utils": "^0.2.14",
-    "lodash": "^4.7.0",
+    "loader-utils": "^0.2.15",
+    "lodash": "^4.13.1",
     "minimist": "^1.2.0",
     "resolve": "^1.1.7",
-    "sinon": "^1.17.3",
+    "sinon": "^1.17.4",
     "space-preconfigured-eslint": "^1.4.11",
     "space-preconfigured-mocha": "^1.1.2",
     "tmp": "^0.0.28",
     "ultra-glob": "^1.1.1",
-    "webpack": "^1.12.14",
+    "webpack": "^1.13.1",
     "worker-farm": "^1.3.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "fs-extra": "^0.26.7",
-    "react": "^0.14.8",
-    "request": "^2.69.0",
+    "fs-extra": "^0.30.0",
+    "react": "^15.1.0",
+    "request": "^2.72.0",
     "rimraf": "^2.5.2"
   },
   "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
@@ -51,5 +52,5 @@
   "scripts": {
     "test": "gulp test"
   },
-  "version": "0.11.10"
+  "version": "0.12.0"
 }

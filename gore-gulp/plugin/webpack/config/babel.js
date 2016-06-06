@@ -40,7 +40,8 @@ function babel(config, pckg) {
                 }
             ]
         },
-        "plugins": [],
+        "plugins": [
+        ],
         "resolve": {
             "alias": normalizeAliasPaths(config, pckg),
             "extensions": ecmaScriptFileExtensions(pckg),
