@@ -10,7 +10,7 @@
 
 const globSpread = require("../globSpread");
 const minimist = require("minimist");
-const mocha = require("space-preconfigured-mocha");
+const mocha = require("lookly-preset-mocha");
 const path = require("path");
 
 module.exports = function (config, pckgPromise) {

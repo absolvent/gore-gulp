@@ -40,7 +40,7 @@ describe("lint", function () {
                 done(new Error("Linter should detect errors!"));
             })
             .catch(function (err) {
-                if ("space-preconfigured-eslint" === err.err.plugin) {
+                if ("lookly-preset-eslint" === err.err.plugin) {
                     done();
                 } else {
                     done(err);

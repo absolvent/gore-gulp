@@ -8,14 +8,14 @@
 
 "use strict";
 
-const config = require("../babel/config");
+const config = require("lookly-preset-babel");
 const loaderUtils = require("loader-utils");
 const vanillaBabelLoader = require("babel-loader");
 
 function babelLoader(source, initialSourceMap) {
     const query = loaderUtils.parseQuery(this.query);
 
-    this.options.babel = config.create();
+    this.options.babel = config();
     this.options.babel.cacheDirectory = query.cacheDirectory;
     this.options.babel.cacheIdentifier = query.cacheIdentifier;
 
