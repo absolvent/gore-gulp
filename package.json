@@ -4,6 +4,7 @@
     "bluebird": "^3.4.0",
     "loader-utils": "^0.2.15",
     "lodash": "^4.13.1",
+    "lookly-preset-ava": "^1.0.0",
     "lookly-preset-babel": "^1.0.0",
     "lookly-preset-eslint": "^1.4.11",
     "lookly-preset-mocha": "^1.1.2",
@@ -45,5 +46,5 @@
   "scripts": {
     "test": "gulp test"
   },
-  "version": "0.12.1"
+  "version": "0.13.0"
 }

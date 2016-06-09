@@ -8,8 +8,6 @@
 
 "use strict";
 
-/* global it: false */
-
 const assert = require("chai").assert;
 const fixtureDir = "../../../__fixtures__";
 const fs = require("fs");
@@ -19,6 +17,7 @@ const merge = require("lodash/merge");
 const noop = require("lodash/noop");
 const path = require("path");
 const Promise = require("bluebird");
+const test = require("lookly-preset-ava/test");
 const tmp = require("tmp");
 
 function doFiles(paths, cb) {
@@ -174,10 +173,10 @@ function setup(variant) {
             "notExpectFiles": []
         }
     ].forEach(function (testData) {
-        it(testData.name, function (done) {
+        test(testData.name, function () {
             var distDir;
 
-            runDirectory(path.resolve(__dirname, fixtureDir, testData.fixture), variant)
+            return runDirectory(path.resolve(__dirname, fixtureDir, testData.fixture), variant)
                 .then(function (dd) {
                     distDir = dd;
 
@@ -187,8 +186,7 @@ function setup(variant) {
                 .then(function () {
                     return distDir;
                 })
-                .then(notExpectFiles(testData.notExpectFiles))
-                .asCallback(done);
+                .then(notExpectFiles(testData.notExpectFiles));
         });
     });
 }

@@ -8,20 +8,14 @@
 
 "use strict";
 
-/* global describe: false, it: false */
-
-const config = require("./config");
 const common = require("./plugin/webpack/common");
 const path = require("path");
+const test = require("lookly-preset-ava/test");
 
-describe("example", function () {
-    this.timeout(config.timeout);
-
-    it("tests example basic package", function () {
-        return common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
-            .then(common.expectFiles([
-                "example.a.min.js",
-                "example.b.min.js"
-            ]));
-    });
+test("tests example basic package", function () {
+    return common.runDirectory(path.resolve(__dirname, "..", "..", "example", "basic"), "webpack.production")
+        .then(common.expectFiles([
+            "example.a.min.js",
+            "example.b.min.js"
+        ]));
 });

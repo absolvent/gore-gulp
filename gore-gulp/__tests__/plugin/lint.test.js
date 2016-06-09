@@ -8,13 +8,11 @@
 
 "use strict";
 
-/* global describe: false, it: false */
-
-const config = require("../config");
 const gg = require("../../index");
 const Gulp = require("gulp").Gulp;
 const path = require("path");
 const Promise = require("bluebird");
+const test = require("lookly-preset-ava/test");
 
 function runDirectory(baseDir) {
     const gulpInstance = new Gulp();
@@ -31,24 +29,18 @@ function runDirectory(baseDir) {
     });
 }
 
-describe("lint", function () {
-    this.timeout(config.timeout);
+test("detects code flaws", function () {
+    return runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
+        .then(function () {
+            throw new Error("Linter should detect errors!");
+        })
+        .catch(function (err) {
+            if ("lookly-preset-eslint" !== err.err.plugin) {
+                throw err;
+            }
+        });
+});
 
-    it("detects code flaws", function (done) {
-        runDirectory(path.join(__dirname, "..", "..", "__fixtures__", "test-library-8"))
-            .then(function () {
-                done(new Error("Linter should detect errors!"));
-            })
-            .catch(function (err) {
-                if ("lookly-preset-eslint" === err.err.plugin) {
-                    done();
-                } else {
-                    done(err);
-                }
-            });
-    });
-
-    it("should ignore errors when library uses 'provide' shim", function (done) {
-        runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9")).asCallback(done);
-    });
+test("should ignore errors when library uses 'provide' shim", function () {
+    return runDirectory(path.resolve(__dirname, "..", "..", "__fixtures__", "test-library-9"));
 });

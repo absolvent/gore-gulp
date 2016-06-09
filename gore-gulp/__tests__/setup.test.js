@@ -8,77 +8,71 @@
 
 "use strict";
 
-/* global afterEach:false, beforeEach: false, describe: false, it: false */
-
 const assert = require("chai").assert;
-const config = require("./config");
 const gg = require("..");
 const Gulp = require("gulp").Gulp;
 const noop = require("lodash/noop");
 const path = require("path");
 const sinon = require("sinon");
+const test = require("lookly-preset-ava/test");
 
-describe("setup", function () {
-    const fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1");
-    var previousNodeEnv;
+const fixtureLibraryPath = path.resolve(__dirname, "..", "__fixtures__", "test-library-1");
+var previousNodeEnv;
 
-    this.timeout(config.timeout);
+function doTestWebpackSetup(environment, taskName) {
+    const gulpInstance = new Gulp();
 
-    function doTestWebpackSetup(done, environment, taskName) {
-        const gulpInstance = new Gulp();
+    process.env.NODE_ENV = environment;
 
-        process.env.NODE_ENV = environment;
+    gg(fixtureLibraryPath).setup(gulpInstance);
 
-        gg(fixtureLibraryPath).setup(gulpInstance);
-
-        gulpInstance.task(taskName, function () {
-            done();
-        });
+    return new Promise(function (resolve) {
+        gulpInstance.task(taskName, resolve);
         gulpInstance.start("webpack");
-    }
-
-    afterEach(function () {
-        process.env.NODE_ENV = previousNodeEnv;
     });
+}
 
-    beforeEach(function () {
-        previousNodeEnv = process.env.NODE_ENV;
-    });
+test.afterEach(function () {
+    process.env.NODE_ENV = previousNodeEnv;
+});
 
-    it("sets up gulp instance using development settings", function (done) {
-        doTestWebpackSetup(done, "development", "webpack.development");
-    });
+test.beforeEach(function () {
+    previousNodeEnv = process.env.NODE_ENV;
+});
 
-    it("sets up gulp instance using production settings", function (done) {
-        doTestWebpackSetup(done, "production", "webpack.production");
-    });
+test("sets up gulp instance using development settings", function () {
+    return doTestWebpackSetup("development", "webpack.development");
+});
 
-    it("provides the default task", function () {
-        const gulpInstance = new Gulp();
+test("sets up gulp instance using production settings", function () {
+    return doTestWebpackSetup("production", "webpack.production");
+});
 
-        gg(fixtureLibraryPath).setup(gulpInstance);
+test("provides the default task", function () {
+    const gulpInstance = new Gulp();
 
-        assert.ok(gulpInstance.hasTask("default"));
-    });
+    gg(fixtureLibraryPath).setup(gulpInstance);
 
-    it("provides package dependencies", function () {
-        const gulpInstance = new Gulp();
-        const spy = sinon.spy();
+    assert.ok(gulpInstance.hasTask("default"));
+});
 
-        gg({
-            "baseDir": fixtureLibraryPath,
-            "dependencies": [
-                "my-custom-dependency"
-            ]
-        }).plugin({
-            "dependencies": [],
-            "factory": noop,
-            "name": "my-test-plugin"
-        }).setup(gulpInstance);
+test("provides package dependencies", function () {
+    const gulpInstance = new Gulp();
+    const spy = sinon.spy();
 
-        gulpInstance.task("my-custom-dependency", spy);
-        gulpInstance.start("my-test-plugin");
+    gg({
+        "baseDir": fixtureLibraryPath,
+        "dependencies": [
+            "my-custom-dependency"
+        ]
+    }).plugin({
+        "dependencies": [],
+        "factory": noop,
+        "name": "my-test-plugin"
+    }).setup(gulpInstance);
 
-        assert.ok(spy.calledOnce);
-    });
+    gulpInstance.task("my-custom-dependency", spy);
+    gulpInstance.start("my-test-plugin");
+
+    assert.ok(spy.calledOnce);
 });

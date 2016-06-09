@@ -8,12 +8,6 @@
 
 "use strict";
 
-/* global describe: false */
-
 const common = require("./common");
-const config = require("../../config");
 
-describe("webpack/development", function () {
-    this.timeout(config.timeout);
-    common.setup("webpack.development");
-});
+common.setup("webpack.development");

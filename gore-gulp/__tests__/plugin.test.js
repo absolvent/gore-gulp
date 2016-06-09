@@ -8,27 +8,21 @@
 
 "use strict";
 
-/* global describe: false, it: false */
-
-const config = require("./config");
 const gg = require("../index");
 const Gulp = require("gulp").Gulp;
 const noop = require("lodash/noop");
 const path = require("path");
+const test = require("lookly-preset-ava/test");
 
-describe("plugin", function () {
-    this.timeout(config.timeout);
+test("allows to attach a custom plugin", function () {
+    const gulpInstance = new Gulp();
 
-    it("allows to attach a custom plugin", function (done) {
-        const gulpInstance = new Gulp();
-
+    return new Promise(function (resolve) {
         gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({
                 "dependencies": [],
                 "factory": function () {
-                    return function () {
-                        done();
-                    };
+                    return resolve;
                 },
                 "name": "custom"
             })
@@ -36,17 +30,17 @@ describe("plugin", function () {
 
         gulpInstance.start("custom");
     });
+});
 
-    it("is chainable", function (done) {
-        const gulpInstance = new Gulp();
+test("is chainable", function () {
+    const gulpInstance = new Gulp();
 
+    return new Promise(function (resolve) {
         gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
             .plugin({
                 "dependencies": [],
                 "factory": function () {
-                    return function () {
-                        done();
-                    };
+                    return resolve;
                 },
                 "name": "first"
             })

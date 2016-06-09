@@ -8,6 +8,7 @@
 
 "use strict";
 
+const ava = require("./plugin/ava");
 const fs = require("fs");
 const identity = require("lodash/identity");
 const isEmpty = require("lodash/isEmpty");
@@ -87,6 +88,13 @@ module.exports = function (config) {
         "dependencies": [],
         "factory": lint,
         "name": "lint"
+    });
+    plugin({
+        "dependencies": [
+            "lint"
+        ],
+        "factory": ava,
+        "name": "ava"
     });
     plugin({
         "dependencies": [
