@@ -3,6 +3,7 @@
     "babel-loader": "^6.2.4",
     "bluebird": "^3.4.0",
     "eslint-config-goreutils": "^0.5.2",
+    "gulp": "^3.9.1",
     "loader-utils": "^0.2.15",
     "lodash": "^4.13.1",
     "lookly-preset-ava": "^1.0.0",
