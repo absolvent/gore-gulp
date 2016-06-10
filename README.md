@@ -132,45 +132,6 @@ Currently it is only possible to override
 [eslint](https://github.com/eslint/eslint) settings by placing your `.eslintrc`
 file into the base project directory (the one that holds your `package.json`).
 
-### Can I attach my own plugin and why should I do that?
-
-The goal of **gore-gulp** is to provide a configuration-less (!) development
-environment. But a centralized configuration is also easy to set up.
-If your organization uses common patterns among projects, you can create an
-NPM package with **gore-gulp** plugin and instead of configuring each project
-via copy-pasting you can attach your plugin.
-
-The minimal plugin is a factory function that returns a gulp task.
-
-```JavaScript
-// my-plugin.js
-
-module.exports = {
-    "dependencies": [],
-    "factory": function (config, pckg, gulpInstance) {
-        // this function is going to be passed to the gulp.task call
-        // config.baseDir is a directory of the host project (the one that uses gore-gulp)
-        // pckg is the host project's package.json contents
-        // gulpInstance is the host project's gulp
-    },
-    "name": "task-name"
-};
-```
-
-```JavaScript
-// gulpfile.js
-
-var myPlugin = require("my-plugin");
-
-gg(__dirname).plugin(myPlugin).setup(gulp)
-```
-
-Invoking with CLI:
-
-```
-$ gulp task-name
-```
-
 ### How can I integrate gore-gulp into my editor?
 
 Please check
@@ -199,16 +160,15 @@ gulp.task("sass", function () {
 ```JavaScript
 // gulpfile.js
 
-gg({
-    "baseDir": __dirname,
-    "dependencies": [
-        "my-dependency"
-    ]
-}).setup(gulp);
+const setup = gg(__dirname);
+
+setup.setup(gulp);
 
 gulp.task("my-dependency", function () {
-    // this tasks is going to start before others
+    // this tasks is going to start before linter
 });
+
+gulp.task("lint", ["my-dependency"], setup.tasks.lint);
 ```
 
 ### Can I autoload dependencies?
