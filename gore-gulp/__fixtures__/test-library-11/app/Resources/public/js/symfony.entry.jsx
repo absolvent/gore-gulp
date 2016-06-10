@@ -12,7 +12,7 @@
 
 import React from 'react';
 
-class FooElement extends React.Component {
+function FooElement() {
 }
 
 React.render(<FooElement />, document.body);
