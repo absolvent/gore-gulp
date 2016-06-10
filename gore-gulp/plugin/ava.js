@@ -9,10 +9,7 @@
 'use strict';
 
 const ava = require('lookly-preset-ava');
-const getCliOptions = require('../getCliOptions');
 
-module.exports = function (config, pckg) {
-  const options = getCliOptions(config, pckg, process.argv.slice(2));
-
-  return ava(options.glob);
+module.exports = function (config, pckg, cli) {
+  return ava(cli.glob);
 };

@@ -9,10 +9,7 @@
 'use strict';
 
 const esformatter = require('lookly-preset-esformatter');
-const getCliOptions = require('../getCliOptions');
 
-module.exports = function (config, pckg) {
-  const options = getCliOptions(config, pckg, process.argv.slice(2));
-
-  return esformatter.formatGlob(options.glob);
+module.exports = function (config, pckg, cli) {
+  return esformatter.formatGlob(cli.glob);
 };

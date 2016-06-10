@@ -11,6 +11,7 @@
 const ava = require('./plugin/ava');
 const format = require('./plugin/format');
 const fs = require('fs');
+const getCliOptions = require('./getCliOptions');
 const identity = require('lodash/identity');
 const isEmpty = require('lodash/isEmpty');
 const lint = require('./plugin/lint');
@@ -42,7 +43,11 @@ function setupTask(config, pckgPromise, factory) {
     return function () {
       return pckgPromise
         .then(pckg => override ? override(pckg) : pckg)
-        .then(pckg => factory(config, pckg, gulp))
+        .then(pckg => Promise.props({
+          pckg,
+          cli: getCliOptions(config, pckg, process.argv.slice(2)),
+        }))
+        .then(props => factory(config, props.pckg, props.cli, gulp))
       ;
     };
   };

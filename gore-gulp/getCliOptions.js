@@ -12,7 +12,7 @@ const globSpread = require('./globSpread');
 const minimist = require('minimist');
 const path = require('path');
 
-function testPluginCliOptions(config, pckg, argv) {
+function getCliOptions(config, pckg, argv) {
   return minimist(argv, {
     string: 'glob',
     default: {
@@ -21,4 +21,4 @@ function testPluginCliOptions(config, pckg, argv) {
   });
 }
 
-module.exports = testPluginCliOptions;
+module.exports = getCliOptions;

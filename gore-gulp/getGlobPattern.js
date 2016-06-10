@@ -12,7 +12,7 @@ const ecmaScriptFileExtensionsGlobPattern = require('./pckg/ecmaScriptFileExtens
 const globSpread = require('./globSpread');
 const path = require('path');
 
-function awaitGlobPattern(config, pckg) {
+function getGlobPattern(config, pckg) {
   return [
     path.resolve(
       config.baseDir,
@@ -31,4 +31,4 @@ function awaitGlobPattern(config, pckg) {
   ];
 }
 
-module.exports = awaitGlobPattern;
+module.exports = getGlobPattern;
