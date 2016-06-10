@@ -8,12 +8,12 @@
 
 'use strict';
 
-const awaitGlobPattern = require('../awaitGlobPattern');
 const eslint = require('lookly-preset-eslint');
+const getGlobPattern = require('../getGlobPattern');
 const keys = require('lodash/keys');
 
 module.exports = function (config, pckg) {
-  return eslint(awaitGlobPattern(config, pckg), {
+  return eslint(getGlobPattern(config, pckg), {
     configFile: require.resolve('lookly-preset-eslint/eslint'),
     globals: keys(pckg.provide),
   });

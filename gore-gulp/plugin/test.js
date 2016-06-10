@@ -9,10 +9,10 @@
 'use strict';
 
 const mocha = require('lookly-preset-mocha');
-const testPluginCliOptions = require('../testPluginCliOptions');
+const getCliOptions = require('../getCliOptions');
 
 module.exports = function (config, pckg) {
-  const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
+  const options = getCliOptions(config, pckg, process.argv.slice(2));
 
   return mocha(options.glob);
 };
