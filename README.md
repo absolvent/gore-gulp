@@ -148,12 +148,10 @@ The minimal plugin is a factory function that returns a gulp task.
 module.exports = {
     "dependencies": [],
     "factory": function (config, pckgPromise, gulpInstance) {
-        return function () {
-            // this function is going to be passed to the gulp.task call
-            // config.baseDir is a directory of the host project (the one that uses gore-gulp)
-            // pckgPromise resolves to host project's package.json contents
-            // gulpInstance is the host project's gulp
-        };
+        // this function is going to be passed to the gulp.task call
+        // config.baseDir is a directory of the host project (the one that uses gore-gulp)
+        // pckgPromise resolves to host project's package.json contents
+        // gulpInstance is the host project's gulp
     },
     "name": "task-name"
 };
