@@ -12,11 +12,9 @@ const esformatter = require('lookly-preset-esformatter');
 const testPluginCliOptions = require('../testPluginCliOptions');
 
 module.exports = function (config, pckgPromise) {
-  return function () {
-    return pckgPromise.then(function (pckg) {
-      const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
+  return pckgPromise.then(function (pckg) {
+    const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
 
-      return esformatter.formatGlob(options.glob);
-    });
-  };
+    return esformatter.formatGlob(options.glob);
+  });
 };

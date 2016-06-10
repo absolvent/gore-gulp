@@ -21,9 +21,7 @@ test('allows to attach a custom plugin', function () {
     gg(path.resolve(__dirname, '..', '__fixtures__', 'test-library-8'))
       .plugin({
         dependencies: [],
-        factory() {
-          return resolve;
-        },
+        factory: resolve,
         name: 'custom',
       })
       .setup(gulpInstance);
@@ -39,16 +37,12 @@ test('is chainable', function () {
     gg(path.resolve(__dirname, '..', '__fixtures__', 'test-library-8'))
       .plugin({
         dependencies: [],
-        factory() {
-          return resolve;
-        },
+        factory: resolve,
         name: 'first',
       })
       .plugin({
         dependencies: ['first'],
-        factory() {
-          return noop;
-        },
+        factory: noop,
         name: 'second',
       })
       .setup(gulpInstance);

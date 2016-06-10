@@ -109,25 +109,23 @@ function groupEntries(config, pckgPromise) {
 
 function setupVariant(variant) {
   return function (config, pckgPromise) {
-    return function () {
-      const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
-      const workers = workerFarm(runnerPath);
+    const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
+    const workers = workerFarm(runnerPath);
 
-      return groupEntries(config, pckgPromise).then(results => (
-        Promise.all(results.map(result => (
-          Promise.fromCallback(callback => (
-            workers({
-              config: {
-                baseDir: config.baseDir,
-              },
-              entries: result.entries,
-              pckg: result.pckg,
-              variant,
-            }, callback)
-          ))
-        )))
-      )).finally(() => workerFarm.end(workers));
-    };
+    return groupEntries(config, pckgPromise).then(results => (
+      Promise.all(results.map(result => (
+        Promise.fromCallback(callback => (
+          workers({
+            config: {
+              baseDir: config.baseDir,
+            },
+            entries: result.entries,
+            pckg: result.pckg,
+            variant,
+          }, callback)
+        ))
+      )))
+    )).finally(() => workerFarm.end(workers));
   };
 }
 

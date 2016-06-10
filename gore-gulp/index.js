@@ -45,7 +45,9 @@ function setupTask(config, pckgPromise, factory) {
       pckgPromise
     );
 
-    return factory(config, normalizedPromise, gulp);
+    return function () {
+      return factory(config, normalizedPromise, gulp);
+    };
   };
 }
 

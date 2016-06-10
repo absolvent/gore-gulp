@@ -19,12 +19,10 @@ module.exports = function (config, pckgPromise) {
     pckgPromise,
   ];
 
-  return function () {
-    return Promise.all(initPromises).spread(function (globPattern, pckg) {
-      return eslint(globPattern, {
-        configFile: require.resolve('lookly-preset-eslint/eslint'),
-        globals: keys(pckg.provide),
-      });
+  return Promise.all(initPromises).spread(function (globPattern, pckg) {
+    return eslint(globPattern, {
+      configFile: require.resolve('lookly-preset-eslint/eslint'),
+      globals: keys(pckg.provide),
     });
-  };
+  });
 };
