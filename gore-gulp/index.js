@@ -39,14 +39,11 @@ function setupDependencies(config, dependencies) {
 
 function setupTask(config, pckgPromise, factory) {
   return function (gulp, override) {
-    const normalizedPromise = override ? (
-      pckgPromise.then(override)
-    ) : (
-      pckgPromise
-    );
-
     return function () {
-      return factory(config, normalizedPromise, gulp);
+      return pckgPromise
+        .then(pckg => override ? override(pckg) : pckg)
+        .then(pckg => factory(config, pckg, gulp))
+      ;
     };
   };
 }

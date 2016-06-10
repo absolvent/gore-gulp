@@ -59,60 +59,58 @@ function normalizeEntries(config, pckg, libDir, entries) {
   return ret;
 }
 
-function groupEntries(config, pckgPromise) {
-  return pckgPromise.then(pckg => (
-    Promise.all(map(libDirs(pckg), function (libDir) {
-      const pattern = path.resolve(
-        config.baseDir,
+function groupEntries(config, pckg) {
+  return Promise.all(map(libDirs(pckg), function (libDir) {
+    const pattern = path.resolve(
+      config.baseDir,
+      libDir,
+      '**',
+      `*.entry${ecmaScriptFileExtensionsGlobPattern(pckg)}`
+    );
+
+    return glob(pattern).then(entries => (
+      map(entries, entry => ({
+        entry,
         libDir,
-        '**',
-        `*.entry${ecmaScriptFileExtensionsGlobPattern(pckg)}`
-      );
+        pckg,
+      }))
+    ));
+  }))
+  .then(results => flatten(results))
+  .then(results => groupBy(results, 'libDir'))
+  .then(results => values(mapValues(results, entryPoints => {
+    const chunkLength = Math.ceil(entryPoints.length / cpus.length);
 
-      return glob(pattern).then(entries => (
-        map(entries, entry => ({
-          entry,
-          libDir,
-          pckg,
-        }))
-      ));
-    }))
-    .then(results => flatten(results))
-    .then(results => groupBy(results, 'libDir'))
-    .then(results => values(mapValues(results, entryPoints => {
-      const chunkLength = Math.ceil(entryPoints.length / cpus.length);
-
-      return chunk(entryPoints, chunkLength);
-    })))
-    .then(results => (
-      map(results, entryPointsChunk => (
-        map(entryPointsChunk, entryPoints => (
-          reduce(entryPoints, (acc, entryPoint) => ({
-            entries: acc.entries.concat(entryPoint.entry),
-            libDir: entryPoint.libDir,
-            pckg: entryPoint.pckg,
-          }), {
-            entries: [],
-            libDir: null,
-            pckg: null,
-          })
-        ))
+    return chunk(entryPoints, chunkLength);
+  })))
+  .then(results => (
+    map(results, entryPointsChunk => (
+      map(entryPointsChunk, entryPoints => (
+        reduce(entryPoints, (acc, entryPoint) => ({
+          entries: acc.entries.concat(entryPoint.entry),
+          libDir: entryPoint.libDir,
+          pckg: entryPoint.pckg,
+        }), {
+          entries: [],
+          libDir: null,
+          pckg: null,
+        })
       ))
     ))
-    .then(results => flatten(results))
-    .then(results => map(results, result => ({
-      entries: normalizeEntries(config, result.pckg, result.libDir, result.entries),
-      pckg: result.pckg,
-    })))
-  ));
+  ))
+  .then(results => flatten(results))
+  .then(results => map(results, result => ({
+    entries: normalizeEntries(config, result.pckg, result.libDir, result.entries),
+    pckg: result.pckg,
+  })));
 }
 
 function setupVariant(variant) {
-  return function (config, pckgPromise) {
+  return function (config, pckg) {
     const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
     const workers = workerFarm(runnerPath);
 
-    return groupEntries(config, pckgPromise).then(results => (
+    return groupEntries(config, pckg).then(results => (
       Promise.all(results.map(result => (
         Promise.fromCallback(callback => (
           workers({

@@ -11,10 +11,8 @@
 const mocha = require('lookly-preset-mocha');
 const testPluginCliOptions = require('../testPluginCliOptions');
 
-module.exports = function (config, pckgPromise) {
-  return pckgPromise.then(function (pckg) {
-    const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
+module.exports = function (config, pckg) {
+  const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
 
-    return mocha(options.glob);
-  });
+  return mocha(options.glob);
 };

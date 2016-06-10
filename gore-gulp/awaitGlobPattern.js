@@ -12,25 +12,23 @@ const ecmaScriptFileExtensionsGlobPattern = require('./pckg/ecmaScriptFileExtens
 const globSpread = require('./globSpread');
 const path = require('path');
 
-function awaitGlobPattern(config, pckgPromise) {
-  return pckgPromise.then(function (pckg) {
-    return [
-      path.resolve(
-        config.baseDir,
-        globSpread(pckg.directories.lib),
-        '**',
-        `*${ecmaScriptFileExtensionsGlobPattern(pckg)}`
-      ),
-      `!${path.resolve(
-        config.baseDir,
-        globSpread(pckg.directories.lib),
-        '**',
-        '__fixtures__',
-        '**',
-        '*'
-      )}`,
-    ];
-  });
+function awaitGlobPattern(config, pckg) {
+  return [
+    path.resolve(
+      config.baseDir,
+      globSpread(pckg.directories.lib),
+      '**',
+      `*${ecmaScriptFileExtensionsGlobPattern(pckg)}`
+    ),
+    `!${path.resolve(
+      config.baseDir,
+      globSpread(pckg.directories.lib),
+      '**',
+      '__fixtures__',
+      '**',
+      '*'
+    )}`,
+  ];
 }
 
 module.exports = awaitGlobPattern;

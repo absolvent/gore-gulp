@@ -11,10 +11,8 @@
 const ava = require('lookly-preset-ava');
 const testPluginCliOptions = require('../testPluginCliOptions');
 
-module.exports = function (config, pckgPromise) {
-  return pckgPromise.then(function (pckg) {
-    const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
+module.exports = function (config, pckg) {
+  const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
 
-    return ava(options.glob);
-  });
+  return ava(options.glob);
 };
