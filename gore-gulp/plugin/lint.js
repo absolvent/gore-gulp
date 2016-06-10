@@ -8,10 +8,9 @@
 
 "use strict";
 
-const ecmaScriptFileExtensionsGlobPattern = require("../pckg/ecmaScriptFileExtensionsGlobPattern");
+const awaitGlobPattern = require("../awaitGlobPattern");
 const eslint = require("lookly-preset-eslint");
 const fs = require("fs");
-const globSpread = require("../globSpread");
 const keys = require("lodash/keys");
 const path = require("path");
 const Promise = require("bluebird");
@@ -34,15 +33,6 @@ function awaitEslintrc(config) {
                 resolve(bundledEslintrc);
             }
         });
-    });
-}
-
-function awaitGlobPattern(config, pckgPromise) {
-    return pckgPromise.then(function (pckg) {
-        return [
-            path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "*" + ecmaScriptFileExtensionsGlobPattern(pckg)),
-            "!" + path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "__fixtures__", "**", "*")
-        ];
     });
 }
 
