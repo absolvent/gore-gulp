@@ -64,6 +64,7 @@ function runDirectory(baseDir, variant) {
         });
       });
     },
+    silent: true,
   }).setup(gulpInstance);
 
   return new Promise(function (resolve, reject) {

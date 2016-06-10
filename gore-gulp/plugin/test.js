@@ -11,5 +11,7 @@
 const mocha = require('lookly-preset-mocha');
 
 module.exports = function (config) {
-  return mocha(config.glob);
+  return mocha(config.glob, {
+    silent: config.silent,
+  });
 };

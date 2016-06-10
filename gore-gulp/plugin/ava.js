@@ -11,5 +11,7 @@
 const ava = require('lookly-preset-ava');
 
 module.exports = function (config) {
-  return ava(config.glob);
+  return ava(config.glob, {
+    silent: config.silent,
+  });
 };

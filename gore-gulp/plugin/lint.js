@@ -16,5 +16,6 @@ module.exports = function (config, pckg) {
   return eslint(getGlobPattern(config, pckg), {
     configFile: require.resolve('lookly-preset-eslint/eslint'),
     globals: keys(pckg.provide),
+    silent: config.silent,
   });
 };
