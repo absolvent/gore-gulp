@@ -8,11 +8,10 @@
 
 'use strict';
 
-const assert = require('chai').assert;
 const test = require('lookly-preset-ava/test');
 const webpackGetOutputFilename = require('../../../plugin/webpack/webpackGetOutputFilename');
 
-test('normalizes filename', function () {
+test('normalizes filename', function (t) {
   const outputFilename = webpackGetOutputFilename({
     output: {
       filename: 'foo.[name].min.js',
@@ -20,5 +19,5 @@ test('normalizes filename', function () {
     },
   }, 'bar');
 
-  assert.strictEqual(outputFilename, '/baz/foo.bar.min.js');
+  t.is(outputFilename, '/baz/foo.bar.min.js');
 });

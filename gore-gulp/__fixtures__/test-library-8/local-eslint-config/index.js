@@ -6,13 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
-
-var a = 5;
+const a = 5;
 
 function b() {
 }
 
 if (a === 5) {
-    b();
+  b();
 }

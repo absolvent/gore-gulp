@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-var c = require("example/c");
+const c = require('example/c');
 
 c.doFoo(__filename);

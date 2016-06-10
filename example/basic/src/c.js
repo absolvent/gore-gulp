@@ -6,10 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
 module.exports = {
-    "doFoo": function (filename) {
-        console.log("hello from ", filename);
-    }
+  doFoo(filename) {
+    console.log('hello from ', filename);
+  },
 };

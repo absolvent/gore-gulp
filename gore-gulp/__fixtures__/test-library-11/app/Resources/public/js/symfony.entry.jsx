@@ -6,11 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-/*eslint no-unused-vars: 0 */
+/* eslint no-unused-vars: 0 */
 
-import React from "react";
+import React from 'react';
 
 class FooElement extends React.Component {
 }

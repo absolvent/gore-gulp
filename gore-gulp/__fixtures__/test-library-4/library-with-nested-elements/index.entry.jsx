@@ -6,6 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-import "test-library-4/React/Element";
+import 'test-library-4/React/Element';

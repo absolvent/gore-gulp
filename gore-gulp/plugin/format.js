@@ -9,12 +9,14 @@
 'use strict';
 
 const esformatter = require('lookly-preset-esformatter');
-const awaitGlobPattern = require('../awaitGlobPattern');
+const testPluginCliOptions = require('../testPluginCliOptions');
 
 module.exports = function (config, pckgPromise) {
   return function () {
-    return awaitGlobPattern(config, pckgPromise).then(function (globPattern) {
-      return esformatter.formatGlob(globPattern);
+    return pckgPromise.then(function (pckg) {
+      const options = testPluginCliOptions(config, pckg, process.argv.slice(2));
+
+      return esformatter.formatGlob(options.glob);
     });
   };
 };

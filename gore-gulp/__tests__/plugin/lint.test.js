@@ -17,7 +17,9 @@ const test = require('lookly-preset-ava/test');
 function runDirectory(baseDir) {
   const gulpInstance = new Gulp();
 
-  gg({ baseDir }).setup(gulpInstance);
+  gg({
+    baseDir,
+  }).setup(gulpInstance);
 
   return new Promise(function (resolve, reject) {
     gulpInstance.on('err', reject);
@@ -33,7 +35,7 @@ test('detects code flaws', function () {
       throw new Error('Linter should detect errors!');
     })
     .catch(function (err) {
-      if (err.err.plugin !== 'lookly-preset-eslint') {
+      if (err.err && err.err.plugin !== 'lookly-preset-eslint') {
         throw err;
       }
     });

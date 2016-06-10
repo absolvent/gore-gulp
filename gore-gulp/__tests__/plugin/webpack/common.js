@@ -8,7 +8,6 @@
 
 'use strict';
 
-const assert = require('chai').assert;
 const fixtureDir = '../../../__fixtures__';
 const fs = require('fs');
 const gg = require('../../../index');
@@ -20,16 +19,16 @@ const Promise = require('bluebird');
 const test = require('lookly-preset-ava/test');
 const tmp = require('tmp');
 
-function doFiles(paths, cb) {
+function doFiles(t, paths, assertion) {
   return function (distDir) {
     const promises = paths.map(function (pth) {
       return Promise.fromCallback(function (statCb) {
         fs.stat(path.resolve(distDir, pth), statCb);
       }).then(function (stats) {
-        return cb(stats.isFile(), pth);
+        return t[assertion](stats.isFile(), pth);
       }).catch(function (err) {
         if (err.code === 'ENOENT') {
-          return cb(false, pth);
+          return t[assertion](false, pth);
         }
 
         throw err;
@@ -40,12 +39,12 @@ function doFiles(paths, cb) {
   };
 }
 
-function expectFiles(paths) {
-  return doFiles(paths, assert.ok);
+function expectFiles(t, paths) {
+  return doFiles(t, paths, 'true');
 }
 
-function notExpectFiles(paths) {
-  return doFiles(paths, assert.notOk);
+function notExpectFiles(t, paths) {
+  return doFiles(t, paths, 'false');
 }
 
 function runDirectory(baseDir, variant) {
@@ -173,7 +172,7 @@ function setup(variant) {
       notExpectFiles: [],
     },
   ].forEach(function (testData) {
-    test(testData.name, function () {
+    test(testData.name, function (t) {
       let distDir;
 
       return runDirectory(path.resolve(__dirname, fixtureDir, testData.fixture), variant)
@@ -182,11 +181,11 @@ function setup(variant) {
 
           return dd;
         })
-        .then(expectFiles(testData.expectFiles))
+        .then(expectFiles(t, testData.expectFiles))
         .then(function () {
           return distDir;
         })
-        .then(notExpectFiles(testData.notExpectFiles));
+        .then(notExpectFiles(t, testData.notExpectFiles));
     });
   });
 }

@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
 module.exports = function () {
-    return "this is just a fake module";
+  return 'this is just a fake module';
 };

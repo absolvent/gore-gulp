@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-import c from "example/c";
+import c from 'example/c';
 
 c.doFoo(__filename);

@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-var gg = require("gore-gulp"),
-    gulp = require("gulp");
+const gg = require('gore-gulp'),
+const gulp = require('gulp');
 
 gg(__dirname).setup(gulp);

@@ -6,6 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-$(".webpack-should-use-provide-plugin").add(".linter-should-not-complain");
+$('.webpack-should-use-provide-plugin').add('.linter-should-not-complain');

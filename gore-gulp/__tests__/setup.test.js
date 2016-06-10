@@ -8,7 +8,6 @@
 
 'use strict';
 
-const assert = require('chai').assert;
 const gg = require('..');
 const Gulp = require('gulp').Gulp;
 const noop = require('lodash/noop');
@@ -48,15 +47,15 @@ test('sets up gulp instance using production settings', function () {
   return doTestWebpackSetup('production', 'webpack.production');
 });
 
-test('provides the default task', function () {
+test('provides the default task', function (t) {
   const gulpInstance = new Gulp();
 
   gg(fixtureLibraryPath).setup(gulpInstance);
 
-  assert.ok(gulpInstance.hasTask('default'));
+  t.true(gulpInstance.hasTask('default'));
 });
 
-test('provides package dependencies', function () {
+test('provides package dependencies', function (t) {
   const gulpInstance = new Gulp();
   const spy = sinon.spy();
 
@@ -74,5 +73,5 @@ test('provides package dependencies', function () {
   gulpInstance.task('my-custom-dependency', spy);
   gulpInstance.start('my-test-plugin');
 
-  assert.ok(spy.calledOnce);
+  t.true(spy.calledOnce);
 });
