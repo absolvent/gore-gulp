@@ -11,5 +11,5 @@
 const esformatter = require('lookly-preset-esformatter');
 
 module.exports = function (config, pckg, cli) {
-  return esformatter.formatGlob(cli.glob);
+  return esformatter(cli.glob);
 };
