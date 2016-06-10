@@ -10,6 +10,6 @@
 
 const ava = require('lookly-preset-ava');
 
-module.exports = function (config, pckg, cli) {
-  return ava(cli.glob);
+module.exports = function (config) {
+  return ava(config.glob);
 };

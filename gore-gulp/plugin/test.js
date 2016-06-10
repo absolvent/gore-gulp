@@ -10,6 +10,6 @@
 
 const mocha = require('lookly-preset-mocha');
 
-module.exports = function (config, pckg, cli) {
-  return mocha(cli.glob);
+module.exports = function (config) {
+  return mocha(config.glob);
 };

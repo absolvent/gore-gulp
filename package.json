@@ -22,7 +22,6 @@
     "react": "^15.1.0",
     "request": "^2.72.0",
     "rimraf": "^2.5.2",
-    "sinon": "^1.17.4",
     "tmp": "^0.0.28"
   },
   "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",

@@ -11,161 +11,52 @@
 const ava = require('./plugin/ava');
 const format = require('./plugin/format');
 const fs = require('fs');
-const getCliOptions = require('./getCliOptions');
-const identity = require('lodash/identity');
-const isEmpty = require('lodash/isEmpty');
 const lint = require('./plugin/lint');
-const merge = require('lodash/merge');
-const noop = require('lodash/noop');
+const normalizeConfig = require('./normalizeConfig');
+const normalizeConfigWithPckg = require('./normalizeConfigWithPckg');
 const path = require('path');
 const Promise = require('bluebird');
 const test = require('./plugin/test');
 const webpack = require('./plugin/webpack');
 
-function setup(options, pckgPromise, plugins, gulp) {
-  for (const name in plugins) {
-    if (plugins.hasOwnProperty(name)) {
-      gulp.task(name, plugins[name].dependencies, plugins[name].task(gulp));
-    }
-  }
-}
-
-function setupDependencies(config, dependencies) {
-  if (!isEmpty(config.dependencies)) {
-    return config.dependencies.concat(dependencies);
-  }
-
-  return dependencies;
-}
-
 function setupTask(config, pckgPromise, factory) {
-  return function (gulp, override) {
-    return function () {
-      return pckgPromise
-        .then(pckg => override ? override(pckg) : pckg)
-        .then(pckg => Promise.props({
-          pckg,
-          cli: getCliOptions(config, pckg, process.argv.slice(2)),
-        }))
-        .then(props => factory(config, props.pckg, props.cli, gulp))
-      ;
-    };
+  return function () {
+    return pckgPromise.then(pckg => Promise.props({
+      config: normalizeConfigWithPckg(config, pckg),
+      pckg,
+    })).then(params => factory(params.config, params.pckg));
   };
 }
 
 module.exports = function (config) {
-  const plugins = {};
-  let normalizedConfig;
-  let ret;
+  const normalizedConfig = normalizeConfig(config, process.argv.slice(2));
+  const pckgPath = path.resolve(normalizedConfig.baseDir, 'package.json');
+  const pckgPromise = Promise
+    .fromCallback(cb => fs.readFile(pckgPath, cb))
+    .then(pckg => JSON.parse(pckg))
+    .then(pckg => normalizedConfig.override(pckg))
+  ;
 
-  if (typeof config === 'string') {
-    normalizedConfig = {
-      baseDir: config,
-    };
-  } else {
-    normalizedConfig = config;
-  }
-
-  normalizedConfig = merge({
-    dependencies: [],
-    override: identity,
-  }, normalizedConfig);
-
-  const pckgPromise = Promise.fromNode(function (cb) {
-    fs.readFile(path.resolve(normalizedConfig.baseDir, 'package.json'), cb);
-  }).then(function (pckgContents) {
-    return JSON.parse(pckgContents);
-  }).then(normalizedConfig.override);
-
-  function plugin(definition) {
-    plugins[definition.name] = {
-      dependencies: setupDependencies(normalizedConfig, definition.dependencies),
-      task: setupTask(normalizedConfig, pckgPromise, definition.factory),
-    };
-
-    return ret;
-  }
-
-  ret = {
-    plugin,
-    plugins,
-    setup(gulp) {
-      return setup(normalizedConfig, pckgPromise, plugins, gulp);
-    },
+  const tasks = {
+    ava: setupTask(normalizedConfig, pckgPromise, ava),
+    format: setupTask(normalizedConfig, pckgPromise, format),
+    lint: setupTask(normalizedConfig, pckgPromise, lint),
+    test: setupTask(normalizedConfig, pckgPromise, test),
+    'webpack.development': setupTask(normalizedConfig, pckgPromise, webpack.development),
+    'webpack.production': setupTask(normalizedConfig, pckgPromise, webpack.production),
   };
 
-  plugin({
-    dependencies: [],
-    factory: format,
-    name: 'format',
-  });
-  plugin({
-    dependencies: [],
-    factory: lint,
-    name: 'lint',
-  });
-  plugin({
-    dependencies: [
-      'lint',
-    ],
-    factory: ava,
-    name: 'ava',
-  });
-  plugin({
-    dependencies: [
-      'lint',
-    ],
-    factory: test,
-    name: 'test',
-  });
-  plugin({
-    dependencies: [
-      'test',
-    ],
-    factory: webpack.development,
-    name: 'webpack.development',
-  });
-  plugin({
-    dependencies: [
-      'test',
-    ],
-    factory: webpack.production,
-    name: 'webpack.production',
-  });
-
-  if (process.env.NODE_ENV === 'production') {
-    plugin({
-      dependencies: [
-        'webpack.production',
-      ],
-      factory: noop,
-      name: 'webpack',
-    });
-  } else {
-    plugin({
-      dependencies: [
-        'webpack.development',
-      ],
-      factory: noop,
-      name: 'webpack',
-    });
-  }
-
-  plugin({
-    dependencies: [
-      'webpack',
-    ],
-    factory: noop,
-    name: 'build',
-  });
-
-  plugin({
-    dependencies: [
-      'webpack',
-    ],
-    factory: noop,
-    name: 'default',
-  });
-
-  return ret;
+  return {
+    tasks,
+    setup(gulp) {
+      gulp.task('format', tasks.format);
+      gulp.task('lint', tasks.lint);
+      gulp.task('ava', ['lint'], tasks.ava);
+      gulp.task('test', ['lint'], tasks.test);
+      gulp.task('webpack.development', ['test'], tasks['webpack.development']);
+      gulp.task('webpack.production', ['test'], tasks['webpack.production']);
+      gulp.task('webpack', tasks['webpack.development']);
+      gulp.task('default', ['webpack']);
+    },
+  };
 };

@@ -12,10 +12,13 @@ const globSpread = require('./globSpread');
 const minimist = require('minimist');
 const path = require('path');
 
-function getCliOptions(config, pckg, argv) {
-  return minimist(argv, {
+function getCliOptions(config, pckg) {
+  return minimist(config.argv, {
+    boolean: 'silent',
     string: 'glob',
+
     default: {
+      silent: config.silent,
       glob: path.resolve(config.baseDir, globSpread(pckg.directories.lib), '**/*.test.js'),
     },
   });

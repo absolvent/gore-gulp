@@ -10,6 +10,6 @@
 
 const esformatter = require('lookly-preset-esformatter');
 
-module.exports = function (config, pckg, cli) {
-  return esformatter(cli.glob);
+module.exports = function (config) {
+  return esformatter(config.glob);
 };
