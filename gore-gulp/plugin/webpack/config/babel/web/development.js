@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const merge = require("lodash/merge");
-const web = require("../web");
+const merge = require('lodash/merge');
+const web = require('../web');
 
 function development(config, pckg, entries) {
-    return web(config, pckg, entries).then(function (webConfig) {
-        return merge({}, webConfig, {
-            "debug": true,
-            "devtool": config.developmentDevtool || "none"
-        });
+  return web(config, pckg, entries).then(function (webConfig) {
+    return merge({}, webConfig, {
+      debug: true,
+      devtool: config.developmentDevtool || 'none',
     });
+  });
 }
 
 module.exports = development;

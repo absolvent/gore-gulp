@@ -6,15 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const esformatter = require("lookly-preset-esformatter");
-const awaitGlobPattern = require("../awaitGlobPattern");
+const esformatter = require('lookly-preset-esformatter');
+const awaitGlobPattern = require('../awaitGlobPattern');
 
 module.exports = function (config, pckgPromise) {
-    return function () {
-        return awaitGlobPattern(config, pckgPromise).then(function (globPattern) {
-            return esformatter.formatGlob(globPattern);
-        });
-    };
+  return function () {
+    return awaitGlobPattern(config, pckgPromise).then(function (globPattern) {
+      return esformatter.formatGlob(globPattern);
+    });
+  };
 };

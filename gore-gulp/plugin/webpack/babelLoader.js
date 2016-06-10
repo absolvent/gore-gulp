@@ -6,21 +6,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const config = require("lookly-preset-babel");
-const loaderUtils = require("loader-utils");
-const vanillaBabelLoader = require("babel-loader");
+const config = require('lookly-preset-babel');
+const loaderUtils = require('loader-utils');
+const vanillaBabelLoader = require('babel-loader');
 
 function babelLoader(source, initialSourceMap) {
-    const query = loaderUtils.parseQuery(this.query);
+  const query = loaderUtils.parseQuery(this.query);
 
-    this.options.babel = config();
-    this.options.babel.cacheDirectory = query.cacheDirectory;
-    this.options.babel.cacheIdentifier = query.cacheIdentifier;
+  this.options.babel = config();
+  this.options.babel.cacheDirectory = query.cacheDirectory;
+  this.options.babel.cacheIdentifier = query.cacheIdentifier;
 
-    this.query = "";
-    vanillaBabelLoader.call(this, source, initialSourceMap);
+  this.query = '';
+  vanillaBabelLoader.call(this, source, initialSourceMap);
 }
 
 module.exports = babelLoader;

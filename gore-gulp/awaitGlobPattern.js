@@ -6,19 +6,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const ecmaScriptFileExtensionsGlobPattern = require("./pckg/ecmaScriptFileExtensionsGlobPattern");
-const globSpread = require("./globSpread");
-const path = require("path");
+const ecmaScriptFileExtensionsGlobPattern = require('./pckg/ecmaScriptFileExtensionsGlobPattern');
+const globSpread = require('./globSpread');
+const path = require('path');
 
 function awaitGlobPattern(config, pckgPromise) {
-    return pckgPromise.then(function (pckg) {
-        return [
-            path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "*" + ecmaScriptFileExtensionsGlobPattern(pckg)),
-            "!" + path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**", "__fixtures__", "**", "*")
-        ];
-    });
+  return pckgPromise.then(function (pckg) {
+    return [
+      path.resolve(
+        config.baseDir,
+        globSpread(pckg.directories.lib),
+        '**',
+        `*${ecmaScriptFileExtensionsGlobPattern(pckg)}`
+      ),
+      `!${path.resolve(
+        config.baseDir,
+        globSpread(pckg.directories.lib),
+        '**',
+        '__fixtures__',
+        '**',
+        '*'
+      )}`,
+    ];
+  });
 }
 
 module.exports = awaitGlobPattern;

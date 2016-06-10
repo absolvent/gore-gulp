@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const isArray = require("lodash/isArray");
+const isArray = require('lodash/isArray');
 
 function libDirs(pckg) {
-    if (isArray(pckg.directories.lib)) {
-        return pckg.directories.lib;
-    }
+  if (isArray(pckg.directories.lib)) {
+    return pckg.directories.lib;
+  }
 
-    return [
-        pckg.directories.lib
-    ];
+  return [
+    pckg.directories.lib,
+  ];
 }
 
 module.exports = libDirs;

@@ -6,53 +6,53 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const gg = require("../index");
-const Gulp = require("gulp").Gulp;
-const noop = require("lodash/noop");
-const path = require("path");
-const test = require("lookly-preset-ava/test");
+const gg = require('../index');
+const Gulp = require('gulp').Gulp;
+const noop = require('lodash/noop');
+const path = require('path');
+const test = require('lookly-preset-ava/test');
 
-test("allows to attach a custom plugin", function () {
-    const gulpInstance = new Gulp();
+test('allows to attach a custom plugin', function () {
+  const gulpInstance = new Gulp();
 
-    return new Promise(function (resolve) {
-        gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
-            .plugin({
-                "dependencies": [],
-                "factory": function () {
-                    return resolve;
-                },
-                "name": "custom"
-            })
-            .setup(gulpInstance);
+  return new Promise(function (resolve) {
+    gg(path.resolve(__dirname, '..', '__fixtures__', 'test-library-8'))
+      .plugin({
+        dependencies: [],
+        factory() {
+          return resolve;
+        },
+        name: 'custom',
+      })
+      .setup(gulpInstance);
 
-        gulpInstance.start("custom");
-    });
+    gulpInstance.start('custom');
+  });
 });
 
-test("is chainable", function () {
-    const gulpInstance = new Gulp();
+test('is chainable', function () {
+  const gulpInstance = new Gulp();
 
-    return new Promise(function (resolve) {
-        gg(path.resolve(__dirname, "..", "__fixtures__", "test-library-8"))
-            .plugin({
-                "dependencies": [],
-                "factory": function () {
-                    return resolve;
-                },
-                "name": "first"
-            })
-            .plugin({
-                "dependencies": ["first"],
-                "factory": function () {
-                    return noop;
-                },
-                "name": "second"
-            })
-            .setup(gulpInstance);
+  return new Promise(function (resolve) {
+    gg(path.resolve(__dirname, '..', '__fixtures__', 'test-library-8'))
+      .plugin({
+        dependencies: [],
+        factory() {
+          return resolve;
+        },
+        name: 'first',
+      })
+      .plugin({
+        dependencies: ['first'],
+        factory() {
+          return noop;
+        },
+        name: 'second',
+      })
+      .setup(gulpInstance);
 
-        gulpInstance.start("second");
-    });
+    gulpInstance.start('second');
+  });
 });

@@ -6,15 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const path = require("path");
+const path = require('path');
 
 function webpackGetOutputFilename(webpackConfig, entry) {
-    return path.resolve(
-        webpackConfig.output.path,
-        webpackConfig.output.filename.replace("[name]", entry)
-    );
+  return path.resolve(
+    webpackConfig.output.path,
+    webpackConfig.output.filename.replace('[name]', entry)
+  );
 }
 
 module.exports = webpackGetOutputFilename;

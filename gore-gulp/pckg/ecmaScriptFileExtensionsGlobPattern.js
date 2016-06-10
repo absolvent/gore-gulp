@@ -6,16 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const ecmaScriptFileExtensions = require("./ecmaScriptFileExtensions");
-const filter = require("lodash/filter");
+const ecmaScriptFileExtensions = require('./ecmaScriptFileExtensions');
+const filter = require('lodash/filter');
 
 function ecmaScriptFileExtensionsGlobPattern(pckg) {
-    const ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg);
-    const notEmptyExtensions = filter(ecmaScriptFileExtensionsList);
+  const ecmaScriptFileExtensionsList = ecmaScriptFileExtensions(pckg);
+  const notEmptyExtensions = filter(ecmaScriptFileExtensionsList);
 
-    return "{" + notEmptyExtensions.join(",") + "}";
+  return `{${notEmptyExtensions.join(',')}}`;
 }
 
 module.exports = ecmaScriptFileExtensionsGlobPattern;

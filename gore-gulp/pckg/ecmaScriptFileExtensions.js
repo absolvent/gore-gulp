@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
 const ecmaScriptFileExtensionsList = [
-    "",
-    ".coffee",
-    ".js",
-    ".jsx",
-    ".min.js"
+  '',
+  '.coffee',
+  '.js',
+  '.jsx',
+  '.min.js',
 ];
 
 function ecmaScriptFileExtensions() {
-    return ecmaScriptFileExtensionsList;
+  return ecmaScriptFileExtensionsList;
 }
 
 module.exports = ecmaScriptFileExtensions;

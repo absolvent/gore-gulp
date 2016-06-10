@@ -6,24 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const ava = require("lookly-preset-ava");
-const globSpread = require("../globSpread");
-const minimist = require("minimist");
-const path = require("path");
+const ava = require('lookly-preset-ava');
+const globSpread = require('../globSpread');
+const minimist = require('minimist');
+const path = require('path');
 
 module.exports = function (config, pckgPromise) {
-    return function () {
-        return pckgPromise.then(function (pckg) {
-            const options = minimist(process.argv.slice(2), {
-                "string": "glob",
-                "default": {
-                    "glob": path.resolve(config.baseDir, globSpread(pckg.directories.lib), "**/*.test.js")
-                }
-            });
+  return function () {
+    return pckgPromise.then(function (pckg) {
+      const options = minimist(process.argv.slice(2), {
+        string: 'glob',
+        default: {
+          glob: path.resolve(config.baseDir, globSpread(pckg.directories.lib), '**/*.test.js'),
+        },
+      });
 
-            return ava(options.glob);
-        });
-    };
+      return ava(options.glob);
+    });
+  };
 };

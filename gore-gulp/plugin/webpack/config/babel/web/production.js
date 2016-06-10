@@ -6,27 +6,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const merge = require("lodash/merge");
-const web = require("../web");
-const webpack = require("webpack");
+const merge = require('lodash/merge');
+const web = require('../web');
+const webpack = require('webpack');
 
 function production(config, pckg, entries) {
-    return web(config, pckg, entries).then(function (webConfig) {
-        return merge({}, webConfig, {
-            "debug": false,
-            "devtool": config.productionDevtool || "none",
-            "plugins": webConfig.plugins.concat([
-                new webpack.DefinePlugin({
-                    "process.env": {
-                        "NODE_ENV": JSON.stringify("production")
-                    }
-                }),
-                new webpack.optimize.UglifyJsPlugin()
-            ])
-        });
+  return web(config, pckg, entries).then(function (webConfig) {
+    return merge({}, webConfig, {
+      debug: false,
+      devtool: config.productionDevtool || 'none',
+      plugins: webConfig.plugins.concat([
+        new webpack.DefinePlugin({
+          'process.env': {
+            NODE_ENV: JSON.stringify('production'),
+          },
+        }),
+        new webpack.optimize.UglifyJsPlugin(),
+      ]),
     });
+  });
 }
 
 module.exports = production;

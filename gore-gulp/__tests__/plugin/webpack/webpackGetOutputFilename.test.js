@@ -6,19 +6,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const assert = require("chai").assert;
-const test = require("lookly-preset-ava/test");
-const webpackGetOutputFilename = require("../../../plugin/webpack/webpackGetOutputFilename");
+const assert = require('chai').assert;
+const test = require('lookly-preset-ava/test');
+const webpackGetOutputFilename = require('../../../plugin/webpack/webpackGetOutputFilename');
 
-test("normalizes filename", function () {
-    const outputFilename = webpackGetOutputFilename({
-        "output": {
-            "filename": "foo.[name].min.js",
-            "path": "/baz"
-        }
-    }, "bar");
+test('normalizes filename', function () {
+  const outputFilename = webpackGetOutputFilename({
+    output: {
+      filename: 'foo.[name].min.js',
+      path: '/baz',
+    },
+  }, 'bar');
 
-    assert.strictEqual(outputFilename, "/baz/foo.bar.min.js");
+  assert.strictEqual(outputFilename, '/baz/foo.bar.min.js');
 });

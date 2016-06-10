@@ -6,10 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
 function publicPath(pckg) {
-    return pckg.directories.publicPath;
+  return pckg.directories.publicPath;
 }
 
 module.exports = publicPath;

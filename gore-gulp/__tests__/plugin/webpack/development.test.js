@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const common = require("./common");
+const common = require('./common');
 
-common.setup("webpack.development");
+common.setup('webpack.development');

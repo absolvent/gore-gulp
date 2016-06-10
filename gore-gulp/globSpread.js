@@ -6,16 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const isArray = require("lodash/isArray");
+const isArray = require('lodash/isArray');
 
 function globSpread(pattern) {
-    if (isArray(pattern)) {
-        return "{" + pattern.join(",") + "}";
-    }
+  if (isArray(pattern)) {
+    return `{${pattern.join(',')}}`;
+  }
 
-    return pattern;
+  return pattern;
 }
 
 module.exports = globSpread;

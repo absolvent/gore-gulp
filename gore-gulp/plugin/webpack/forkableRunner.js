@@ -6,31 +6,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const development = require("./config/babel/web/development");
-const production = require("./config/babel/web/production");
-const Promise = require("bluebird");
-const webpack = require("webpack");
+const development = require('./config/babel/web/development');
+const production = require('./config/babel/web/production');
+const Promise = require('bluebird');
+const webpack = require('webpack');
 
 module.exports = function (inp, callback) {
-    const webpackConfigPromise = "production" === inp.variant ? (
-        production(inp.config, inp.pckg, inp.entries)
-    ) : (
-        development(inp.config, inp.pckg, inp.entries)
-    );
+  const webpackConfigPromise = inp.variant === 'production' ? (
+    production(inp.config, inp.pckg, inp.entries)
+  ) : (
+    development(inp.config, inp.pckg, inp.entries)
+  );
 
-    webpackConfigPromise.then(webpackConfig => {
-        return Promise.fromCallback(webpackCallback => {
-            webpack(webpackConfig, err => {
-                webpackCallback(err, webpackConfig);
-            });
-        });
-    }).asCallback(function (err, data) {
-        if (err) {
-            callback(err.toString(), data);
-        } else {
-            callback(null, data);
-        }
-    });
+  webpackConfigPromise.then(webpackConfig => (
+    Promise.fromCallback(webpackCallback => {
+      webpack(webpackConfig, err => {
+        webpackCallback(err, webpackConfig);
+      });
+    })
+  )).asCallback(function (err, data) {
+    if (err) {
+      callback(err.toString(), data);
+    } else {
+      callback(null, data);
+    }
+  });
 };
