@@ -55,7 +55,7 @@ module.exports = function (config) {
       gulp.task('test', ['lint'], tasks.test);
       gulp.task('webpack.development', ['test'], tasks['webpack.development']);
       gulp.task('webpack.production', ['test'], tasks['webpack.production']);
-      gulp.task('webpack', tasks['webpack.development']);
+      gulp.task('webpack', ['test'], tasks['webpack.development']);
       gulp.task('default', ['webpack']);
     },
   };
