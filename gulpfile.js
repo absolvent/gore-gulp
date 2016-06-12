@@ -13,6 +13,7 @@ const pckg = require(path.resolve(__dirname, 'package.json'));
 const gg = require('./src');
 const gulp = require('gulp');
 
-const gore = gg(__dirname).setup(gulp);
-
-gulp.task('test', gore.tasks.ava);
+const gore = gg({
+  baseDir: __dirname,
+  useAva: true,
+}).setup(gulp);
