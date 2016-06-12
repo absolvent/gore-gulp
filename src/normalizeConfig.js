@@ -14,6 +14,7 @@ const merge = require('lodash/merge');
 function normalizeConfigObject(config) {
   return merge({
     override: identity,
+    useAva: false,
   }, config);
 }
 

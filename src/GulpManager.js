@@ -60,11 +60,9 @@ function createTask(configBuilder, pckgPromise, factoryList) {
 
 class GulpManager {
   constructor(configBuilder, pckgPromise) {
+    const useAva = configBuilder.config.get('useAva');
+
     this.tasks = {
-      ava: createTask(configBuilder, pckgPromise, [
-        lint,
-        ava,
-      ]),
       format: createTask(configBuilder, pckgPromise, [
         format,
       ]),
@@ -73,16 +71,16 @@ class GulpManager {
       ]),
       test: createTask(configBuilder, pckgPromise, [
         lint,
-        test,
+        useAva ? ava : test,
       ]),
       'webpack.development': createTask(configBuilder, pckgPromise, [
         lint,
-        test,
+        useAva ? ava : test,
         webpack.development,
       ]),
       'webpack.production': createTask(configBuilder, pckgPromise, [
         lint,
-        test,
+        useAva ? ava : test,
         webpack.production,
       ]),
     };
