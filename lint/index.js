@@ -9,7 +9,7 @@
 'use strict';
 
 const eslint = require('lookly-preset-eslint');
-const getGlobPattern = require('../getGlobPattern');
+const getGlobPattern = require('../src/getGlobPattern');
 const keys = require('lodash/keys');
 
 module.exports = function eslintPlugin(config, pckg) {
