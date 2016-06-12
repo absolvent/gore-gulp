@@ -8,10 +8,10 @@
 
 'use strict';
 
-const ecmaScriptFileExtensions = require('../../../pckg/ecmaScriptFileExtensions');
-const gorePckg = require('../../../../package.json');
+const ecmaScriptFileExtensions = require('../../pckg/ecmaScriptFileExtensions');
+const gorePckg = require('../../../package.json');
 const isArray = require('lodash/isArray');
-const libDirs = require('../../../pckg/libDirs');
+const libDirs = require('../../pckg/libDirs');
 const map = require('lodash/map');
 const merge = require('lodash/merge');
 const os = require('os');

@@ -8,7 +8,7 @@
 
 'use strict';
 
-const common = require('./plugin/webpack/common');
+const common = require('./webpack/common');
 const path = require('path');
 const test = require('lookly-preset-ava/test');
 

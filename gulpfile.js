@@ -6,13 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-"use strict";
+'use strict';
 
-const ava = require("lookly-preset-ava");
-const path = require("path");
-const pckg = require(path.resolve(__dirname, "package.json"));
-const gg = require(path.resolve(__dirname, pckg.name));
-const gulp = require("gulp");
+const ava = require('lookly-preset-ava');
+const path = require('path');
+const pckg = require(path.resolve(__dirname, 'package.json'));
+const gg = require('./src');
+const gulp = require('gulp');
 
 const gore = gg(__dirname).setup(gulp);
 

@@ -8,14 +8,14 @@
 
 'use strict';
 
-const ava = require('./plugin/ava');
-const format = require('./plugin/format');
+const ava = require('./ava');
+const format = require('./format');
 const gutil = require('gulp-util');
-const lint = require('./plugin/lint');
+const lint = require('./lint');
 const prettyTime = require('pretty-hrtime');
 const reduce = require('lodash/reduce');
-const test = require('./plugin/test');
-const webpack = require('./plugin/webpack');
+const test = require('./test');
+const webpack = require('./webpack');
 
 function getMsgTail(start) {
   const time = process.hrtime(start);

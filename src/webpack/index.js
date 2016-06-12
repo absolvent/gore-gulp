@@ -10,14 +10,14 @@
 
 /* eslint-disable max-len */
 const chunk = require('lodash/chunk');
-const ecmaScriptFileExtensions = require('../../pckg/ecmaScriptFileExtensions');
-const ecmaScriptFileExtensionsGlobPattern = require('../../pckg/ecmaScriptFileExtensionsGlobPattern');
+const ecmaScriptFileExtensions = require('../pckg/ecmaScriptFileExtensions');
+const ecmaScriptFileExtensionsGlobPattern = require('../pckg/ecmaScriptFileExtensionsGlobPattern');
 const endsWith = require('lodash/endsWith');
 const flatten = require('lodash/flatten');
 const glob = require('ultra-glob');
 const groupBy = require('lodash/groupBy');
 const kebabCase = require('lodash/kebabCase');
-const libDirs = require('../../pckg/libDirs');
+const libDirs = require('../pckg/libDirs');
 const map = require('lodash/map');
 const mapValues = require('lodash/mapValues');
 const os = require('os');
