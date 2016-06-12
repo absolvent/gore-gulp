@@ -30,7 +30,7 @@
   "description": "Simple and univesal Gulp configuration framework for JavaScript projects.",
   "directories": {
     "example": "example",
-    "lib": "gore-gulp"
+    "lib": "src"
   },
   "engines": {
     "node": ">=0.10"
@@ -41,7 +41,7 @@
     "gulp",
     "react"
   ],
-  "main": "gore-gulp",
+  "main": "src",
   "name": "gore-gulp",
   "repository": {
     "type": "git",
