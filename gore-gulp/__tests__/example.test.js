@@ -12,11 +12,11 @@ const common = require('./plugin/webpack/common');
 const path = require('path');
 const test = require('lookly-preset-ava/test');
 
-test('tests example basic package', function (t) {
-  return common.runDirectory(
+test('tests example basic package', t => (
+  common.runDirectory(
     path.resolve(__dirname, '..', '..', 'example', 'basic'), 'webpack.production'
   ).then(common.expectFiles(t, [
     'example.a.min.js',
     'example.b.min.js',
-  ]));
-});
+  ]))
+));

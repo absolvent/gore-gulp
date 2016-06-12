@@ -10,7 +10,7 @@
 
 const mocha = require('lookly-preset-mocha');
 
-module.exports = function (config) {
+module.exports = function mochaPlugin(config) {
   return mocha(config.glob, {
     silent: config.silent,
   });

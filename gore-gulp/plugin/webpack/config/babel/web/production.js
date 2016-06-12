@@ -13,8 +13,8 @@ const web = require('../web');
 const webpack = require('webpack');
 
 function production(config, pckg, entries) {
-  return web(config, pckg, entries).then(function (webConfig) {
-    return merge({}, webConfig, {
+  return web(config, pckg, entries).then(webConfig => (
+    merge({}, webConfig, {
       debug: false,
       devtool: config.productionDevtool || 'none',
       plugins: webConfig.plugins.concat([
@@ -25,8 +25,8 @@ function production(config, pckg, entries) {
         }),
         new webpack.optimize.UglifyJsPlugin(),
       ]),
-    });
-  });
+    })
+  ));
 }
 
 module.exports = production;

@@ -19,9 +19,10 @@ function runDirectory(baseDir) {
 
   gg({
     baseDir,
+    silent: true,
   }).setup(gulpInstance);
 
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     gulpInstance.on('err', reject);
     gulpInstance.on('stop', resolve);
 
@@ -29,18 +30,18 @@ function runDirectory(baseDir) {
   });
 }
 
-test('detects code flaws', function () {
-  return runDirectory(path.join(__dirname, '..', '..', '__fixtures__', 'test-library-8'))
-    .then(function () {
+test('detects code flaws', () => (
+  runDirectory(path.join(__dirname, '..', '..', '__fixtures__', 'test-library-8'))
+    .then(() => {
       throw new Error('Linter should detect errors!');
     })
-    .catch(function (err) {
+    .catch(err => {
       if (err.err && err.err.plugin !== 'lookly-preset-eslint') {
         throw err;
       }
-    });
-});
+    })
+));
 
-test("should ignore errors when library uses 'provide' shim", function () {
-  return runDirectory(path.resolve(__dirname, '..', '..', '__fixtures__', 'test-library-9'));
-});
+test("should ignore errors when library uses 'provide' shim", () => (
+  runDirectory(path.resolve(__dirname, '..', '..', '__fixtures__', 'test-library-9'))
+));

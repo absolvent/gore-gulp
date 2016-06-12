@@ -11,7 +11,7 @@
 const normalizeConfig = require('../normalizeConfig');
 const test = require('lookly-preset-ava/test');
 
-test('should normalize basedir to object', function (t) {
+test('should normalize basedir to object', t => {
   const normalizedConfig = normalizeConfig(__dirname);
 
   t.is(normalizedConfig.baseDir, __dirname);

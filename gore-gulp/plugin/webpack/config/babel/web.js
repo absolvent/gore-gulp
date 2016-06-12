@@ -22,8 +22,8 @@ function normalizeProvidePaths(providePaths) {
 }
 
 function web(config, pckg, entries) {
-  return babel(config, pckg).then(function (babelConfig) {
-    return merge({}, babelConfig, {
+  return babel(config, pckg).then(babelConfig => (
+    merge({}, babelConfig, {
       entry: entries,
       output: {
         filename: `${pckg.name}.[name].min.js`,
@@ -32,8 +32,8 @@ function web(config, pckg, entries) {
       plugins: babelConfig.plugins.concat([
         new webpack.ProvidePlugin(normalizeProvidePaths(pckg.provide)),
       ]),
-    });
-  });
+    })
+  ));
 }
 
 module.exports = web;

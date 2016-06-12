@@ -10,7 +10,7 @@
 
 const esformatter = require('lookly-preset-esformatter');
 
-module.exports = function (config) {
+module.exports = function esformatterPlugin(config) {
   return esformatter(config.glob, {
     silent: config.silent,
   });

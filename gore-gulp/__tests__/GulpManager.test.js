@@ -15,10 +15,13 @@ const test = require('lookly-preset-ava/test');
 
 const fixtureLibraryPath = path.resolve(__dirname, '..', '__fixtures__', 'test-library-1');
 
-test('provides the default task', function (t) {
+test('provides the default task', t => {
   const gulpInstance = new Gulp();
 
-  gg(fixtureLibraryPath).setup(gulpInstance);
+  gg({
+    baseDir: fixtureLibraryPath,
+    silent: true,
+  }).setup(gulpInstance);
 
   t.true(gulpInstance.hasTask('default'));
 });

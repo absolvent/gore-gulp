@@ -8,55 +8,21 @@
 
 'use strict';
 
-const ava = require('./plugin/ava');
-const format = require('./plugin/format');
+const ConfigBuilder = require('./ConfigBuilder');
 const fs = require('fs');
-const lint = require('./plugin/lint');
+const GulpManager = require('./GulpManager');
 const normalizeConfig = require('./normalizeConfig');
-const normalizeConfigWithPckg = require('./normalizeConfigWithPckg');
 const path = require('path');
 const Promise = require('bluebird');
-const test = require('./plugin/test');
-const webpack = require('./plugin/webpack');
 
-function setupTask(config, pckgPromise, factory) {
-  return function () {
-    return pckgPromise.then(pckg => Promise.props({
-      config: normalizeConfigWithPckg(config, pckg),
-      pckg,
-    })).then(params => factory(params.config, params.pckg));
-  };
-}
-
-module.exports = function (config) {
-  const normalizedConfig = normalizeConfig(config, process.argv.slice(2));
-  const pckgPath = path.resolve(normalizedConfig.baseDir, 'package.json');
+module.exports = function createGulpManager(config) {
+  const configBuilder = new ConfigBuilder(normalizeConfig(config)).addArgv(process.argv.slice(2));
+  const pckgPath = path.resolve(configBuilder.config.get('baseDir'), 'package.json');
   const pckgPromise = Promise
     .fromCallback(cb => fs.readFile(pckgPath, cb))
     .then(pckg => JSON.parse(pckg))
-    .then(pckg => normalizedConfig.override(pckg))
+    .then(pckg => configBuilder.config.get('override')(pckg))
   ;
 
-  const tasks = {
-    ava: setupTask(normalizedConfig, pckgPromise, ava),
-    format: setupTask(normalizedConfig, pckgPromise, format),
-    lint: setupTask(normalizedConfig, pckgPromise, lint),
-    test: setupTask(normalizedConfig, pckgPromise, test),
-    'webpack.development': setupTask(normalizedConfig, pckgPromise, webpack.development),
-    'webpack.production': setupTask(normalizedConfig, pckgPromise, webpack.production),
-  };
-
-  return {
-    tasks,
-    setup(gulp) {
-      gulp.task('format', tasks.format);
-      gulp.task('lint', tasks.lint);
-      gulp.task('ava', ['lint'], tasks.ava);
-      gulp.task('test', ['lint'], tasks.test);
-      gulp.task('webpack.development', ['test'], tasks['webpack.development']);
-      gulp.task('webpack.production', ['test'], tasks['webpack.production']);
-      gulp.task('webpack', ['test'], tasks['webpack.development']);
-      gulp.task('default', ['webpack']);
-    },
-  };
+  return new GulpManager(configBuilder, pckgPromise);
 };

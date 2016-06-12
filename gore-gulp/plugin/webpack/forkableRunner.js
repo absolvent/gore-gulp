@@ -13,7 +13,7 @@ const production = require('./config/babel/web/production');
 const Promise = require('bluebird');
 const webpack = require('webpack');
 
-module.exports = function (inp, callback) {
+module.exports = function runWebpack(inp, callback) {
   const webpackConfigPromise = inp.variant === 'production' ? (
     production(inp.config, inp.pckg, inp.entries)
   ) : (
@@ -26,7 +26,7 @@ module.exports = function (inp, callback) {
         webpackCallback(err, webpackConfig);
       });
     })
-  )).asCallback(function (err, data) {
+  )).asCallback((err, data) => {
     if (err) {
       callback(err.toString(), data);
     } else {

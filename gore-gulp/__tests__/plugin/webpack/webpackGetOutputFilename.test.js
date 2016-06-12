@@ -11,7 +11,7 @@
 const test = require('lookly-preset-ava/test');
 const webpackGetOutputFilename = require('../../../plugin/webpack/webpackGetOutputFilename');
 
-test('normalizes filename', function (t) {
+test('normalizes filename', t => {
   const outputFilename = webpackGetOutputFilename({
     output: {
       filename: 'foo.[name].min.js',

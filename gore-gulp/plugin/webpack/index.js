@@ -60,7 +60,7 @@ function normalizeEntries(config, pckg, libDir, entries) {
 }
 
 function groupEntries(config, pckg) {
-  return Promise.all(map(libDirs(pckg), function (libDir) {
+  return Promise.all(map(libDirs(pckg), libDir => {
     const pattern = path.resolve(
       config.baseDir,
       libDir,
@@ -105,8 +105,8 @@ function groupEntries(config, pckg) {
   })));
 }
 
-function setupVariant(variant) {
-  return function (config, pckg) {
+function createVariant(variant) {
+  return function webpack(config, pckg) {
     const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
     const workers = workerFarm(runnerPath);
 
@@ -128,6 +128,6 @@ function setupVariant(variant) {
 }
 
 module.exports = {
-  development: setupVariant('development'),
-  production: setupVariant('production'),
+  development: createVariant('development'),
+  production: createVariant('production'),
 };

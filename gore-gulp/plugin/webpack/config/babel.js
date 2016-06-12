@@ -38,9 +38,7 @@ function babel(config, pckg) {
     module: {
       loaders: [
         {
-          include: map(libDirs(pckg), function (libDir) {
-            return path.resolve(config.baseDir, libDir);
-          }),
+          include: map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir)),
           test: /\.jsx?$/,
           loader: path.resolve(__dirname, '..', 'babelLoader'),
           query: {

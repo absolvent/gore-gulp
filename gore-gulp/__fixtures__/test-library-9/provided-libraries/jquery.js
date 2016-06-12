@@ -8,6 +8,6 @@
 
 'use strict';
 
-module.exports = function () {
+module.exports = function jQuery() {
   return 'this is just a fake module';
 };

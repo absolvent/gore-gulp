@@ -10,7 +10,7 @@
 
 const ava = require('lookly-preset-ava');
 
-module.exports = function (config) {
+module.exports = function avaPlugin(config) {
   return ava(config.glob, {
     silent: config.silent,
   });

@@ -20,20 +20,18 @@ const test = require('lookly-preset-ava/test');
 const tmp = require('tmp');
 
 function doFiles(t, paths, assertion) {
-  return function (distDir) {
-    const promises = paths.map(function (pth) {
-      return Promise.fromCallback(function (statCb) {
-        fs.stat(path.resolve(distDir, pth), statCb);
-      }).then(function (stats) {
-        return t[assertion](stats.isFile(), pth);
-      }).catch(function (err) {
+  return function awaitFiles(distDir) {
+    const promises = paths.map(pth => (
+      Promise.fromCallback(statCb => fs.stat(path.resolve(distDir, pth), statCb))
+      .then(stats => t[assertion](stats.isFile(), pth))
+      .catch(err => {
         if (err.code === 'ENOENT') {
           return t[assertion](false, pth);
         }
 
         throw err;
-      });
-    });
+      })
+    ));
 
     return Promise.all(promises).then(noop);
   };
@@ -54,7 +52,7 @@ function runDirectory(baseDir, variant) {
   gg({
     baseDir,
     override(pckg) {
-      return Promise.fromCallback(tmp.dir).then(function (tmpDir) {
+      return Promise.fromCallback(tmp.dir).then(tmpDir => {
         distDir = path.resolve(tmpDir, pckg.directories.dist);
 
         return merge(pckg, {
@@ -67,16 +65,12 @@ function runDirectory(baseDir, variant) {
     silent: true,
   }).setup(gulpInstance);
 
-  return new Promise(function (resolve, reject) {
-    gulpInstance.on('err', function (err) {
-      reject(err.err);
-    });
+  return new Promise((resolve, reject) => {
+    gulpInstance.on('err', err => reject(err.err));
     gulpInstance.on('stop', resolve);
 
     gulpInstance.start(variant);
-  }).then(function () {
-    return distDir;
-  });
+  }).then(() => distDir);
 }
 
 function setup(variant) {
@@ -172,20 +166,18 @@ function setup(variant) {
       name: 'uses ES6 decorators',
       notExpectFiles: [],
     },
-  ].forEach(function (testData) {
-    test(testData.name, function (t) {
+  ].forEach(testData => {
+    test(testData.name, t => {
       let distDir;
 
       return runDirectory(path.resolve(__dirname, fixtureDir, testData.fixture), variant)
-        .then(function (dd) {
+        .then(dd => {
           distDir = dd;
 
           return dd;
         })
         .then(expectFiles(t, testData.expectFiles))
-        .then(function () {
-          return distDir;
-        })
+        .then(() => distDir)
         .then(notExpectFiles(t, testData.notExpectFiles));
     });
   });

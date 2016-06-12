@@ -11,21 +11,20 @@
 const identity = require('lodash/identity');
 const merge = require('lodash/merge');
 
-function normalizeConfigObject(config, argv) {
+function normalizeConfigObject(config) {
   return merge({
-    argv,
     override: identity,
   }, config);
 }
 
-function normalizeConfig(config, argv) {
+function normalizeConfig(config) {
   if (typeof config === 'string') {
     return normalizeConfigObject({
       baseDir: config,
-    }, argv);
+    });
   }
 
-  return normalizeConfigObject(config, argv);
+  return normalizeConfigObject(config);
 }
 
 module.exports = normalizeConfig;
