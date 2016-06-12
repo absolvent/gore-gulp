@@ -8,7 +8,7 @@
 
 'use strict';
 
-const gg = require('../../index');
+const gg = require('../index');
 const Gulp = require('gulp').Gulp;
 const path = require('path');
 const Promise = require('bluebird');
@@ -31,7 +31,7 @@ function runDirectory(baseDir) {
 }
 
 test('detects code flaws', () => (
-  runDirectory(path.join(__dirname, '..', '..', '__fixtures__', 'test-library-8'))
+  runDirectory(path.join(__dirname, '..', '__fixtures__', 'test-library-8'))
     .then(() => {
       throw new Error('Linter should detect errors!');
     })
@@ -43,5 +43,5 @@ test('detects code flaws', () => (
 ));
 
 test("should ignore errors when library uses 'provide' shim", () => (
-  runDirectory(path.resolve(__dirname, '..', '..', '__fixtures__', 'test-library-9'))
+  runDirectory(path.resolve(__dirname, '..', '__fixtures__', 'test-library-9'))
 ));

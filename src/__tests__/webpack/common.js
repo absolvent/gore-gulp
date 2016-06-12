@@ -8,9 +8,9 @@
 
 'use strict';
 
-const fixtureDir = '../../../__fixtures__';
+const fixtureDir = '../../__fixtures__';
 const fs = require('fs');
-const gg = require('../../../index');
+const gg = require('../../index');
 const Gulp = require('gulp').Gulp;
 const merge = require('lodash/merge');
 const noop = require('lodash/noop');

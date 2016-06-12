@@ -8,7 +8,6 @@
 
 'use strict';
 
-const ava = require('lookly-preset-ava');
 const path = require('path');
 const pckg = require(path.resolve(__dirname, 'package.json'));
 const gg = require('./src');

@@ -9,7 +9,7 @@
 'use strict';
 
 const test = require('lookly-preset-ava/test');
-const webpackGetOutputFilename = require('../../../webpack/webpackGetOutputFilename');
+const webpackGetOutputFilename = require('../../webpack/webpackGetOutputFilename');
 
 test('normalizes filename', t => {
   const outputFilename = webpackGetOutputFilename({
