@@ -116,6 +116,8 @@ function createVariant(variant) {
           workers({
             config: {
               baseDir: config.baseDir,
+              developmentDevtool: config.developmentDevtool,
+              productionDevtool: config.productionDevtool,
             },
             entries: result.entries,
             pckg: result.pckg,
