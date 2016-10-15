@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "babel-core": "^6.17.0",
     "babel-loader": "^6.2.4",
     "bluebird": "^3.4.0",
     "eslint-config-goreutils": "^0.5.2",
@@ -50,5 +51,5 @@
   "scripts": {
     "test": "gulp test"
   },
-  "version": "0.14.5"
+  "version": "0.14.6"
 }
