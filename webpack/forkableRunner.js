@@ -8,10 +8,14 @@
 
 'use strict';
 
+const babel = require('babel-core');
 const development = require('./config/babel/web/development');
+const fs = require('fs');
+const head = require('lodash/head');
 const production = require('./config/babel/web/production');
 const Promise = require('bluebird');
 const webpack = require('webpack');
+const webpackGetOutputFilename = require('./webpackGetOutputFilename');
 
 module.exports = function runWebpack(inp, callback) {
   const webpackConfigPromise = inp.variant === 'production' ? (
@@ -22,11 +26,29 @@ module.exports = function runWebpack(inp, callback) {
 
   webpackConfigPromise.then(webpackConfig => (
     Promise.fromCallback(webpackCallback => {
-      webpack(webpackConfig, err => {
-        webpackCallback(err, webpackConfig);
-      });
+      webpack(webpackConfig, err => webpackCallback(err, webpackConfig));
     })
-  )).asCallback((err, data) => {
+  )).then(webpackConfig => {
+    if (inp.variant !== 'production') {
+      return webpackConfig;
+    }
+
+    const entryPointName = head(Object.keys(webpackConfig.entry));
+    const outputFilename = webpackGetOutputFilename(webpackConfig, entryPointName);
+
+    return Promise.fromCallback(babelCallback => {
+      babel.transformFile(outputFilename, {
+        plugins: webpackConfig.babel.plugins,
+        presets: webpackConfig.babel.presets,
+      }, babelCallback);
+    }).then(babelResult => {
+      return Promise.fromCallback(fsCallback => {
+        fs.writeFile(outputFilename, babelResult.code, fsCallback);
+      });
+    }).then(() => {
+      return webpackConfig;
+    });
+  }).asCallback((err, data) => {
     if (err) {
       callback(err.toString(), data);
     } else {
