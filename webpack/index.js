@@ -110,26 +110,22 @@ function createVariant(variant) {
     const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
     const workers = workerFarm(runnerPath);
 
-    return groupEntries(config, pckg)
-      .then(results => (
-        results.map(result => (
-          Promise.fromCallback(callback => (
-            workers({
-              config: {
-                baseDir: config.baseDir,
-                developmentDevtool: config.developmentDevtool,
-                productionDevtool: config.productionDevtool,
-              },
-              entries: result.entries,
-              pckg: result.pckg,
-              variant,
-            }, callback)
-          ))
+    return groupEntries(config, pckg).then(results => (
+      Promise.all(results.map(result => (
+        Promise.fromCallback(callback => (
+          workers({
+            config: {
+              baseDir: config.baseDir,
+              developmentDevtool: config.developmentDevtool,
+              productionDevtool: config.productionDevtool,
+            },
+            entries: result.entries,
+            pckg: result.pckg,
+            variant,
+          }, callback)
         ))
-      ))
-      .then(webpackConfigList => Promise.all(webpackConfigList))
-      .finally(() => workerFarm.end(workers))
-    ;
+      )))
+    )).finally(() => workerFarm.end(workers));
   };
 }
 
