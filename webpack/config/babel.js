@@ -38,10 +38,11 @@ function babel(config, pckg) {
     module: {
       loaders: [
         {
-          include: map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir)),
-          test: /\.jsx?$/,
+          // include: map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir)),
           loader: path.resolve(__dirname, '..', 'babelLoader'),
+          test: /\.jsx?$/,
           query: {
+            babelrc: false,
             cacheDirectory,
             cacheIdentifier,
           },

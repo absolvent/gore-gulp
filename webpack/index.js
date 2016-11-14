@@ -16,10 +16,12 @@ const endsWith = require('lodash/endsWith');
 const flatten = require('lodash/flatten');
 const glob = require('ultra-glob');
 const groupBy = require('lodash/groupBy');
+const gutil = require('gulp-util');
 const kebabCase = require('lodash/kebabCase');
 const libDirs = require('../src/pckg/libDirs');
 const map = require('lodash/map');
 const mapValues = require('lodash/mapValues');
+const MissingBabelPluginErrorHandle = require('./MissingBabelPluginErrorHandle');
 const os = require('os');
 const path = require('path');
 const Promise = require('bluebird');
@@ -110,22 +112,39 @@ function createVariant(variant) {
     const runnerPath = require.resolve(path.resolve(__dirname, 'forkableRunner'));
     const workers = workerFarm(runnerPath);
 
-    return groupEntries(config, pckg).then(results => (
-      Promise.all(results.map(result => (
-        Promise.fromCallback(callback => (
-          workers({
-            config: {
-              baseDir: config.baseDir,
-              developmentDevtool: config.developmentDevtool,
-              productionDevtool: config.productionDevtool,
-            },
-            entries: result.entries,
-            pckg: result.pckg,
-            variant,
-          }, callback)
+    return groupEntries(config, pckg)
+      .then(results => (
+        results.map(result => (
+          Promise.fromCallback(callback => (
+            workers({
+              config: {
+                baseDir: config.baseDir,
+                developmentDevtool: config.developmentDevtool,
+                productionDevtool: config.productionDevtool,
+              },
+              entries: result.entries,
+              pckg: result.pckg,
+              variant,
+            }, callback)
+          ))
         ))
-      )))
-    )).finally(() => workerFarm.end(workers));
+      ))
+      .then(webpackConfigList => Promise.all(webpackConfigList))
+      .catch(err => {
+        if (!MissingBabelPluginErrorHandle.isMissingPluginError(err)) {
+          throw err;
+        }
+
+        return new MissingBabelPluginErrorHandle(err)
+          .createMissingPluginMessage()
+          .then(msg => gutil.log(msg))
+          .then(() => {
+            throw err
+          })
+        ;
+      })
+      .finally(() => workerFarm.end(workers))
+    ;
   };
 }
 
