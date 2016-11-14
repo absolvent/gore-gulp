@@ -11,8 +11,6 @@
 const ecmaScriptFileExtensions = require('../../src/pckg/ecmaScriptFileExtensions');
 const gorePckg = require('../../package.json');
 const isArray = require('lodash/isArray');
-const libDirs = require('../../src/pckg/libDirs');
-const map = require('lodash/map');
 const merge = require('lodash/merge');
 const os = require('os');
 const path = require('path');
@@ -38,7 +36,6 @@ function babel(config, pckg) {
     module: {
       loaders: [
         {
-          // include: map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir)),
           loader: path.resolve(__dirname, '..', 'babelLoader'),
           test: /\.jsx?$/,
           query: {

@@ -8,16 +8,23 @@
 
 'use strict';
 
+const libDirs = require('../../../../src/pckg/libDirs');
+const map = require('lodash/map');
 const merge = require('lodash/merge');
+const path = require('path');
 const web = require('../web');
 
 function development(config, pckg, entries) {
-  return web(config, pckg, entries).then(webConfig => (
-    merge({}, webConfig, {
+  return web(config, pckg, entries).then(webConfig => {
+    const webDevConfig = merge({}, webConfig, {
       debug: true,
       devtool: config.developmentDevtool || 'none',
-    })
-  ));
+    });
+
+    webDevConfig.module.loaders[0].include = map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir));
+
+    return webDevConfig;
+  });
 }
 
 module.exports = development;
