@@ -10,6 +10,7 @@
 
 const ava = require('../ava');
 const format = require('../format');
+const publish = require('../publish');
 const gutil = require('gulp-util');
 const lint = require('../lint');
 const prettyTime = require('pretty-hrtime');
@@ -73,6 +74,11 @@ class GulpManager {
         lint,
         useAva ? ava : test,
       ]),
+      publish: createTask(configBuilder, pckgPromise, [
+        lint,
+        useAva ? ava : test,
+        publish,
+      ]),
       'webpack.development': createTask(configBuilder, pckgPromise, [
         lint,
         useAva ? ava : test,
@@ -91,6 +97,7 @@ class GulpManager {
     gulp.task('lint', [], this.tasks.lint);
     gulp.task('ava', [], this.tasks.ava);
     gulp.task('test', [], this.tasks.test);
+    gulp.task('publish', [], this.tasks.publish);
     gulp.task('webpack.development', [], this.tasks['webpack.development']);
     gulp.task('webpack.production', [], this.tasks['webpack.production']);
     gulp.task('webpack', ['webpack.development']);
