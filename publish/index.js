@@ -8,26 +8,34 @@
 
 'use strict';
 
-const babelConfig = require('lookly-preset-babel');
+const getBabelConfig = require('lookly-preset-babel');
 const getGlobPattern = require('../src/getGlobPattern');
 const glob = require('ultra-glob');
 const babel = require('babel-core');
 const fs = require('fs');
 const Promise = require('bluebird');
+const convertLibFilePathToDistFilePath = require('../src/convertLibFilePathToDistFilePath');
+const path = require('path');
 
-function publish(pattern, options) {
-  return glob(pattern).then(files =>
-    Promise.all(
-      files.map(filename =>
-        Promise.fromCallback(cb =>
-          babel.transformFile(
-            filename,
-            options,
-            cb
-          )).then(result => Promise.fromCallback(cb => fs.writeFile(filename, result, cb))))
-    ));
+const mkdirp = require('mkdirp');
+
+function publish(pattern, babelConfig, config, pckg) {
+  return glob(pattern).then(files => Promise.all(
+    files.map(fileName => Promise.fromCallback(cb =>
+      babel.transformFile(fileName, babelConfig, cb))
+      .then(result => {
+        const newFileName = convertLibFilePathToDistFilePath(config, pckg, fileName);
+        Promise.fromCallback(cb => {
+          mkdirp(path.dirname(newFileName), () => {
+            fs.writeFile(newFileName, result.code, cb);
+          });
+        });
+      }
+    ))
+  ));
 }
 
 module.exports = function publishPlugin(config, pckg) {
-  return publish(getGlobPattern(config, pckg), babelConfig());
+  const babelConfig = getBabelConfig();
+  return publish(getGlobPattern(config, pckg), babelConfig, config, pckg);
 };
