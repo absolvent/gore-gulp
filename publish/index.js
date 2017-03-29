@@ -25,7 +25,7 @@ function publish(pattern, babelConfig, config, pckg) {
       babel.transformFile(fileName, babelConfig, cb))
       .then(result => {
         const newFileName = convertLibFilePathToDistFilePath(config, pckg, fileName);
-        Promise.fromCallback(cb => {
+        return Promise.fromCallback(cb => {
           mkdirp(path.dirname(newFileName), () => {
             fs.writeFile(newFileName, result.code, cb);
           });
