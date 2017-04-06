@@ -9,6 +9,7 @@
 'use strict';
 
 const ava = require('../ava');
+const updateSnapshots = require('../updateSnapshots');
 const format = require('../format');
 const publish = require('../publish');
 const gutil = require('gulp-util');
@@ -74,6 +75,9 @@ class GulpManager {
         lint,
         useAva ? ava : test,
       ]),
+      'update-snapshots': createTask(configBuilder, pckgPromise, [
+        updateSnapshots,
+      ]),
       publish: createTask(configBuilder, pckgPromise, [
         lint,
         useAva ? ava : test,
@@ -97,6 +101,7 @@ class GulpManager {
     gulp.task('lint', [], this.tasks.lint);
     gulp.task('ava', [], this.tasks.ava);
     gulp.task('test', [], this.tasks.test);
+    gulp.task('update-snapshots', [], this.tasks['update-snapshots']);
     gulp.task('publish', [], this.tasks.publish);
     gulp.task('webpack.development', [], this.tasks['webpack.development']);
     gulp.task('webpack.production', [], this.tasks['webpack.production']);
