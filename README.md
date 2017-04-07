@@ -212,7 +212,7 @@ $ gulp test --glob ./mylibrary/__tests__/subdir/*.test.js
 
 ### How to create snapshot tests?
 
-You can leverage built in (AVA)[https://github.com/avajs/ava] features.
+You can leverage built in [AVA](https://github.com/avajs/ava) features.
 
 First make sure to enable AVA by `useAva` switch:
 
@@ -225,7 +225,7 @@ gg({
 }).setup(gulp);
 ```
 
-Than follow instructions of AVA's (snapshot testing)[https://github.com/avajs/ava#snapshot-testing]
+Than follow instructions of AVA's [snapshot testing](https://github.com/avajs/ava#snapshot-testing)
 
 And then run tests as usual:
 
