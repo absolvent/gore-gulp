@@ -30,6 +30,8 @@ gg(__dirname).setup(gulp);
 $ gulp lint # check your code using highly demading linter to prevent bugs
 $ gulp test # perform regression tests to refactor with confidence
 $ gulp webpack # pack your code to make it production-ready
+$ gulp publish # transpiles your code to ES5 to make it publish ready
+$ gulp update-snapshots # updates shapshots created by ava
 ```
 
 **gore-gulp** takes advantage of [package.json's "directories"](https://docs.npmjs.com/files/package.json#directorieslib)
@@ -47,6 +49,9 @@ feature. If you configure your `package.json` like this:
 It would make `webpack` task to look for all `*.entry.js`, `*.entry.jsx` and
 `*.entry.coffee` files inside `./my-package` and output
 production-ready to the `./dist` directory. For `lib` you can also configure multiple sources by placing an array of directories.
+
+It would also make `publish` task to look fo all `*.js`, `*.jsx` files inside `./my-package` and output
+ES5 transpiled versions to the ./dist` directory keeping folder structure. This is usefull when your project is a JS library and you want it to be easily consumable from public repository.
 
 ## Why is gore-gulp so special?
 
@@ -203,6 +208,35 @@ You can use the `glob` switch:
 
 ```bash
 $ gulp test --glob ./mylibrary/__tests__/subdir/*.test.js
+```
+
+### How to create snapshot tests?
+
+You can leverage built in [AVA](https://github.com/avajs/ava) features.
+
+First make sure to enable AVA by `useAva` switch:
+
+```JavaScript
+// gulpfile.js
+
+gg({
+  baseDir: __dirname,
+  useAva: true,
+}).setup(gulp);
+```
+
+Than follow instructions of AVA's [snapshot testing](https://github.com/avajs/ava#snapshot-testing)
+
+And then run tests as usual:
+
+```bash
+$ gulp test
+```
+
+To update snapshot files there is another task:
+
+```bash
+$ gulp update-snapshots
 ```
 
 ## Summary
