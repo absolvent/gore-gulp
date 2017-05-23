@@ -34,11 +34,11 @@ function babel(config, pckg) {
     bail: true,
     externals: pckg.externals,
     module: {
-      loaders: [
+      rules: [
         {
           loader: path.resolve(__dirname, '..', 'babelLoader'),
           test: /\.jsx?$/,
-          query: {
+          options: {
             babelrc: false,
             cacheDirectory,
             cacheIdentifier,
@@ -50,7 +50,10 @@ function babel(config, pckg) {
     resolve: {
       alias: normalizeAliasPaths(config, pckg),
       extensions: ecmaScriptFileExtensions(pckg),
-      root: config.baseDir,
+      modules:
+        [
+          config.baseDir,
+        ]
     },
   }));
 }

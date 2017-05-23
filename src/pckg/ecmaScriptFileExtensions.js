@@ -9,7 +9,6 @@
 'use strict';
 
 const ecmaScriptFileExtensionsList = [
-  '',
   '.coffee',
   '.js',
   '.jsx',

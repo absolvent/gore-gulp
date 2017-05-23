@@ -13,15 +13,20 @@ const map = require('lodash/map');
 const merge = require('lodash/merge');
 const path = require('path');
 const web = require('../web');
+const webpack = require('webpack');
 
 function development(config, pckg, entries) {
   return web(config, pckg, entries).then(webConfig => {
     const webDevConfig = merge({}, webConfig, {
-      debug: true,
+      plugins: [
+        new webpack.LoaderOptionsPlugin({
+          debug: true
+        })
+      ],
       devtool: config.developmentDevtool || 'none',
     });
 
-    webDevConfig.module.loaders[0].include = map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir));
+    webDevConfig.module.rules[0].include = map(libDirs(pckg), libDir => path.resolve(config.baseDir, libDir));
 
     return webDevConfig;
   });

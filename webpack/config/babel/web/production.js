@@ -15,15 +15,24 @@ const webpack = require('webpack');
 function production(config, pckg, entries) {
   return web(config, pckg, entries).then(webConfig => (
     merge({}, webConfig, {
-      debug: false,
       devtool: config.productionDevtool || 'none',
       plugins: webConfig.plugins.concat([
+          new webpack.LoaderOptionsPlugin({
+            minimize: true
+          }),
         new webpack.DefinePlugin({
           'process.env': {
             NODE_ENV: JSON.stringify('production'),
           },
         }),
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+          compress: {
+            warnings: true
+          }
+        }),
+        new webpack.LoaderOptionsPlugin({
+          debug: true
+        }),
       ]),
     })
   ));
