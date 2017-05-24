@@ -13,13 +13,13 @@ const loaderUtils = require('loader-utils');
 const vanillaBabelLoader = require('babel-loader');
 
 function babelLoader(source, initialSourceMap) {
-  const query = loaderUtils.parseQuery(this.query);
+  const options = loaderUtils.parseQuery(this.options);
 
   this.options.babel = config();
-  this.options.babel.cacheDirectory = query.cacheDirectory;
-  this.options.babel.cacheIdentifier = query.cacheIdentifier;
+  this.options.babel.cacheDirectory = options.cacheDirectory;
+  this.options.babel.cacheIdentifier = options.cacheIdentifier;
 
-  this.query = '';
+  this.options = '';
   vanillaBabelLoader.call(this, source, initialSourceMap);
 }
 
