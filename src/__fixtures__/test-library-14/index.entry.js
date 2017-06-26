@@ -13,6 +13,6 @@ function fooDecorator() {
 
 export default class Foo {
   @fooDecorator
-  doFoo() {
+  static doFoo() {
   }
 }
