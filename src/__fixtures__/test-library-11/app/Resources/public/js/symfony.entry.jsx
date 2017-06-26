@@ -11,8 +11,9 @@
 /* eslint no-unused-vars: 0 */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 function FooElement() {
 }
 
-React.render(<FooElement />, document.body);
+ReactDOM.render(<FooElement />, document.body);

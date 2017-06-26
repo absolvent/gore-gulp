@@ -9,5 +9,6 @@
 
 import HelloWorld from "example.com/HelloWorld";
 import React from "react";
+import ReactDOM from "react-dom";
 
-React.render(<HelloWorld world="Earth" />, document.body);
+ReactDOM.render(<HelloWorld world="Earth" />, document.body);
