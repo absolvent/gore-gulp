@@ -10,6 +10,7 @@
 
 const convertLibFilePathToDistFilePath = require('../convertLibFilePathToDistFilePath');
 const test = require('lookly-preset-ava/test');
+
 const config = {
   baseDir: '/Users/zangrafx/projects/gore-gulp',
 };

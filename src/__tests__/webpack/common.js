@@ -37,7 +37,7 @@ function doFiles(t, paths, assertion) {
   };
 }
 
-/* eslint-disable global-require */
+/* eslint-disable global-require, import/no-dynamic-require */
 function executeFiles(t, files, assertion) {
   return function awaitFiles(distDir) {
     const promises = files.map(file => (
@@ -51,7 +51,7 @@ function executeFiles(t, files, assertion) {
     return Promise.all(promises).then(noop);
   };
 }
-/* eslint-enable global-require */
+/* eslint-enable global-require, import/no-dynamic-require */
 
 function expectFiles(t, paths) {
   return doFiles(t, paths, 'true');
