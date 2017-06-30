@@ -44,6 +44,10 @@ function babel(config, pckg) {
             cacheIdentifier,
           },
         },
+        {
+          test: /\.json$/,
+          loader: 'json',
+        },
       ],
     },
     plugins: [],
