@@ -1,14 +1,13 @@
 {
   "dependencies": {
-    "babel-core": "^6.17.0",
+    "babel-core": "6.26.0",
     "babel-loader": "^6.2.4",
     "bluebird": "^3.4.0",
-    "eslint-config-goreutils": "^0.5.2",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.7",
     "immutable": "^3.8.1",
-    "loader-utils": "^0.2.15",
-    "lodash": "^4.13.1",
+    "loader-utils": "1.1.0",
+    "lodash": "4.17.4",
     "lookly-preset-ava": "^1.3.0",
     "lookly-preset-babel": "^1.1.0",
     "lookly-preset-esformatter": "^2.0.0",
@@ -53,5 +52,5 @@
   "scripts": {
     "test": "gulp test"
   },
-  "version": "0.21.0"
+  "version": "0.21.1"
 }
