@@ -10,7 +10,6 @@
 
 const ecmaScriptFileExtensions = require('../../src/pckg/ecmaScriptFileExtensions');
 const gorePckg = require('../../package.json');
-const isArray = require('lodash/isArray');
 const merge = require('lodash/merge');
 const os = require('os');
 const path = require('path');
@@ -19,7 +18,7 @@ const Promise = require('bluebird');
 function normalizeAliasPaths(config, pckg) {
   const alias = {};
 
-  if (!isArray(pckg.directories.lib)) {
+  if (!Array.isArray(pckg.directories.lib)) {
     alias[pckg.name] = pckg.directories.lib;
   }
 
